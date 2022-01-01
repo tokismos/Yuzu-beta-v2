@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import auth from "@react-native-firebase/auth";
-import { setUser } from "../redux/slicer/userSlicer";
+import { Alert, StyleSheet } from "react-native";
 
+import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import {
-  AccessToken,
-  GraphRequest,
-  GraphRequestManager,
-  LoginManager,
-  Profile,
-} from "react-native-fbsdk-next";
+import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import AsyncStorage from "@react-native-community/async-storage";
+import database from "@react-native-firebase/database";
+import { firebase } from "@react-native-firebase/database";
 
 import { api } from "../axios";
 
@@ -26,26 +19,33 @@ const signIn = async (email, password) => {
   }
 };
 
-const signInWithGoogle = async () => {
+const signInWithGoogle = async (navigation) => {
   // Get the users ID token
   const userInfo = await GoogleSignin.signIn();
   const { idToken, accessToken } = await GoogleSignin.getTokens();
 
-  console.log("info", userInfo);
+  console.log("info", userInfo.email);
+  console.log("google email", userInfo.user.email);
   // Create a Google credential with the token
   const googleCredential = auth.GoogleAuthProvider.credential(
     idToken,
     accessToken
   );
+  // reference.set(info).then((i) => console.log("Additional info added", i));
+  console.log("cred", auth().currentUser);
   await auth().signInWithCredential(googleCredential);
 
-  auth()
-    .currentUser.updateEmail(userInfo.user.email)
-    .then(async () => {
-      console.log("email updated");
-    });
-  auth().currentUser.reload();
-  console.log("proo", auth().currentUser.providerData);
+  //if its the first time email in google is null this is why we update it
+  if (!auth().currentUser.email) {
+    auth()
+      .currentUser.updateEmail(userInfo.user.email)
+      .then(async () => {
+        console.log("email updated");
+        console.log("update", auth().currentUser);
+      });
+  }
+
+  // ACHEEEEEEEEEEEECKER CAAAAAAA IMPOOORTAAAAAAAAAAAAAANT !!!!!!!!!!!
 };
 
 // Sign In with Facebook
@@ -146,6 +146,15 @@ const verifyCode = async (phoneNumber, verificationCode) => {
     Alert.alert(`${e.response.status}, ${e.response.data.error}`);
   }
 };
+const signUp = async (email, password) => {
+  try {
+    const res = await auth().createUserWithEmailAndPassword(email, password);
+    console.log("User Created !", res);
+    return res;
+  } catch (e) {
+    console.log("user NOT created");
+  }
+};
 
 export default useAuth = () => {
   return {
@@ -155,6 +164,7 @@ export default useAuth = () => {
     signInWithFb,
     sendPhoneVerification,
     verifyCode,
+    signUp,
   };
 };
 

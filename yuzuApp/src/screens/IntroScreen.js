@@ -25,7 +25,7 @@ const IntroScreen = ({ navigation }) => {
           style={styles.logoContainer}
         />
         <Text style={styles.descriptionText}>
-          Faire ses courses en 5 min depuis son canap
+          Perdre quelques kilos n’aura jamais été aussi agréable !
         </Text>
       </View>
       <View style={styles.middleBottomScreen}>

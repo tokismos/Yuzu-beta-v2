@@ -5,7 +5,13 @@ import {
   TransitionSpecs,
 } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Animated,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   Ionicons,
@@ -20,7 +26,6 @@ import OnBoardingScreen from "../screens/OnBoardingScreen";
 import { COLORS } from "../consts/colors";
 import IngredientScreen from "../screens/IngredientScreen";
 import LoginScreen from "../screens/LoginScreen";
-import PhoneVerificationScreen from "../screens/PhoneVerificationScreen";
 import CartScreen from "../screens/CartScreen";
 import ResultCartScreen from "../screens/ResultCartScreen";
 import RecetteSVG from "../assets/recette.svg";
@@ -34,6 +39,8 @@ import HeaderComponent from "../components/HeaderComponent";
 import SummarizeScreen from "../screens/SummarizeScreen";
 import IntroScreen from "../screens/IntroScreen";
 import useAuth from "../hooks/useAuth";
+import { useNavigation } from "@react-navigation/native";
+
 const Stack = createStackNavigator();
 const LoginStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,6 +57,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import FeedBackScreen from "../screens/FeedBackScreen";
 import SignInScreen from "../screens/SignInScreen";
+import PhoneScreen from "../screens/PhoneScreen";
+import CommandesScreen from "../screens/CommandesScreen";
 
 export const TabScreen = () => {
   return (
@@ -183,30 +192,30 @@ const LoggedStackScreen = () => {
   //Get the authenticated user and set it to the redux store in user state
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!HADCHI N9DER NHTAJO MNB3D!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  useEffect(() => {
-    const func = async () => {
-      const user = await auth().currentUser;
-      console.log("hna UUUUUUSERRR0", user);
-      const userObj = {
-        uid: user.uid,
-        displayName: user.displayName,
-        email: info ? info.email : user.email, //if we log with FB we get the info
-        phoneNumber: user.phoneNumber,
-        photoURL: info ? info.picture.data.url : user.photoURL,
-      };
+  // useEffect(() => {
+  //   const func = async () => {
+  //     const user = await auth().currentUser;
+  //     console.log("hna UUUUUUSERRR0", user);
+  //     const userObj = {
+  //       uid: user.uid,
+  //       displayName: user.displayName,
+  //       email: info ? info.email : user.email, //if we log with FB we get the info
+  //       phoneNumber: user.phoneNumber,
+  //       photoURL: info ? info.picture.data.url : user.photoURL,
+  //     };
 
-      dispatch(setUser(userObj));
-    };
-    func();
-  }, [info, auth().currentUser]);
+  //     dispatch(setUser(userObj));
+  //   };
+  //   func();
+  // }, [info]);
 
   //Get the info from facebook API if the access token exists in storage
-  useEffect(() => {
-    if (accessTokenFb) {
-      getInfoFromTokenFb(accessTokenFb);
-      console.log("laast effect ", info);
-    }
-  }, [accessTokenFb]);
+  // useEffect(() => {
+  //   if (accessTokenFb) {
+  //     getInfoFromTokenFb(accessTokenFb);
+  //     console.log("laast effect ", info);
+  //   }
+  // }, [accessTokenFb]);
 
   return (
     <NavigationContainer>
@@ -218,11 +227,17 @@ const LoggedStackScreen = () => {
           name="TinderScreen"
           component={TinderScreen}
         />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+          }}
+          name="CommandesScreen"
+          component={CommandesScreen}
+        />
 
         <Stack.Screen
           options={{
             header: () => <HeaderComponent page="2" />,
-            headerLeft: null,
           }}
           name="PanierScreen"
           component={PanierScreen}
@@ -274,15 +289,9 @@ const LoggedStackScreen = () => {
           name="SignUpScreen"
           component={SignUpScreen}
         />
-        <Stack.Screen
-          options={{
-            // header: () => <HeaderComponent page="1" />,
-            headerShown: false,
-          }}
-          name="PhoneVerificationScreen"
-          component={PhoneVerificationScreen}
-        />
+
         <Stack.Screen name="FilterScreen" component={FilterScreen} />
+        <Stack.Screen name="PhoneScreen" component={PhoneScreen} />
         <Stack.Screen name="CartScreen" component={CartScreen} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         <Stack.Screen name="ResultCartScreen" component={ResultCartScreen} />
@@ -301,6 +310,14 @@ const LoginStackScreen = () => {
           }}
           name="IntroScreen"
           component={IntroScreen}
+        />
+        <Stack.Screen name="PhoneScreen" component={PhoneScreen} />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+          }}
+          name="CommandesScreen"
+          component={CommandesScreen}
         />
         <Stack.Screen
           options={{
@@ -340,6 +357,7 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             ...horizontalAnimation,
+            headerShown: false,
           }}
           name="IngredientScreen"
           component={IngredientScreen}
@@ -382,7 +400,10 @@ const LoginStackScreen = () => {
 };
 
 const RootNavigation = () => {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.userStore);
+
   const config = {
     webClientId:
       "768418404122-out2q1cfkp99u5bs6sb5gsnhs9tl98sl.apps.googleusercontent.com",
@@ -391,25 +412,43 @@ const RootNavigation = () => {
     permissions: ["public_profile", "location", "email"],
     offlineAccess: true,
   };
+
   useEffect(() => {
     GoogleSignin.configure(config);
 
-    const sub = auth().onAuthStateChanged((userInfo) => {
+    const sub = auth().onAuthStateChanged(async (userInfo) => {
       if (userInfo) {
-        setUser(userInfo);
+        console.log("changed", userInfo);
+
+        // getAdditionalInfo().then((e) => {
+        //   console.log("W", e);
+        //   if (e != null) {
+        //     console.log("props", props);
+        //     navigation.navigate("PhoneScreen");
+        //     setShow(true);
+        //   }
+        // });
+
+        // console.log("ADIOTO,", wow);
+
+        dispatch(
+          setUser({
+            uid: userInfo.uid,
+            displayName: userInfo.displayName,
+            email: userInfo.email, //if we log with FB we get the info
+            //    phoneNumber: additionalInfo,
+            photoURL: userInfo.photoURL,
+          })
+        );
       } else {
         console.log("no usser");
-        setUser(null);
 
-        console.log("Disconnected", userInfo);
+        dispatch(setUser(null));
       }
     });
     return sub;
   }, []);
 
-  useEffect(() => {
-    console.log("root auth", auth().currentUser);
-  }, [auth().currentUser]);
   return (
     <>
       <StatusBar translucent />

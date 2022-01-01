@@ -13,13 +13,13 @@ export const matchSlice = createSlice({
       console.log("added");
       state.matches = [...state.matches, action.payload];
     },
-    changeNumberOfRecipes: (state, action) => {
-      state.nbrOfRecipes = action.payload;
+    resetMatches: (state, action) => {
+      state.matches = [];
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addMatch, changeNumberOfRecipes } = matchSlice.actions;
+export const { addMatch, resetMatches } = matchSlice.actions;
 
 export default matchSlice.reducer;

@@ -6,40 +6,80 @@ import {
   TouchableOpacity,
   Button,
   Image,
+  Dimensions,
+  ActivityIndicator,
+  Pressable,
+  ImageBackground,
+  requireNativeComponent,
+  ToastAndroid,
 } from "react-native";
 import TinderCard from "../components/TinderCard";
 import users from "../helpers/data/";
 import { AntDesign, Entypo } from "@expo/vector-icons";
+import LottieView from "lottie-react-native";
 
 import AnimatedStack from "../components/AnimatedStack";
 import { useDispatch, useSelector } from "react-redux";
 import { addMatch, changeNumberOfRecipes } from "../redux/slicer/MatchSlicer";
 import { COLORS } from "../consts/colors";
-import { TextInput } from "react-native-gesture-handler";
-import { FontAwesome5 } from "@expo/vector-icons";
+
 import { getAllRecipes } from "../axios";
-import { setRecipes } from "../redux/slicer/recipeSlicer";
-import data from "../helpers/data";
+// import { setRecipes } from "../redux/slicer/recipeSlicer";
+import { Avatar } from "react-native-paper";
+
 import LoadingComponent from "../components/LoadingComponent";
 // import { LoginWithFb, signOut } from "../helpers/db";
 import HeaderComponent from "../components/HeaderComponent";
 import auth from "@react-native-firebase/auth";
 import useAuth from "../hooks/useAuth";
 import { useNavigation } from "@react-navigation/core";
+const { height, width } = Dimensions.get("screen");
+import { setUser } from "../redux/slicer/userSlicer";
+import { getAdditionalInfo } from "../helpers/db";
 
 const Header = () => {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.userStore);
 
   return (
-    <View
+    <ImageBackground
+      source={require("../assets/logoNoel.png")}
+      resizeMode="contain"
       style={{
         flexDirection: "row",
-        height: "10%",
+        height: height * 0.08,
         width: "100%",
-        marginTop: 10,
+        marginTop: 20,
+        justifyContent: "space-between",
       }}
     >
+      <View
+        style={{
+          width: "100%",
+          position: "absolute",
+          bottom: 0,
+        }}
+      >
+        <LottieView
+          source={require("../assets/snow.json")}
+          speed={0.4}
+          autoPlay
+          style={{
+            width: "100%",
+          }}
+        />
+        <LottieView
+          source={require("../assets/snow.json")}
+          autoPlay
+          speed={0.6}
+          style={{
+            width: "80%",
+            marginLeft: 15,
+            position: "absolute",
+            bottom: -20,
+          }}
+        />
+      </View>
       <TouchableOpacity
         onPress={() =>
           auth().currentUser
@@ -52,7 +92,18 @@ const Header = () => {
           justifyContent: "center",
         }}
       >
-        <Image
+        <Avatar.Image
+          size={40}
+          source={
+            user?.photoURL != null
+              ? {
+                  uri: user?.photoURL,
+                }
+              : require("../assets/avatar.png")
+          }
+        />
+
+        {/* <Image
           source={
             user?.photoURL != null
               ? {
@@ -66,12 +117,22 @@ const Header = () => {
             resizeMode: "contain",
             borderRadius: 50,
           }}
-        />
+        /> */}
       </TouchableOpacity>
 
-      <View style={{ width: "45%", alignItems: "center" }}>
+      <View
+        style={{
+          width: "100%",
+          alignItems: "center",
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          left: 0,
+          zIndex: 99,
+        }}
+      >
         <Image
-          source={require("../assets/logo.png")}
+          source={require("../assets/logoNoel.png")}
           style={{
             height: "100%",
             width: "100%",
@@ -109,11 +170,13 @@ const Header = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 const BarHeader = () => {
-  return (
+  const { user } = useSelector((state) => state.userStore);
+  const navigation = useNavigation();
+  return user?.phoneNumber || user == null ? (
     <View
       style={{
         height: "5%",
@@ -163,20 +226,63 @@ const BarHeader = () => {
         <AntDesign name="downcircleo" size={15} color={COLORS.primary} />
       </View>
     </View>
+  ) : (
+    <Pressable
+      onPress={() => navigation.navigate("ProfileScreen")}
+      style={{
+        height: "5%",
+        width: "100%",
+        backgroundColor: "#b20000",
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text style={{ textAlign: "center", color: "white", fontWeight: "bold" }}>
+        Vous avez des informations manquantes dans votre profile.
+      </Text>
+    </Pressable>
   );
 };
 const TinderScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.userStore);
+
+  const [recipes, setRecipes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { nbrOfRecipes, matches } = useSelector((state) => state.matchStore);
-  const { recipes, activeFilters } = useSelector((state) => state.recipeStore);
+  const { activeFilters } = useSelector((state) => state.recipeStore);
 
   const loadData = async (item) => {
-    const recipesData = await getAllRecipes(item);
-    dispatch(setRecipes(recipesData));
+    getAllRecipes(item)
+      .then((result) => {
+        const tmp = result.filter((item) => item.imgURL != null);
+        setRecipes(tmp);
+      })
+      .catch((e) => console.log("HOOHOHOHOHOHHOHO", e));
   };
+
+  //To add the additional information to the store , we get them from firebase DB
   useEffect(() => {
-    loadData(activeFilters);
-  }, [activeFilters]);
+    if (user != null) {
+      getAdditionalInfo().then((e) => {
+        console.log("W", e);
+        if (!e.phoneNumber) {
+          setIsLoading(false);
+
+          return navigation.navigate("PhoneScreen");
+        }
+        dispatch(setUser({ ...user, phoneNumber: e.phoneNumber }));
+        setIsLoading(false);
+      });
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const onSwipeLeft = (item) => {
     // console.warn("swipe left", user.name);
@@ -206,7 +312,10 @@ const TinderScreen = ({ navigation }) => {
             transform: [{ scale: 0.8 }],
           }}
         >
-          <TouchableOpacity style={{ alignItems: "center" }}>
+          <TouchableOpacity
+            style={{ alignItems: "center" }}
+            onPress={() => navigation.navigate("CommandesScreen")}
+          >
             <Image source={require("../assets/recette.png")} />
             <Text style={{ color: "#cccccc" }}>Recettes</Text>
           </TouchableOpacity>
@@ -215,14 +324,16 @@ const TinderScreen = ({ navigation }) => {
             <Text style={{ color: "#cccccc" }}>Cuisine</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => navigation.navigate("CommandesScreen")}
             style={{
               alignItems: "center",
               justifyContent: "center",
               marginTop: -3,
+              marginLeft: -20,
             }}
           >
-            <AntDesign name="pluscircle" size={40} color="#cccccc" />
-            <Text style={{ color: "#cccccc" }}>Ajouter</Text>
+            <Entypo name="list" size={40} color="#cccccc" />
+            <Text style={{ color: "#cccccc" }}>Liste de courses</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -232,15 +343,23 @@ const TinderScreen = ({ navigation }) => {
   return (
     <View style={styles.pageContainer}>
       <Header />
-      <BarHeader />
-      <HeaderComponent yes page="1" style={{ justifyContent: "center" }} />
+      {isLoading ? (
+        <ActivityIndicator size="small" color="#0000ff" />
+      ) : (
+        <BarHeader />
+      )}
+      <HeaderComponent
+        yes
+        page="1"
+        style={{ justifyContent: "center", height: height * 0.1 }}
+      />
       {/* <NbrMatchComponent /> */}
       {/* <View style={[styles.headerContainer, { height: "10%" }]}>
         <TouchableOpacity onPress={() => navigation.navigate("FilterScreen")}>
           <FontAwesome5 name="filter" size={24} color="white" />
         </TouchableOpacity>
       </View> */}
-      {recipes == null ? (
+      {recipes.length == 0 ? (
         <LoadingComponent />
       ) : (
         <>
@@ -269,7 +388,7 @@ const TinderScreen = ({ navigation }) => {
                 <Text
                   style={{ fontSize: 20, color: "white", fontWeight: "bold" }}
                 >
-                  Voir le panier{" "}
+                  Générer ma liste de course{" "}
                   {matches.length != 0 ? `(${matches.length})` : null}
                 </Text>
               </TouchableOpacity>
@@ -334,7 +453,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: COLORS.primary,
-    width: "70%",
+    width: "90%",
     height: "80%",
     alignItems: "center",
     justifyContent: "center",

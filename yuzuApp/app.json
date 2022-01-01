@@ -3,8 +3,8 @@
     "facebookScheme": "fb593620908653647",
     "facebookAppId": "593620908653647",
     "facebookDisplayName": "Helllo",
-    "name": "foodApp",
-    "slug": "foodApp",
+    "name": "Yuzu",
+    "slug": "Yuzu",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,9 +16,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.foodApp.test"
@@ -32,9 +30,7 @@
         "backgroundColor": "#FFFFFF"
       }
     },
-    "plugins": [
-      "@react-native-firebase/app"
-    ],
+    "plugins": ["@react-native-firebase/app"],
     "web": {
       "favicon": "./assets/favicon.png"
     },

@@ -17,7 +17,7 @@ import TextInputColored from "./TextInputColored";
 
 const { width, height } = Dimensions.get("window");
 
-const CodeVerificationComponent = ({ fullNumber, setCode }) => {
+const CodeVerificationComponent = ({ fullNumber, setCode, goBack }) => {
   const [refresh, setRefresh] = useState(false);
 
   const ref = createRef(null);
@@ -40,10 +40,24 @@ const CodeVerificationComponent = ({ fullNumber, setCode }) => {
           alignSelf: "center",
           textAlign: "center",
           marginVertical: 20,
+          color: COLORS.primary,
+          fontWeight: "bold",
+          fontSize: 18,
         }}
       >
-        Nous avons envoyé un SMS avec un code à 6 chiffres au {fullNumber}
+        Veuillez saisir le code de confirmation reçu par SMS
       </Text>
+      <Text
+        style={{ color: "gray", textAlign: "center", marginHorizontal: 20 }}
+      >
+        Un code de 4 chiffres a été envoyé au{" "}
+        <Text style={{ fontWeight: "bold" }}>{fullNumber}</Text>
+      </Text>
+      <TouchableOpacity onPress={goBack}>
+        <Text style={{ color: "blue", textDecorationLine: "underline" }}>
+          Changer
+        </Text>
+      </TouchableOpacity>
 
       <OTPInputView
         keyboardType="phone-pad"
@@ -88,9 +102,6 @@ const CodeVerificationComponent = ({ fullNumber, setCode }) => {
             onComplete={() => setRefresh(true)}
           />
         )}
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.resendButton} onPress={{}}>
-        <Text style={styles.text}>Change number</Text>
       </TouchableOpacity>
     </View>
   );

@@ -1,25 +1,11 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import Navigator, {
-  SignNavigator,
-  TabScreen,
-} from "./src/navigation/Navigator";
-import auth from "@react-native-firebase/auth";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { COLORS } from "./src/consts/colors";
+import React, { useState } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
+
 import { store } from "./src/redux/store";
-import { Provider, useDispatch } from "react-redux";
-import RootNavigation, {
-  LoggedStackScreen,
-  LoginStackScreen,
-} from "./src/navigation/Navigator";
+import { Provider } from "react-redux";
+import RootNavigation from "./src/navigation/Navigator";
 require("./src/helpers/db");
-import TinderScreen from "./src/screens/TinderScreen";
-import LoginScreen from "./src/screens/LoginScreen";
-import IntroScreen from "./src/screens/IntroScreen";
+
 const config = {
   webClientId:
     "768418404122-out2q1cfkp99u5bs6sb5gsnhs9tl98sl.apps.googleusercontent.com",

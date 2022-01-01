@@ -8,9 +8,13 @@ import firebase from "@react-native-firebase/app";
 import auth from "@react-native-firebase/auth";
 import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 
+const firebaseDbURL =
+  "https://yuzu-a0d71-default-rtdb.europe-west1.firebasedatabase.app/";
 const firebaseConfig = {
   apiKey: "AIzaSyC_Khzc-fgbnfetYLwwdkSiNYPuRVjbdN8",
   authDomain: "yuzu-a0d71.firebaseapp.com",
+  databaseURL:
+    "https://yuzu-a0d71-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "yuzu-a0d71",
   storageBucket: "yuzu-a0d71.appspot.com",
   messagingSenderId: "768418404122",
@@ -22,6 +26,77 @@ if (!firebase.apps.length) {
 } else {
   firebase.app(); // if already initialized, use that one
 }
+
+const setAdditionalInfo = async (info) => {
+  console.log("AUTHHHHHHHHHHH", auth().currentUser?.uid);
+  try {
+    firebase
+      .app()
+      .database(firebaseDbURL)
+      .ref(`/users/${auth().currentUser?.uid}`)
+      .update(info)
+      .then((i) => console.log("Additional info added", i));
+  } catch (e) {
+    console.log("Additional informations not added !");
+  }
+};
+
+//get num from realtime DB
+const getAdditionalInfo = async () => {
+  const snapshot = await firebase
+    .app()
+    .database(firebaseDbURL)
+    .ref(`/users/${auth().currentUser?.uid}`)
+    .once("value");
+  if (snapshot.exists()) {
+    return snapshot.val();
+  }
+  return false;
+};
+
+const setCommandes = (cart) => {
+  let obj = [];
+  cart.map((item) => {
+    obj.push({
+      _id: item._id,
+      name: item.name,
+      imgURL: item.imgURL,
+    });
+  });
+  try {
+    firebase
+      .app()
+      .database(firebaseDbURL)
+      .ref(`/users/${auth().currentUser?.uid}/commandes`)
+      .push({
+        recipes: { ...obj },
+        dateTime: firebase.database.ServerValue.TIMESTAMP,
+      })
+      .then((i) => console.log("cartadded", i));
+  } catch (e) {
+    console.log("Additional informations not added !");
+  }
+};
+
+const getCommandes = async (setCommandes) => {
+  let arr = [];
+  const hi = firebase
+    .app()
+    .database(firebaseDbURL)
+    .ref(`/users/${auth().currentUser?.uid}/commandes`)
+    .orderByChild("dateTime")
+    .on("value", (snapshot) => {
+      // let arr = [];
+      // Object.entries(snapshot).forEach(([key, value]) => {
+      //   arr.push({ _id: key, ...value });
+      // });
+      if (snapshot.exists()) {
+        console.log("it exists");
+        arr = Object?.values(snapshot.val());
+      }
+      setCommandes(arr);
+    });
+};
 const LoginWithGoogle = async () => {
   // Get the users ID token
   const { idToken } = await GoogleSignin.signIn();
@@ -120,4 +195,10 @@ const logInWithFb = async () => {
 //     });
 // };
 
-export { auth, LoginWithFb };
+export {
+  auth,
+  setAdditionalInfo,
+  getAdditionalInfo,
+  setCommandes,
+  getCommandes,
+};

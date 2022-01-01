@@ -17,10 +17,12 @@ const { width, height } = Dimensions.get("screen");
 const PanierScreen = ({ navigation }) => {
   const { matches } = useSelector((state) => state.matchStore);
   //   console.log("thiiiiis matches", matches);
-  const [finalCart, setFinalCart] = useState([...matches]);
-
+  let finalCart = matches;
+  // const [finalCart, setFinalCart] = useState([...matches]);
+  useEffect(() => {
+    console.log("this isssssss", finalCart);
+  }, [finalCart]);
   const validate = () => {
-    console.log("hiii");
     navigation.navigate("IngredientsCartScreen", { cart: finalCart });
   };
   //when click on recipe we check if it exist to remove it or if not to add id
@@ -29,10 +31,10 @@ const PanierScreen = ({ navigation }) => {
     const res = finalCart.includes(item);
     // console.log("res", item.name);
     if (!res) {
-      setFinalCart((prev) => [...prev, item]);
+      finalCart.push(item);
       console.log("wasnt there");
     } else {
-      setFinalCart(finalCart.filter((elmt) => elmt != item));
+      finalCart = finalCart.filter((elmt) => elmt != item);
       //   setFinalCart(tmpCart);
       console.log("elemt was there");
     }
@@ -46,8 +48,14 @@ const PanierScreen = ({ navigation }) => {
       <ScrollView>
         <View style={{ width: "100%" }}>
           <View style={{}}>
-            {matches.map((item) => (
-              <CartComponent item={item} key={item.name} onPress={onPress} />
+            {matches.map((item, index) => (
+              <CartComponent
+                index={index}
+                item={item}
+                key={item.name}
+                onPress={onPress}
+                finalCart={finalCart}
+              />
             ))}
           </View>
         </View>
@@ -56,7 +64,10 @@ const PanierScreen = ({ navigation }) => {
       <View style={styles.bottomContainer}>
         <TouchableOpacity
           style={{ ...styles.buttonContainer, backgroundColor: "#E3E3E3" }}
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            console.log("BBBBBBBBBBBBBB", finalCart);
+            // navigation.goBack()
+          }}
         >
           <Text style={{ fontWeight: "800", fontSize: 18, color: "black" }}>
             Ajouter d'autres recettes

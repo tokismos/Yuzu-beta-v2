@@ -19,6 +19,7 @@ import {
   Alert,
 } from "react-native";
 import PagerView from "react-native-pager-view";
+import database from "@react-native-firebase/database";
 
 import HeaderComponent from "../../components/HeaderComponent";
 import LoginHeaderScreen from "../../components/LoginHeaderScreen";
@@ -28,7 +29,8 @@ import auth from "@react-native-firebase/auth";
 import useAuth from "../../hooks/useAuth";
 import PhoneInputComponent from "../../components/PhoneInputComponent";
 import CodeVerificationComponent from "../../components/CodeVerificationComponent";
-import PhoneVerificationScreen from "../PhoneVerificationScreen";
+import CustomButton from "../../components/CustomButton";
+import { setAdditionalInfo } from "../../helpers/db";
 
 const { height, width } = Dimensions.get("screen");
 const EmailComponent = ({ setEmail, refe, email }) => {
@@ -87,6 +89,7 @@ const PhoneComponent = ({
   fullNumber,
 }) => {
   const { sendPhoneVerification } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={{ width }}>
       <PhoneInputComponent
@@ -94,12 +97,18 @@ const PhoneComponent = ({
         setCountryCode={setCountryCode}
         style={{}}
       />
-      <NextButton
+      <CustomButton
+        isLoading={isLoading}
+        title="Suivant"
         onPress={async () => {
+          setIsLoading(true);
           const status = await sendPhoneVerification(fullNumber);
           if (status == 200) {
             console.log("yeaah 200");
             refe.current.setPage(3);
+            setIsLoading(false);
+          } else {
+            setIsLoading(false);
           }
         }}
       />
@@ -125,26 +134,10 @@ const NameComponent = ({
   );
 };
 
-const createUser = async (email, password, phoneNumber) => {
-  await auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      console.log("User account created & signed in!");
-    })
-    .catch((error) => {
-      if (error.code === "auth/email-already-in-use") {
-        throw new Error("That email address is already in use!");
-      }
-
-      if (error.code === "auth/invalid-email") {
-        console.log("That email address is invalid!");
-      }
-      throw new Error("no");
-    });
-};
-const VerificationPhoneComponent = ({ fullNumber, email, password }) => {
-  const { verifyCode } = useAuth();
+const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
+  const { verifyCode, signUp } = useAuth();
   const [verificationCode, setCode] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -158,15 +151,34 @@ const VerificationPhoneComponent = ({ fullNumber, email, password }) => {
           <CodeVerificationComponent
             setCode={setCode}
             fullNumber={fullNumber}
+            goBack={() => refe.current.setPage(2)}
           />
 
-          <NextButton
+          <CustomButton
+            title="Suivant"
+            isLoading={isLoading}
             onPress={async () => {
-              const status = await verifyCode(fullNumber, verificationCode);
-              if (status == 200) {
-                // await createUser(email, password);
-                console.log("approoved");
-              }
+              setIsLoading(true);
+              signUp(email, password).then(async (e) => {
+                console.log("cREEEATEEED", e);
+                await setAdditionalInfo({
+                  phoneNumber: "99999911111111",
+                });
+              });
+
+              setIsLoading(false);
+              // const status = await verifyCode(fullNumber, verificationCode);
+              // if (status == 200) {
+              //   await signUp(email, password);
+              //   await setAdditionalInfo({
+              //     phoneNumber: fullNumber,
+              //   });
+              //   console.log("approoved");
+              //   setIsLoading(false);
+              // } else {
+              //   setIsLoading(false);
+              // }
+              console.log("wa8WWWWWWWWW", auth()?.currentUser);
             }}
           />
         </View>
@@ -242,6 +254,7 @@ const SignUpScreen = ({}) => {
         </View>
         <View key="4">
           <VerificationPhoneComponent
+            refe={ref}
             email={email}
             password={password}
             fullNumber={fullNumber}

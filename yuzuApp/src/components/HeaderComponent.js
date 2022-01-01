@@ -26,8 +26,6 @@ const HeaderComponent = ({ page, style, yes }) => {
   const { matches } = useSelector((state) => state.matchStore);
   const { user } = useSelector((state) => state.userStore);
 
-  const [layout, setLayout] = useState(1);
-
   //The color bar plus title
   const BarComponent = ({ long, title, style, children }) => {
     return (
@@ -178,8 +176,8 @@ const HeaderComponent = ({ page, style, yes }) => {
   return (
     <View
       style={{
-        height: height * 0.1,
-        // paddingTop: StatusBar.currentHeight,
+        height: height * 0.11,
+        paddingTop: StatusBar.currentHeight,
         backgroundColor: yes ? "#f5f4f4" : "#E8E8E8",
         width,
         justifyContent: "flex-end",
@@ -214,6 +212,6 @@ const styles = StyleSheet.create({
     height: "80%",
 
     flexDirection: "row",
-    paddingTop: 15,
+    paddingTop: 10,
   },
 });

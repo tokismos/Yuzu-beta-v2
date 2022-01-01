@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import TextInputColored from "../../components/TextInputColored";
+
 import { COLORS } from "../../consts/colors";
 
 const EmailScreen = () => {

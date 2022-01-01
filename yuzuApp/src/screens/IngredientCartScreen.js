@@ -2,6 +2,7 @@ import CheckBox from "@react-native-community/checkbox";
 import React, { useEffect, useState } from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import FastImage from "react-native-fast-image";
 import { COLORS } from "../consts/colors";
 
 const IngredientCartScreen = ({ route, navigation }) => {
@@ -10,15 +11,15 @@ const IngredientCartScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     cart.map((item) => {
-      finalCart[item.name] = {
+      finalCart[item._id] = {
         ingredients: item.ingredients,
+        name: item.name,
         imgURL: item.imgURL,
       };
     });
   }, []);
 
   const onPress = (ingredient, title) => {
-    // setToggle(tmpObj[title]?.includes(ingredient));
     console.log("erd", finalCart[title].ingredients);
     console.log("bname", JSON.stringify(ingredient), title);
     if (finalCart[title].ingredients?.includes(ingredient)) {
@@ -51,12 +52,13 @@ const IngredientCartScreen = ({ route, navigation }) => {
         }}
       >
         <Text style={{ marginLeft: 20, width: "80%" }}>
-          {ingredient.quantity} {ingredient.name}
+          {ingredient.quantity}{" "}
+          {ingredient.unite == "unite" ? "" : ingredient.unite}{" "}
+          {ingredient.name}
         </Text>
         <CheckBox
           disabled
           value={toggle}
-          onValueChange={(newValue) => setToggle(!newValue)}
           tintColors={{ true: COLORS.primary, false: "gray" }}
         />
       </TouchableOpacity>
@@ -72,10 +74,19 @@ const IngredientCartScreen = ({ route, navigation }) => {
           }}
         >
           <View style={{ width: "15%", height: "20%", paddingLeft: 5 }}>
-            <Image
+            <FastImage
+              style={{ aspectRatio: 1, borderRadius: 10 }}
+              source={{
+                uri: item.imgURL,
+                headers: { Authorization: "someAuthToken" },
+                priority: FastImage.priority.normal,
+              }}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+            {/* <Image
               source={{ uri: item.imgURL }}
               style={{ aspectRatio: 1, borderRadius: 10 }}
-            />
+            /> */}
           </View>
           <View style={{ width: "85%" }}>
             <Text
@@ -92,7 +103,7 @@ const IngredientCartScreen = ({ route, navigation }) => {
               <IngredientItemComponent
                 ingredient={elmt}
                 key={index}
-                title={item.name}
+                title={item._id}
                 set
               />
             ))}

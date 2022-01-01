@@ -104,7 +104,13 @@ const LoginScreen = ({ navigation }) => {
               style={{ marginHorizontal: 20 }}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => signInWithGoogle()}>
+          <TouchableOpacity
+            onPress={async () => {
+              console.log("WAooo");
+              const hi = signInWithGoogle();
+              console.log("WAHAA", hi);
+            }}
+          >
             <GoogleIcon width={40} height={40} fill={COLORS.primary} />
           </TouchableOpacity>
         </View>

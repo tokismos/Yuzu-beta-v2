@@ -5,7 +5,6 @@ import PhoneInput from "react-native-phone-number-input";
 const { width, height } = Dimensions.get("window");
 
 const PhoneInputComponent = ({
-  number,
   setCountryCode,
   style,
   error,

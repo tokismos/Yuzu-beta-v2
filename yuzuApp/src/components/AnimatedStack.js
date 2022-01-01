@@ -205,7 +205,8 @@ const AnimatedStack = (props) => {
         loop={false}
       />
       <Text style={{ fontSize: 20, textAlign: "center", marginTop: 100 }}>
-        OOPS y'a plus de recette !Veuillez changer vos filtres si activés
+        OOPS, il n'y a plus de recette disponible pour l'instant. Veuillez
+        désactiver certains de vos filtres si activés.
       </Text>
     </Animated.View>
   );
