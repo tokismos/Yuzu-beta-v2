@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Button,
-  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,50 +8,54 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import CartComponent from "../components/CartComponent";
-import HeaderComponent from "../components/HeaderComponent";
+import CustomButton from "../components/CustomButton";
 import { COLORS } from "../consts/colors";
-const { width, height } = Dimensions.get("screen");
 
 const PanierScreen = ({ navigation }) => {
   const { matches } = useSelector((state) => state.matchStore);
-  //   console.log("thiiiiis matches", matches);
-  let finalCart = matches;
-  // const [finalCart, setFinalCart] = useState([...matches]);
-  useEffect(() => {
-    console.log("this isssssss", finalCart);
-  }, [finalCart]);
+  const [finalCart, setFinalCart] = useState([...matches]);
+
   const validate = () => {
-    navigation.navigate("IngredientsCartScreen", { cart: finalCart });
+    //Filter just the items in cart which are checked
+    const checkedCart = finalCart.filter((item) => item.isChecked == true);
+    //Change the quantity of every item in the cart
+    checkedCart.forEach((item, index) => {
+      const newQuantity = item.ingredients.map((elmt, i) => {
+        const tmp = { ...elmt };
+        //it's matche[index] and not tmp or finalCart ,because it had a bug when u would return after click on validate , the quantity change again
+        tmp.newQuantity = +(
+          (tmp.quantity * item.nbrPersonne) /
+          item.defaultNbrPersonne
+        ).toFixed(1);
+        return { ...tmp };
+      });
+      item.ingredients = newQuantity;
+    });
+    navigation.navigate("IngredientsCartScreen", { cart: checkedCart });
   };
   //when click on recipe we check if it exist to remove it or if not to add id
-  const onPress = (item) => {
-    console.log("pressed");
-    const res = finalCart.includes(item);
-    // console.log("res", item.name);
-    if (!res) {
-      finalCart.push(item);
-      console.log("wasnt there");
-    } else {
-      finalCart = finalCart.filter((elmt) => elmt != item);
-      //   setFinalCart(tmpCart);
-      console.log("elemt was there");
-    }
+  const onPress = (item, index) => {
+    //when we click we change the value to the opposite of isChecked
+    setFinalCart((p) => {
+      const tmp = JSON.parse(JSON.stringify(p));
+      tmp[index].isChecked = !tmp[index].isChecked;
+      return [...tmp];
+    });
   };
-  //   useEffect(() => {
-  //     console.log("tjosooo cart", finalCart);
-  //   }, [finalCart]);
+
   return (
     <View style={styles.mainContainer}>
-      <Text style={styles.title}>Les recettes sélectionnées:</Text>
+      <Text style={styles.title}>Les recettes sélectionnées :</Text>
       <ScrollView>
         <View style={{ width: "100%" }}>
           <View style={{}}>
-            {matches.map((item, index) => (
+            {finalCart.map((item, index) => (
               <CartComponent
                 index={index}
                 item={item}
                 key={item.name}
-                onPress={onPress}
+                onPress={() => onPress(item, index)}
+                setFinalCart={setFinalCart}
                 finalCart={finalCart}
               />
             ))}
@@ -62,25 +64,26 @@ const PanierScreen = ({ navigation }) => {
       </ScrollView>
 
       <View style={styles.bottomContainer}>
-        <TouchableOpacity
-          style={{ ...styles.buttonContainer, backgroundColor: "#E3E3E3" }}
-          onPress={() => {
-            console.log("BBBBBBBBBBBBBB", finalCart);
-            // navigation.goBack()
+        <CustomButton
+          onPress={() => navigation.goBack()}
+          title="Ajouter d'autres recettes"
+          style={{
+            ...styles.buttonContainer,
+            backgroundColor: "#E3e3e3",
+            borderRadius: 0,
           }}
-        >
-          <Text style={{ fontWeight: "800", fontSize: 18, color: "black" }}>
-            Ajouter d'autres recettes
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ ...styles.buttonContainer, backgroundColor: COLORS.primary }}
+          textStyle={{ fontWeight: "800", fontSize: 18, color: "black" }}
+        />
+        <CustomButton
           onPress={validate}
-        >
-          <Text style={{ fontWeight: "bold", color: "white", fontSize: 18 }}>
-            Valider les recettes
-          </Text>
-        </TouchableOpacity>
+          title="Valider les recettes"
+          style={{
+            ...styles.buttonContainer,
+            backgroundColor: COLORS.primary,
+            borderRadius: 0,
+          }}
+          textStyle={{ fontSize: 20 }}
+        />
       </View>
     </View>
   );

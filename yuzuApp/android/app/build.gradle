@@ -132,11 +132,11 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.foodApp.test'
+        applicationId 'com.yuzu.itten'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 5
+        versionName "1.0.1"
     }
     splits {
         abi {
@@ -154,10 +154,10 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('C:\\Users\\tokis\\Desktop\\www.jks')
-            storePassword 'qqqqqq'
-            keyAlias 'key0eee'
-            keyPassword 'wwwwww'
+            storeFile file('C:\\Users\\tokis\\Desktop\\YUZUKEY.jks')
+            storePassword 'med-mapper12'
+            keyAlias 'key0'
+            keyPassword 'medemapper12'
         }
     }
     buildTypes {

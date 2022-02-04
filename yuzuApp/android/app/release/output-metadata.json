@@ -4,14 +4,14 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.foodApp.test",
+  "applicationId": "com.yuzu.itten",
   "variantName": "processReleaseResources",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 1,
-      "versionName": "1.0.0",
+      "versionCode": 5,
+      "versionName": "1.0.1",
       "outputFile": "app-release.apk"
     }
   ]

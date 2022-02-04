@@ -1,13 +1,9 @@
 import { Alert } from "react-native";
 
 import database from "@react-native-firebase/database";
-// import auth from "@react-native-firebase/auth";
-// import { LoginManager, AccessToken } from "react-native-fbsdk-next";
-// import { GoogleSignin } from "@react-native-google-signin/google-signin";
+
 import firebase from "@react-native-firebase/app";
 import auth from "@react-native-firebase/auth";
-import { AccessToken, LoginManager } from "react-native-fbsdk-next";
-
 const firebaseDbURL =
   "https://yuzu-a0d71-default-rtdb.europe-west1.firebasedatabase.app/";
 const firebaseConfig = {
@@ -28,7 +24,6 @@ if (!firebase.apps.length) {
 }
 
 const setAdditionalInfo = async (info) => {
-  console.log("AUTHHHHHHHHHHH", auth().currentUser?.uid);
   try {
     firebase
       .app()
@@ -54,13 +49,90 @@ const getAdditionalInfo = async () => {
   return false;
 };
 
+//add to favorites
+const addToFav = async (id, imgURL, name) => {
+  try {
+    firebase
+      .app()
+      .database(firebaseDbURL)
+      .ref(`/users/${auth().currentUser?.uid}/favoris/${id}`)
+      .set({
+        imgURL,
+        name,
+        _id: id,
+        dateTime: firebase.database.ServerValue.TIMESTAMP,
+      });
+  } catch (e) {
+    console.log("Erreur,recette non ajoutée aux favoris !");
+  }
+};
+
+const deleteFav = async (id) => {
+  try {
+    firebase
+      .app()
+      .database(firebaseDbURL)
+      .ref(`/users/${auth().currentUser?.uid}/favoris/${id}`)
+      .remove();
+  } catch (e) {
+    console.log("Recette ajoutées aux favoris .");
+  }
+};
+
+// const getFavoris = async () => {
+//   let favoritesArray = [""];
+//   firebase
+//     .app()
+//     .database(firebaseDbURL)
+//     .ref(`/users/${auth().currentUser?.uid}/favoris`)
+//     .on("value", (snapshot) => {
+//       if (snapshot.exists()) {
+//         snapshot.forEach((item) => favoritesArray.push(item.key));
+//       }
+//     });
+//     return favoritesArray;
+// };
+const getFavoris = async (tmp) => {
+  let favoritesArray = [];
+  firebase
+    .app()
+    .database(firebaseDbURL)
+    .ref(`/users/${auth().currentUser?.uid}/favoris`)
+    .once("value", (snapshot) => {
+      console.log("User data: ", snapshot.val());
+      if (snapshot.exists()) {
+        snapshot.forEach((item) => favoritesArray.push(item.key));
+        tmp(favoritesArray);
+      }
+    });
+};
+
+const getAllFavoris = async (setCommandes) => {
+  let arr = [];
+  firebase
+    .app()
+    .database(firebaseDbURL)
+    .ref(`/users/${auth().currentUser?.uid}/favoris`)
+    .orderByChild("dateTime")
+    .on("value", (snapshot) => {
+      if (snapshot.exists()) {
+        console.log("it exists SNAPSHOT", snapshot);
+        arr = Object?.values(snapshot.val());
+        console.log("WBOOOOOOOOOOOO", arr);
+        setCommandes(arr);
+      }
+    });
+};
 const setCommandes = (cart) => {
   let obj = [];
-  cart.map((item) => {
+
+  cart.forEach((item) => {
     obj.push({
       _id: item._id,
       name: item.name,
       imgURL: item.imgURL,
+      ingredients: item.ingredients,
+      nbrPersonne: item.nbrPersonne,
     });
   });
   try {
@@ -80,89 +152,43 @@ const setCommandes = (cart) => {
 
 const getCommandes = async (setCommandes) => {
   let arr = [];
-  const hi = firebase
+  firebase
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/commandes`)
     .orderByChild("dateTime")
     .on("value", (snapshot) => {
-      // let arr = [];
-      // Object.entries(snapshot).forEach(([key, value]) => {
-      //   arr.push({ _id: key, ...value });
-      // });
       if (snapshot.exists()) {
-        console.log("it exists");
+        console.log("it exists COOOMMA", snapshot);
         arr = Object?.values(snapshot.val());
+        console.log("WBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", arr);
       }
       setCommandes(arr);
     });
 };
-const LoginWithGoogle = async () => {
-  // Get the users ID token
-  const { idToken } = await GoogleSignin.signIn();
 
-  // Create a Google credential with the token
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  // Sign-in the user with the credential
-  return auth().signInWithCredential(googleCredential);
-};
+// const LoginWithFb = async () => {
+//   // Attempt login with permissions
+//   const result = await LoginManager.logInWithPermissions([
+//     "public_profile",
+//     "email",
+//   ]);
+//   if (result.isCancelled) {
+//     throw "User cancelled the login process";
+//   }
+//   // Once signed in, get the users AccesToken
+//   const data = await AccessToken.getCurrentAccessToken();
 
-const LoginWithFb = async () => {
-  // Attempt login with permissions
-  const result = await LoginManager.logInWithPermissions([
-    "public_profile",
-    "email",
-  ]);
-  if (result.isCancelled) {
-    throw "User cancelled the login process";
-  }
-  // Once signed in, get the users AccesToken
-  const data = await AccessToken.getCurrentAccessToken();
-
-  if (!data) {
-    throw "Something went wrong obtaining access token";
-  }
-  // Create a Firebase credential with the AccessToken
-  const facebookCredential = auth.FacebookAuthProvider.credential(
-    data.accessToken
-  );
-  // Sign-in the user with the credential
-  return auth().signInWithCredential(facebookCredential);
-};
-
-const signUp = async (email, password) => {
-  try {
-    await auth().createUserWithEmailAndPassword(email, password);
-    console.log("User Created !");
-  } catch (e) {
-    alert(e);
-  }
-};
-
-const signIn = async (email, password) => {
-  try {
-    await auth().signInWithEmailAndPassword(email, password);
-    console.log("signed");
-  } catch (e) {
-    console.log(e);
-    alert(e);
-  }
-};
-
-const signOut = async () => {
-  try {
-    if (auth().currentUser.providerData[0].providerId === "google.com")
-      await GoogleSignin.revokeAccess();
-    await auth().signOut();
-    console.log("signed out");
-  } catch (e) {
-    alert(e);
-  }
-};
-const signInWithPhoneNumber = async (phoneNumber, setConfirm) => {
-  const confirmation = await auth().signInWithPhoneNumber(phoneNumber, true);
-  setConfirm(confirmation);
-};
+//   if (!data) {
+//     throw "Something went wrong obtaining access token";
+//   }
+//   // Create a Firebase credential with the AccessToken
+//   const facebookCredential = auth.FacebookAuthProvider.credential(
+//     data.accessToken
+//   );
+//   // Sign-in the user with the credential
+//   return auth().signInWithCredential(facebookCredential);
+// };
 
 const logInWithFb = async () => {
   try {
@@ -196,9 +222,13 @@ const logInWithFb = async () => {
 // };
 
 export {
-  auth,
   setAdditionalInfo,
   getAdditionalInfo,
   setCommandes,
   getCommandes,
+  auth,
+  addToFav,
+  deleteFav,
+  getFavoris,
+  getAllFavoris,
 };

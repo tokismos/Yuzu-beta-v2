@@ -1,6 +1,5 @@
-import React, { createRef, useEffect, useState } from "react";
-import { StyleSheet, Text, ToastAndroid, View } from "react-native";
-import { GameRequestDialog } from "react-native-fbsdk-next";
+import React, { useRef, useEffect, useState } from "react";
+import { Alert, StyleSheet, Text, ToastAndroid, View } from "react-native";
 import PagerView from "react-native-pager-view";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -19,7 +18,7 @@ const PhoneScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState("");
   const [index, setIndex] = useState("");
-  const ref = createRef();
+  const ref = useRef();
   const dispatch = useDispatch();
   const { sendPhoneVerification, verifyCode } = useAuth();
   useEffect(() => {
@@ -31,7 +30,7 @@ const PhoneScreen = ({ navigation }) => {
   return (
     <PagerView
       ref={ref}
-      scrollEnabled={true}
+      scrollEnabled={false}
       style={{ height: "100%" }}
       initialPage={0}
       onPageScroll={(ev) => setIndex(ev.nativeEvent.position)}
@@ -69,25 +68,22 @@ const PhoneScreen = ({ navigation }) => {
           isLoading={isLoading}
           onPress={async () => {
             setIsLoading(true);
-            await setAdditionalInfo({
-              phoneNumber: fullNumber,
-            });
-            dispatch(setUser({ ...user, phoneNumber: fullNumber }));
-            navigation.pop();
-            ToastAndroid.show(
-              "Votre numéro de téléphone a été changé !",
-              ToastAndroid.SHORT
-            );
-            // const status = await verifyCode(fullNumber, verificationCode);
-            // if (status == 200) {
-            //   await setAdditionalInfo({
-            //     phoneNumber: fullNumber,
-            //   });
-            //   console.log("added additional info");
-            //   setIsLoading(false);
-            // } else {
-            //   setIsLoading(false);
-            // }
+
+            const status = await verifyCode(fullNumber, code);
+            if (status == 200) {
+              await setAdditionalInfo({
+                phoneNumber: fullNumber,
+              });
+              dispatch(setUser({ ...user, phoneNumber: fullNumber }));
+              navigation.pop();
+              ToastAndroid.show(
+                "Votre numéro de téléphone a été changé !",
+                ToastAndroid.SHORT
+              );
+              setIsLoading(false);
+            } else {
+              setIsLoading(false);
+            }
           }}
         />
       </View>

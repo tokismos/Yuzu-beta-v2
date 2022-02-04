@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Button,
   Dimensions,
   Keyboard,
   Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import auth from "@react-native-firebase/auth";
@@ -23,7 +21,6 @@ import CustomButton from "../components/CustomButton";
 import { KeyboardAvoidingView } from "react-native";
 import { setUser } from "../redux/slicer/userSlicer";
 import { ToastAndroid } from "react-native";
-import { color } from "react-native-reanimated";
 
 const { width, height } = Dimensions.get("screen");
 const ProfileScreen = () => {
@@ -60,9 +57,8 @@ const ProfileScreen = () => {
       setName("");
       ToastAndroid.show("Votre nom a été changé !", ToastAndroid.SHORT);
     } catch (e) {
-      console.log("A// EROR,", e);
+      console.log("A// ERROR,", e);
     }
-    console.log("arraQQQQQQQQQQQ", auth().currentUser);
   };
   return (
     <KeyboardAvoidingView behavior="position">

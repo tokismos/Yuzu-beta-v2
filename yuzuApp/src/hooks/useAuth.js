@@ -2,10 +2,8 @@ import { Alert, StyleSheet } from "react-native";
 
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { AccessToken, LoginManager } from "react-native-fbsdk-next";
+// import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import AsyncStorage from "@react-native-community/async-storage";
-import database from "@react-native-firebase/database";
-import { firebase } from "@react-native-firebase/database";
 
 import { api } from "../axios";
 
@@ -24,15 +22,12 @@ const signInWithGoogle = async (navigation) => {
   const userInfo = await GoogleSignin.signIn();
   const { idToken, accessToken } = await GoogleSignin.getTokens();
 
-  console.log("info", userInfo.email);
-  console.log("google email", userInfo.user.email);
   // Create a Google credential with the token
   const googleCredential = auth.GoogleAuthProvider.credential(
     idToken,
     accessToken
   );
   // reference.set(info).then((i) => console.log("Additional info added", i));
-  console.log("cred", auth().currentUser);
   await auth().signInWithCredential(googleCredential);
 
   //if its the first time email in google is null this is why we update it
@@ -40,7 +35,6 @@ const signInWithGoogle = async (navigation) => {
     auth()
       .currentUser.updateEmail(userInfo.user.email)
       .then(async () => {
-        console.log("email updated");
         console.log("update", auth().currentUser);
       });
   }
@@ -67,59 +61,59 @@ const signOut = async () => {
   auth().signOut();
 };
 //Sign In with Facebook
-const signInWithFb = async () => {
-  //Get info of the fb profile from the token
-  //   const getInfoFromToken = (token) => {
-  //     const PROFILE_REQUEST_PARAMS = {
-  //       fields: {
-  //         string: "id, name,  first_name, last_name,email,picture",
-  //       },
-  //     };
-  //     const profileRequest = new GraphRequest(
-  //       "/me",
-  //       { token, parameters: PROFILE_REQUEST_PARAMS },
-  //       (error, result) => {
-  //         if (error) {
-  //           console.log("login info has error: " + error);
-  //         } else {
-  //           //   this.setState({userInfo: result});
-  //           console.log("result:", result);
-  //         }
-  //       }
-  //     );
-  //     new GraphRequestManager().addRequest(profileRequest).start();
-  //   };
-  // Attempt login with permissions
-  const result = await LoginManager.logInWithPermissions([
-    "public_profile",
-    "email",
-  ]);
-  if (result.isCancelled) {
-    throw "User cancelled the login process";
-  }
+// const signInWithFb = async () => {
+//   //Get info of the fb profile from the token
+//   //   const getInfoFromToken = (token) => {
+//   //     const PROFILE_REQUEST_PARAMS = {
+//   //       fields: {
+//   //         string: "id, name,  first_name, last_name,email,picture",
+//   //       },
+//   //     };
+//   //     const profileRequest = new GraphRequest(
+//   //       "/me",
+//   //       { token, parameters: PROFILE_REQUEST_PARAMS },
+//   //       (error, result) => {
+//   //         if (error) {
+//   //           console.log("login info has error: " + error);
+//   //         } else {
+//   //           //   this.setState({userInfo: result});
+//   //           console.log("result:", result);
+//   //         }
+//   //       }
+//   //     );
+//   //     new GraphRequestManager().addRequest(profileRequest).start();
+//   //   };
+//   // Attempt login with permissions
+//   const result = await LoginManager.logInWithPermissions([
+//     "public_profile",
+//     "email",
+//   ]);
+//   if (result.isCancelled) {
+//     throw "User cancelled the login process";
+//   }
 
-  // Once signed in, get the users AccesToken
-  const data = await AccessToken.getCurrentAccessToken();
+//   // Once signed in, get the users AccesToken
+//   const data = await AccessToken.getCurrentAccessToken();
 
-  try {
-    await AsyncStorage.setItem("accessTokenFb", data.accessToken);
-    console.log("acces token seeeted", data);
-  } catch (e) {
-    // saving error
-  }
-  if (!data) {
-    throw "Something went wrong obtaining access token";
-  }
-  //Get the info
+//   try {
+//     await AsyncStorage.setItem("accessTokenFb", data.accessToken);
+//     console.log("acces token seeeted", data);
+//   } catch (e) {
+//     // saving error
+//   }
+//   if (!data) {
+//     throw "Something went wrong obtaining access token";
+//   }
+//   //Get the info
 
-  // Create a Firebase credential with the AccessToken
-  const facebookCredential = await auth.FacebookAuthProvider.credential(
-    data.accessToken
-  );
-  // Sign-in the user with the credential
-  await auth().signInWithCredential(facebookCredential);
-  return data.accessToken;
-};
+//   // Create a Firebase credential with the AccessToken
+//   const facebookCredential = await auth.FacebookAuthProvider.credential(
+//     data.accessToken
+//   );
+//   // Sign-in the user with the credential
+//   await auth().signInWithCredential(facebookCredential);
+//   return data.accessToken;
+// };
 //SEnd the verification code to the phone number
 const sendPhoneVerification = async (phoneNumber) => {
   try {
@@ -142,7 +136,7 @@ const verifyCode = async (phoneNumber, verificationCode) => {
     if (e.response.status == 429) {
       return Alert.alert(`429,Max attempts reached,please try later !`);
     }
-    console.log("SMS NOT SENTg ", e.response);
+    console.log("SMS NOT SENT ", e.response);
     Alert.alert(`${e.response.status}, ${e.response.data.error}`);
   }
 };
@@ -161,7 +155,7 @@ export default useAuth = () => {
     signIn,
     signOut,
     signInWithGoogle,
-    signInWithFb,
+
     sendPhoneVerification,
     verifyCode,
     signUp,

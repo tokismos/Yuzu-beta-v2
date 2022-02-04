@@ -60,32 +60,25 @@ const HeaderComponent = ({ page, style, yes }) => {
         </BarComponent>
         <BarComponent long="20%" title="Valider les recettes" style={second} />
         <BarComponent
-          long="22%"
-          title="Selection des ingrédients"
+          long="23%"
+          title="Créer ma liste de courses"
           style={third}
         />
         <BarComponent long="5%" title="" style={fourth} />
 
         <View
           style={{
-            width: "25%",
+            width: "20%",
           }}
         >
-          <View
+          <BarComponent long="100%" title="Livraison" style={last} />
+          <Text
             style={{
-              marginHorizontal: 3,
-              flexDirection: "row",
+              width: "120%",
+              fontSize: 10,
             }}
           >
-            <View style={{ width: "45%", marginRight: 3 }}>
-              <Bar style={last} />
-            </View>
-            <View style={{ width: "45%" }}>
-              <Bar style={last} />
-            </View>
-          </View>
-          <Text style={{ width: "100%", textAlign: "center", fontSize: 12 }}>
-            Livraison & paiement
+            (prochainement)
           </Text>
         </View>
       </View>

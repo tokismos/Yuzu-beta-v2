@@ -1,107 +1,84 @@
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-  TransitionPresets,
-  TransitionSpecs,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Animated,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Animated, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  FontAwesome,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import auth from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
 
-import OnBoardingScreen from "../screens/OnBoardingScreen";
 import { COLORS } from "../consts/colors";
 import IngredientScreen from "../screens/IngredientScreen";
-import LoginScreen from "../screens/LoginScreen";
-import CartScreen from "../screens/CartScreen";
-import ResultCartScreen from "../screens/ResultCartScreen";
-import RecetteSVG from "../assets/recette.svg";
-import { color } from "react-native-reanimated";
 import TinderScreen from "../screens/TinderScreen";
-import FilterScreen from "../screens/FilterScreen";
-import LogOutScreen from "../screens/LogOutScreen";
 import PanierScreen from "../screens/PanierScreen";
 import IngredientCartScreen from "../screens/IngredientCartScreen";
 import HeaderComponent from "../components/HeaderComponent";
 import SummarizeScreen from "../screens/SummarizeScreen";
 import IntroScreen from "../screens/IntroScreen";
-import useAuth from "../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
 
 const Stack = createStackNavigator();
-const LoginStack = createStackNavigator();
+const LoginStac = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const TopTab = createMaterialTopTabNavigator();
 import { setUser, setAccessToken } from "../redux/slicer/userSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
-import { GraphRequest, GraphRequestManager } from "react-native-fbsdk-next";
+// import { GraphRequest, GraphRequestManager } from "react-native-fbsdk-next";
 import SignUpScreen from "../screens/createAccountScreens/SignUpScreen";
 import PasswordScreen from "../screens/createAccountScreens/PasswordScreen";
-import LoginHeaderScreen from "../components/LoginHeaderScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import FeedBackScreen from "../screens/FeedBackScreen";
 import SignInScreen from "../screens/SignInScreen";
 import PhoneScreen from "../screens/PhoneScreen";
+import MyRecipesScreen from "../screens/MyRecipesScreen";
 import CommandesScreen from "../screens/CommandesScreen";
+import InfoCommandeScreen from "../screens/InfoCommandeScreen";
 
-export const TabScreen = () => {
+export const MyRecipesTabScreen = () => {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: COLORS.primary,
-        tabBarInactiveTintColor: "black",
+        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: COLORS.secondary,
+
         tabBarStyle: {
-          height: 50,
+          backgroundColor: COLORS.primary,
         },
         tabBarLabelStyle: {
           // color: "black",
+          fontSize: 12,
+          fontWeight: "bold",
         },
       }}
     >
       <Tab.Screen
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="silverware-fork-knife" size={30} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialCommunityIcons
+              color={focused ? "white" : COLORS.secondary}
+              name="format-list-bulleted-square"
+              size={30}
+            />
           ),
         }}
-        name="TinderNavigator"
-        component={TinderNavigator}
+        name="Recettes ajoutées"
+        component={MyRecipesScreen}
       />
 
       <Tab.Screen
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="heart" size={24} />
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome
+              name="heart"
+              size={24}
+              color={focused ? "white" : COLORS.secondary}
+            />
           ),
         }}
-        name="CartScreen"
-        component={PanierScreen}
-      />
-      <Tab.Screen
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="shopping-cart" size={24} />
-          ),
-        }}
-        name="Panier"
-        component={LogOutScreen}
+        name="Recettes favories"
+        component={MyRecipesScreen}
       />
     </Tab.Navigator>
   );
@@ -152,25 +129,25 @@ const LoggedStackScreen = () => {
   // const { accessTokenFb } = useSelector((state) => state.userStore);
 
   //Get the information from the token we get after connecting to fb
-  const getInfoFromTokenFb = (token) => {
-    const PROFILE_REQUEST_PARAMS = {
-      fields: {
-        string: "id,name,first_name,last_name,email,picture.type(large)",
-      },
-    };
-    const profileRequest = new GraphRequest(
-      "/me",
-      { token, parameters: PROFILE_REQUEST_PARAMS },
-      (error, user) => {
-        if (error) {
-          console.log("login info has error: " + error);
-        } else {
-          setInfo(user);
-        }
-      }
-    );
-    new GraphRequestManager().addRequest(profileRequest).start();
-  };
+  // const getInfoFromTokenFb = (token) => {
+  //   const PROFILE_REQUEST_PARAMS = {
+  //     fields: {
+  //       string: "id,name,first_name,last_name,email,picture.type(large)",
+  //     },
+  //   };
+  //   const profileRequest = new GraphRequest(
+  //     "/me",
+  //     { token, parameters: PROFILE_REQUEST_PARAMS },
+  //     (error, user) => {
+  //       if (error) {
+  //         console.log("login info has error: " + error);
+  //       } else {
+  //         setInfo(user);
+  //       }
+  //     }
+  //   );
+  //   new GraphRequestManager().addRequest(profileRequest).start();
+  // };
 
   //Get the access Token of Fb from the storage if it exists
   useEffect(() => {
@@ -230,6 +207,49 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="InfoCommandeScreen"
+          component={InfoCommandeScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: "Mes recettes",
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="MyRecipesScreen"
+          component={MyRecipesTabScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: "Liste de courses",
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
           }}
           name="CommandesScreen"
           component={CommandesScreen}
@@ -273,14 +293,7 @@ const LoggedStackScreen = () => {
           name="IngredientScreen"
           component={IngredientScreen}
         />
-        <Stack.Screen
-          options={{
-            // header: () => <HeaderComponent page="1" />,
-            headerShown: false,
-          }}
-          name="LoginScreen"
-          component={LoginScreen}
-        />
+
         <Stack.Screen
           options={{
             // header: () => <HeaderComponent page="1" />,
@@ -290,11 +303,40 @@ const LoggedStackScreen = () => {
           component={SignUpScreen}
         />
 
-        <Stack.Screen name="FilterScreen" component={FilterScreen} />
-        <Stack.Screen name="PhoneScreen" component={PhoneScreen} />
-        <Stack.Screen name="CartScreen" component={CartScreen} />
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-        <Stack.Screen name="ResultCartScreen" component={ResultCartScreen} />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: "Modifier mon numéro",
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="PhoneScreen"
+          component={PhoneScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: "Mon profile",
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="Mon profile"
+          component={ProfileScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -311,13 +353,55 @@ const LoginStackScreen = () => {
           name="IntroScreen"
           component={IntroScreen}
         />
-        <Stack.Screen name="PhoneScreen" component={PhoneScreen} />
         <Stack.Screen
           options={{
             headerShown: true,
+            headerTitle: "Modifier mon numéro",
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
           }}
-          name="CommandesScreen"
-          component={CommandesScreen}
+          name="PhoneScreen"
+          component={PhoneScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="InfoCommandeScreen"
+          component={InfoCommandeScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: "Mes recettes",
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="MyRecipesScreen"
+          component={MyRecipesTabScreen}
         />
         <Stack.Screen
           options={{
@@ -328,7 +412,23 @@ const LoginStackScreen = () => {
           component={SignInScreen}
         />
 
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: "Mon profile",
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="Mon profile"
+          component={ProfileScreen}
+        />
 
         <Stack.Screen
           options={{
@@ -388,6 +488,23 @@ const LoginStackScreen = () => {
         />
         <Stack.Screen
           options={{
+            headerShown: true,
+            headerTitle: "Liste de courses",
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="CommandesScreen"
+          component={CommandesScreen}
+        />
+        <Stack.Screen
+          options={{
             ...horizontalAnimation,
             header: () => <HeaderComponent page="4" />,
           }}
@@ -418,19 +535,6 @@ const RootNavigation = () => {
 
     const sub = auth().onAuthStateChanged(async (userInfo) => {
       if (userInfo) {
-        console.log("changed", userInfo);
-
-        // getAdditionalInfo().then((e) => {
-        //   console.log("W", e);
-        //   if (e != null) {
-        //     console.log("props", props);
-        //     navigation.navigate("PhoneScreen");
-        //     setShow(true);
-        //   }
-        // });
-
-        // console.log("ADIOTO,", wow);
-
         dispatch(
           setUser({
             uid: userInfo.uid,
@@ -441,7 +545,7 @@ const RootNavigation = () => {
           })
         );
       } else {
-        console.log("no usser");
+        console.log("no user");
 
         dispatch(setUser(null));
       }

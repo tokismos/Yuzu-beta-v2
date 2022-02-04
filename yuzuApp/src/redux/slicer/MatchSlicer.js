@@ -6,7 +6,7 @@ const initialState = {
 };
 
 export const matchSlice = createSlice({
-  name: "matches ",
+  name: "matches",
   initialState,
   reducers: {
     addMatch: (state, action) => {

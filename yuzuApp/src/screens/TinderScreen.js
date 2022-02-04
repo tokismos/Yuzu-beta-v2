@@ -20,7 +20,11 @@ import LottieView from "lottie-react-native";
 
 import AnimatedStack from "../components/AnimatedStack";
 import { useDispatch, useSelector } from "react-redux";
-import { addMatch, changeNumberOfRecipes } from "../redux/slicer/MatchSlicer";
+import {
+  addMatch,
+  changeNumberOfRecipes,
+  resetMatches,
+} from "../redux/slicer/MatchSlicer";
 import { COLORS } from "../consts/colors";
 
 import { getAllRecipes } from "../axios";
@@ -35,8 +39,20 @@ import useAuth from "../hooks/useAuth";
 import { useNavigation } from "@react-navigation/core";
 const { height, width } = Dimensions.get("screen");
 import { setUser } from "../redux/slicer/userSlicer";
-import { getAdditionalInfo } from "../helpers/db";
-
+import { getAdditionalInfo, getFavoris } from "../helpers/db";
+import CustomButton from "../components/CustomButton";
+import { Alert } from "react-native";
+import {
+  setCuisineNotification,
+  setListNotification,
+} from "../redux/slicer/notificationSlicer";
+import { setFavorites } from "../redux/slicer/favoritesSlicer";
+const shuffleArray = () => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+};
 const Header = () => {
   const navigation = useNavigation();
   const { user } = useSelector((state) => state.userStore);
@@ -83,7 +99,7 @@ const Header = () => {
       <TouchableOpacity
         onPress={() =>
           auth().currentUser
-            ? navigation.navigate("ProfileScreen")
+            ? navigation.navigate("Mon profile")
             : navigation.navigate("SignUpScreen")
         }
         style={{
@@ -93,6 +109,8 @@ const Header = () => {
         }}
       >
         <Avatar.Image
+          theme={{ color: "red", backgroundColor: "red" }}
+          style={{ backgroundColor: COLORS.primary }}
           size={40}
           source={
             user?.photoURL != null
@@ -228,7 +246,7 @@ const BarHeader = () => {
     </View>
   ) : (
     <Pressable
-      onPress={() => navigation.navigate("ProfileScreen")}
+      onPress={() => navigation.navigate("Mon profile")}
       style={{
         height: "5%",
         width: "100%",
@@ -245,95 +263,120 @@ const BarHeader = () => {
     </Pressable>
   );
 };
+
+const Notification = ({ right }) => {
+  return (
+    <View
+      style={{
+        height: 10,
+        width: 10,
+        backgroundColor: COLORS.red,
+        borderRadius: 10,
+        position: "absolute",
+        top: 0,
+        right: right ?? "25%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    />
+  );
+};
 const TinderScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userStore);
 
+  const [notificationList, setNotificationList] = useState(true);
+  const [notificationCuisine, setNotificationCuisine] = useState(true);
+
   const [recipes, setRecipes] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [headerIsLoading, setHeaderLoading] = useState(true);
+  const [showButton, setShowButton] = useState(false);
+  const { listNotification, cuisineNotification } = useSelector(
+    (state) => state.notificationStore
+  );
   const { nbrOfRecipes, matches } = useSelector((state) => state.matchStore);
   const { activeFilters } = useSelector((state) => state.recipeStore);
 
   const loadData = async (item) => {
     getAllRecipes(item)
       .then((result) => {
-        const tmp = result.filter((item) => item.imgURL != null);
-        setRecipes(tmp);
+        setRecipes(result);
       })
       .catch((e) => console.log("HOOHOHOHOHOHHOHO", e));
   };
 
+  const getAndSetFavorites = async () => {
+    await getFavoris((fav) => dispatch(setFavorites(fav)));
+  };
   //To add the additional information to the store , we get them from firebase DB
   useEffect(() => {
     if (user != null) {
       getAdditionalInfo().then((e) => {
         console.log("W", e);
         if (!e.phoneNumber) {
-          setIsLoading(false);
+          setHeaderLoading(false);
 
           return navigation.navigate("PhoneScreen");
         }
         dispatch(setUser({ ...user, phoneNumber: e.phoneNumber }));
-        setIsLoading(false);
+        setHeaderLoading(false);
       });
     } else {
-      setIsLoading(false);
+      setHeaderLoading(false);
     }
   }, []);
   useEffect(() => {
+    getAndSetFavorites();
     loadData();
   }, []);
-
+  useEffect(() => {
+    if (matches.length > 0) {
+      setShowButton(true);
+    }
+  }, [matches]);
   const onSwipeLeft = (item) => {
     // console.warn("swipe left", user.name);
     console.log("swiped left", item);
   };
 
   const onSwipeRight = (item) => {
+    item.defaultNbrPersonne = item.nbrPersonne;
+    item.isChecked = true;
     dispatch(addMatch(item));
-    // console.warn("swipe right: ", user.name);
-    console.log("swiped right", item);
   };
   const BottomContainer = () => {
     return (
-      <View
-        style={{
-          width: "100%",
-          height: "10%",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            transform: [{ scale: 0.8 }],
-          }}
-        >
-          <TouchableOpacity
-            style={{ alignItems: "center" }}
-            onPress={() => navigation.navigate("CommandesScreen")}
-          >
+      <View style={styles.bottomContainer}>
+        <View style={styles.bottomView}>
+          <TouchableOpacity style={{ alignItems: "center" }}>
             <Image source={require("../assets/recette.png")} />
             <Text style={{ color: "#cccccc" }}>Recettes</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ alignItems: "center" }}>
-            <Image source={require("../assets/cuisine.png")} />
-            <Text style={{ color: "#cccccc" }}>Cuisine</Text>
-          </TouchableOpacity>
+
           <TouchableOpacity
-            onPress={() => navigation.navigate("CommandesScreen")}
+            onPress={() => {
+              navigation.navigate("CommandesScreen");
+              listNotification && dispatch(setListNotification(false));
+            }}
             style={{
               alignItems: "center",
               justifyContent: "center",
-              marginTop: -3,
-              marginLeft: -20,
             }}
           >
-            <Entypo name="list" size={40} color="#cccccc" />
+            {listNotification && <Notification />}
+            <Entypo name="list" size={45} color="#cccccc" />
             <Text style={{ color: "#cccccc" }}>Liste de courses</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ alignItems: "center" }}
+            onPress={() => {
+              navigation.navigate("MyRecipesScreen");
+              cuisineNotification && dispatch(setCuisineNotification(false));
+            }}
+          >
+            {cuisineNotification && <Notification right={0} />}
+            <Image source={require("../assets/cuisine.png")} />
+            <Text style={{ color: "#cccccc" }}>Cuisine</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -343,7 +386,7 @@ const TinderScreen = ({ navigation }) => {
   return (
     <View style={styles.pageContainer}>
       <Header />
-      {isLoading ? (
+      {headerIsLoading ? (
         <ActivityIndicator size="small" color="#0000ff" />
       ) : (
         <BarHeader />
@@ -353,12 +396,7 @@ const TinderScreen = ({ navigation }) => {
         page="1"
         style={{ justifyContent: "center", height: height * 0.1 }}
       />
-      {/* <NbrMatchComponent /> */}
-      {/* <View style={[styles.headerContainer, { height: "10%" }]}>
-        <TouchableOpacity onPress={() => navigation.navigate("FilterScreen")}>
-          <FontAwesome5 name="filter" size={24} color="white" />
-        </TouchableOpacity>
-      </View> */}
+
       {recipes.length == 0 ? (
         <LoadingComponent />
       ) : (
@@ -379,19 +417,55 @@ const TinderScreen = ({ navigation }) => {
               onSwipeRight={onSwipeRight}
             />
           </View>
-          {matches.length > 3 ? (
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate("PanierScreen")}
+          {showButton ? (
+            <View style={styles.button}>
+              <Pressable
+                onPress={() => {
+                  Alert.alert(
+                    "Alerte",
+                    `Voulez-vous conserver les ${matches.length} recettes que vous venez de swiper?`,
+                    [
+                      {
+                        text: "Supprimer",
+                        onPress: () => {
+                          setShowButton(false);
+                          dispatch(resetMatches());
+                        },
+                        style: "cancel",
+                      },
+                      {
+                        text: "Conserver",
+                        onPress: () => setShowButton(false),
+                      },
+                    ]
+                  );
+                }}
+                style={{
+                  position: "absolute",
+                  top: -5,
+                  right: 0,
+                  padding: 5,
+                }}
               >
-                <Text
-                  style={{ fontSize: 20, color: "white", fontWeight: "bold" }}
-                >
-                  Générer ma liste de course{" "}
-                  {matches.length != 0 ? `(${matches.length})` : null}
-                </Text>
-              </TouchableOpacity>
+                <AntDesign
+                  name="closecircle"
+                  size={24}
+                  color={COLORS.red}
+                  style={{
+                    backgroundColor: "white",
+                    overflow: "hidden",
+                    borderRadius: 20,
+                  }}
+                />
+              </Pressable>
+              <CustomButton
+                onPress={() => {
+                  navigation.navigate("PanierScreen");
+                }}
+                title={`Générer ma liste de course (${matches.length})`}
+                style={{ width: "90%", height: "90%", zIndex: -2 }}
+                textStyle={{ fontSize: 20, textAlign: "center" }}
+              />
             </View>
           ) : (
             <BottomContainer />
@@ -436,9 +510,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 3,
   },
-  buttonContainer: {
+  button: {
     height: "10%",
-    width: "100%",
+    width: "90%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -451,12 +525,18 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     marginTop: 40,
   },
-  button: {
-    backgroundColor: COLORS.primary,
-    width: "90%",
-    height: "80%",
-    alignItems: "center",
+  bottomContainer: {
+    width: "100%",
+    height: "10%",
+    flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  bottomView: {
+    width: "90%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    transform: [{ scale: 0.8 }],
   },
 });
 

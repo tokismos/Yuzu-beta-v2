@@ -1,14 +1,13 @@
 import axios from "axios";
-import { logPushNotificationOpenAsync } from "expo-facebook";
 
 const api = axios.create({
-  //baseURL: "http://4f54-105-154-109-13.ngrok.io",
+  //  baseURL: "http://4c34-50-100-167-5.ngrok.io",
   baseURL: "https://backend-yuzi.herokuapp.com/",
 });
 
 const getAllRecipes = async (item) => {
   //randomize data of array
-  const shuffleArray = () => {
+  const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
@@ -21,11 +20,12 @@ const getAllRecipes = async (item) => {
   // let data;
   try {
     const res = await api.get(`/recipes`);
-    data = res.data;
-    shuffleArray(data);
+    data = res.data.filter((item) => item.imgURL != null);
   } catch (e) {
     console.log("ERROR", e);
   }
+  shuffleArray(data);
+
   return data;
 };
 
@@ -33,7 +33,7 @@ const getRecipe = async (_id) => {
   try {
     const res = await api.get(`/recipes/${_id}`);
     data = res.data;
-    console.log("DAAANAAA", data);
+    console.log("DAATA", data);
   } catch (e) {
     console.log("ERROR", e);
   }

@@ -29,13 +29,7 @@ const ReportItemComponent = ({ title, setReport, report }) => {
 
           setReport(title);
         }}
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-          marginVertical: 5,
-        }}
+        style={styles.containerItem}
       >
         <Text
           style={{
@@ -55,16 +49,7 @@ const ReportItemComponent = ({ title, setReport, report }) => {
           <Ionicons name="checkmark-circle" size={20} color={COLORS.primary} />
         )}
       </Pressable>
-      {title != "Autres :" && (
-        <View
-          style={{
-            width: "90%",
-            alignSelf: "center",
-            height: 0.3,
-            backgroundColor: "gray",
-          }}
-        />
-      )}
+      {title != "Autres :" && <View style={styles.separator} />}
     </>
   );
 };
@@ -89,6 +74,7 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
         title: reportTitle,
         message: ` ${fullName} a reporter la recette " ${recipeName} " - ${reportTitle} - ${message}`,
       });
+      Alert.alert("Merci pour votre contribution !", " Message envoyé.");
       ToastAndroid.show(
         "Merci pour votre contribution! Ca nous fait plaisir de vous avoir parmis nous .",
         ToastAndroid.LONG
@@ -106,7 +92,7 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
         <MaterialIcons
           name="report"
           size={30}
-          color="red"
+          color={COLORS.red}
           style={{ padding: 5 }}
         />
 
@@ -123,6 +109,7 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
 
       {reportsTab.map((item, index) => (
         <ReportItemComponent
+          key={index}
           setIsSelected={setIsSelected}
           setReport={setReport}
           report={report}
@@ -131,14 +118,13 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
         />
       ))}
 
-      {report == "Autres :" && (
-        <TextInputColored
-          multiline
-          setChangeText={setReportDescription}
-          value={reportDescription}
-          placeholder="N'hesitez pas a tout nous raconter "
-        />
-      )}
+      <TextInputColored
+        multiline
+        setChangeText={setReportDescription}
+        value={reportDescription}
+        placeholder="N'hesitez pas a tout nous raconter "
+      />
+
       <View
         style={{
           flexDirection: "row",
@@ -150,8 +136,8 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
         <CustomButton
           isLoading={isLoading}
           disabled={report == ""}
-          title="Envoyer"
-          style={{ backgroundColor: "red", marginLeft: 10 }}
+          title="Signaler"
+          style={{ backgroundColor: COLORS.red, marginLeft: 10 }}
           onPress={async () => {
             await sendEmail(
               auth().currentUser?.displayName || "ANONYME",
@@ -166,4 +152,18 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
 };
 export default ReportComponent;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  containerItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginVertical: 5,
+  },
+  separator: {
+    width: "90%",
+    alignSelf: "center",
+    height: 0.3,
+    backgroundColor: "gray",
+  },
+});

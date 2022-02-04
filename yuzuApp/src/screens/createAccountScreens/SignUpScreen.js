@@ -159,25 +159,17 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
             isLoading={isLoading}
             onPress={async () => {
               setIsLoading(true);
-              signUp(email, password).then(async (e) => {
-                console.log("cREEEATEEED", e);
+              const status = await verifyCode(fullNumber, verificationCode);
+              if (status == 200) {
+                await signUp(email, password);
                 await setAdditionalInfo({
-                  phoneNumber: "99999911111111",
+                  phoneNumber: fullNumber,
                 });
-              });
-
-              setIsLoading(false);
-              // const status = await verifyCode(fullNumber, verificationCode);
-              // if (status == 200) {
-              //   await signUp(email, password);
-              //   await setAdditionalInfo({
-              //     phoneNumber: fullNumber,
-              //   });
-              //   console.log("approoved");
-              //   setIsLoading(false);
-              // } else {
-              //   setIsLoading(false);
-              // }
+                console.log("approoved");
+                setIsLoading(false);
+              } else {
+                setIsLoading(false);
+              }
               console.log("wa8WWWWWWWWW", auth()?.currentUser);
             }}
           />
@@ -188,16 +180,15 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
 };
 const NextButton = ({ onPress, disabled }) => {
   return (
-    <TouchableOpacity
+    <CustomButton
       onPress={onPress}
+      title="Suivant"
       disabled={disabled}
       style={{
         ...styles.nextButton,
-        backgroundColor: disabled ? COLORS.secondary : COLORS.primary,
       }}
-    >
-      <Text style={{ fontWeight: "bold", color: "white" }}>Suivant</Text>
-    </TouchableOpacity>
+      textStyle={{ fontWeight: "bold", color: "white" }}
+    />
   );
 };
 
@@ -223,7 +214,7 @@ const SignUpScreen = ({}) => {
       {/* innerRef to pass the ref of flatList to the component */}
       <LoginHeaderScreen innerRef={ref} index={ind} />
       <PagerView
-        scrollEnabled={true}
+        scrollEnabled={false}
         style={{ height: "100%" }}
         initialPage={0}
         ref={ref}
@@ -273,7 +264,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 50,
     alignItems: "center",
-    borderRadius: 10,
     alignSelf: "center",
   },
   description: {

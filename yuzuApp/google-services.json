@@ -1,32 +1,41 @@
 {
   "project_info": {
     "project_number": "768418404122",
+    "firebase_url": "https://yuzu-a0d71-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "yuzu-a0d71",
     "storage_bucket": "yuzu-a0d71.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:768418404122:android:d0d608f38161c03f107ea3",
+        "mobilesdk_app_id": "1:768418404122:android:385b15a3b4c34cf4107ea3",
         "android_client_info": {
-          "package_name": "com.foodApp.test"
+          "package_name": "com.yuzu.itten"
         }
       },
       "oauth_client": [
         {
-          "client_id": "768418404122-0gnou460di9bjq0bflmrtoh88nkh56q5.apps.googleusercontent.com",
+          "client_id": "768418404122-l4a1fjf776sm22io4vmq9bq31vt8poa1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.foodApp.test",
+            "package_name": "com.yuzu.itten",
+            "certificate_hash": "0803b922de3599f345a115796d81a38082919087"
+          }
+        },
+        {
+          "client_id": "768418404122-luug4ts09ra5hcse6i9k6f9qgj8qh18s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yuzu.itten",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
-          "client_id": "768418404122-rllkjskkgqtvg2g97gp06nmk2ce3n9jp.apps.googleusercontent.com",
+          "client_id": "768418404122-s4acs1m9nqg5qhhep8h5hrujo7sf5nme.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.foodApp.test",
-            "certificate_hash": "caaddad3c74795367215695982e208f6175fde3a"
+            "package_name": "com.yuzu.itten",
+            "certificate_hash": "798c52bd5f1fe10c11b10da8f295d9d69d3e79e3"
           }
         },
         {
@@ -43,8 +52,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "768418404122-out2q1cfkp99u5bs6sb5gsnhs9tl98sl.apps.googleusercontent.com",
+              "client_id": "768418404122-obgmmoqp17nh36ng4trdfku7if0d0a2j.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "768418404122-mjlo79ajbflatsq8ns5ut8qrtn5b1mmg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yuzu.itten"
+              }
             }
           ]
         }

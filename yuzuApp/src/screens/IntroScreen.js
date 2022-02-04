@@ -9,6 +9,7 @@ import FbIcon from "../assets/fbIcon.svg";
 import GoogleIcon from "../assets/GoogleIcon.svg";
 
 import useAuth from "../hooks/useAuth";
+import CustomButton from "../components/CustomButton";
 
 const IntroScreen = ({ navigation }) => {
   const { signIn, signInWithGoogle, signInWithFb } = useAuth();
@@ -24,37 +25,34 @@ const IntroScreen = ({ navigation }) => {
           source={require("../assets/logo.png")}
           style={styles.logoContainer}
         />
-        <Text style={styles.descriptionText}>
-          Perdre quelques kilos n’aura jamais été aussi agréable !
-        </Text>
+        <Text style={styles.descriptionText}>Bien manger, simplement.</Text>
       </View>
       <View style={styles.middleBottomScreen}>
         <View style={styles.bottomContainer}>
           {/* Sign Up  */}
-          <TouchableOpacity
-            activeOpacity={0.95}
-            style={{ ...styles.button, width: "80%" }}
+
+          <CustomButton
             onPress={() => {
               navigation.navigate("SignInScreen");
             }}
-          >
-            <Text style={styles.text}>Se connecter</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.95}
+            title="Se connecter"
+            style={{ ...styles.button, width: "80%" }}
+            textStyle={{ fontSize: 20 }}
+          />
+          <CustomButton
+            colorRipple={{ color: "#d3d3d3" }}
+            onPress={() => {
+              navigation.navigate("SignUpScreen");
+            }}
+            title=" Je suis nouveau"
             style={{
               ...styles.button,
               width: "80%",
               backgroundColor: "white",
             }}
-            onPress={() => {
-              navigation.navigate("SignUpScreen");
-            }}
-          >
-            <Text style={{ ...styles.text, color: COLORS.primary }}>
-              Je suis nouveau
-            </Text>
-          </TouchableOpacity>
+            textStyle={{ ...styles.text, color: COLORS.primary }}
+          />
+
           {/* Sign In from Google */}
           {/* <TouchableOpacity
             activeOpacity={0.95}
@@ -120,13 +118,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 5,
-    borderRadius: 10,
   },
   text: {
     textAlign: "center",
     fontWeight: "bold",
     color: "white",
-    fontSize: 16,
+    fontSize: 20,
   },
   middleTopScreen: {
     height: "50%",
@@ -136,8 +133,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoContainer: {
-    height: "40%",
-    width: "80%",
+    height: "30%",
+    width: "60%",
     resizeMode: "contain",
     alignSelf: "center",
   },

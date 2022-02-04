@@ -29,7 +29,6 @@ const SummarizeScreen = ({ route, navigation }) => {
     return (
       <>
         <View style={styles.itemComponent}>
-          {console.log("imnage", imgURL)}
           <View style={styles.itemContainer}>
             <FastImage
               style={styles.image}
@@ -43,12 +42,23 @@ const SummarizeScreen = ({ route, navigation }) => {
             {/* <Image source={{ uri: imgURL }} style={styles.image} /> */}
           </View>
           <View style={{ width: "90%" }}>
-            <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 10 }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                marginLeft: 10,
+                width: "90%",
+              }}
+            >
               {name}
             </Text>
             {ingredients?.map((item, index) => (
               <Text key={index} style={{ marginLeft: 10 }}>
-                {item.quantity} {item.unite == "unite" ? "" : item.unite}{" "}
+                <Text style={{ fontWeight: "bold" }}>
+                  {" "}
+                  {!item.newQuantity ? item.quantity : item.newQuantity}{" "}
+                  {item.unite == "unite" ? "" : item.unite}{" "}
+                </Text>
                 {item.name}
               </Text>
             ))}
@@ -86,7 +96,6 @@ const SummarizeScreen = ({ route, navigation }) => {
         <View style={{ height: "75%" }}>
           <ScrollView>
             {cartArray.map((item, index) => {
-              console.log("THJIS IS ITEM", cartArray);
               if (item.ingredients?.length == 0) {
                 return;
               }

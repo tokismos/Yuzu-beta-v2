@@ -9,28 +9,24 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import Animated, {
-  FadeInLeft,
-  Layout,
-  StretchOutY,
-  ZoomOut,
-} from "react-native-reanimated";
+import Animated, { FadeInLeft } from "react-native-reanimated";
 import {
   AntDesign,
   MaterialIcons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
-import LinearGradient from "react-native-linear-gradient";
 import CheckBox from "@react-native-community/checkbox";
 import Dialog, {
   DialogContent,
   SlideAnimation,
 } from "react-native-popup-dialog";
-import { TextInput } from "react-native-paper";
 import CustomButton from "../components/CustomButton";
 import ReportComponent from "../components/ReportComponent";
 import { getRecipe } from "../axios";
+import { addToFav, deleteFav, getFavoris } from "../helpers/db";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, deleteFavorite } from "../redux/slicer/favoritesSlicer";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -68,10 +64,20 @@ const IngredientComponent = ({
         >
           <Text style={{ marginLeft: 20, width: "75%" }}>{name}</Text>
           <CheckBox
+            style={[
+              {
+                transform: [{ scale: 0.8 }],
+              },
+            ]}
+            onTintColor={COLORS.primary}
+            onFillColor={COLORS.primary}
+            onCheckColor={"white"}
+            onAnimationType="fill"
+            offAnimationType="fade"
+            boxType="square"
             disabled
             value={toggle}
             tintColors={{ true: COLORS.primary, false: "gray" }}
-            style={{ transform: [{ scale: 1.2 }], width: "20%" }}
           />
         </View>
       </TouchableOpacity>
@@ -99,11 +105,20 @@ const StepComponent = ({ step, index }) => {
             Etape {index + 1}.
           </Text>
           <CheckBox
-            boxType="circle"
+            style={[
+              {
+                transform: [{ scale: 0.8 }],
+              },
+            ]}
+            onTintColor={COLORS.primary}
+            onFillColor={COLORS.primary}
+            onCheckColor={"white"}
+            onAnimationType="fill"
+            offAnimationType="fade"
+            boxType="square"
             disabled
             value={toggle}
             tintColors={{ true: COLORS.primary, false: "gray" }}
-            style={{ transform: [{ scale: 1.2 }] }}
           />
         </View>
 
@@ -129,7 +144,7 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
       <TouchableOpacity
         style={{ padding: 10, marginRight: "-15%" }}
         onPress={() => {
-          if (nbrPersonne == 4) return;
+          if (nbrPersonne == 2) return;
 
           setNbrPersonne((p) => p - 1);
         }}
@@ -140,7 +155,7 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
         {nbrPersonne}
       </Text>
       <MaterialCommunityIcons
-        name="snowman"
+        name="human-male"
         size={24}
         color="black"
         style={{ marginRight: 5 }}
@@ -158,26 +173,30 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
   );
 };
 
-const IngredientScreen = ({ route }) => {
+const IngredientScreen = ({ route, navigation }) => {
   const [recipe, setRecipe] = useState();
   const [nbr, setNbr] = useState(+route.params.recipe?.nbrPersonne);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [showVote, setShowVote] = useState(false);
+  const { favorites } = useSelector((state) => state.favoritesStore);
+  const dispatch = useDispatch();
   useEffect(() => {
+    console.log("THOSE ARE FAVORIS ", route);
+
     if (route.params.recipe) {
       setRecipe(route.params.recipe);
       setIsLoading(false);
     } else {
       getRecipe(route.params._id).then((res) => {
-        console.log("HOLA THIS IS RES", res);
         setNbr(+res.nbrPersonne);
         setRecipe(res);
         setIsLoading(false);
       });
     }
   }, []);
-  console.log("RECEIPPE", recipe?.nbrPersonne);
+
   return (
     <>
       {isLoading ? (
@@ -187,7 +206,20 @@ const IngredientScreen = ({ route }) => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <>
+        <View style={{ flex: 1, width }}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              position: "absolute",
+              top: 40,
+              left: 20,
+              zIndex: 99,
+              backgroundColor: "white",
+              borderRadius: 30,
+            }}
+          >
+            <AntDesign name="arrowleft" size={40} color="black" />
+          </TouchableOpacity>
           <Dialog
             visible={showReport}
             onTouchOutside={() => {
@@ -212,78 +244,74 @@ const IngredientScreen = ({ route }) => {
             style={{ backgroundColor: "#E6E6E6", flex: 1 }}
             showsVerticalScrollIndicator={false}
           >
-            <Image
-              source={{ uri: recipe?.imgURL }}
-              style={{
-                aspectRatio: 1,
-              }}
-            />
-            <LinearGradient
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 0, y: 0.2 }}
-              locations={[0.3, 1]}
-              colors={["black", "transparent"]}
-              style={{
-                height: height * 0.3,
-                marginTop: "-28%",
-                paddingTop: "25%",
-              }}
-            >
+            <View style={{}}>
+              <Image
+                source={{ uri: recipe?.imgURL }}
+                style={{
+                  aspectRatio: 1,
+                }}
+              />
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  height: height * 0.3,
+                  marginBottom: 20,
+                  backgroundColor: "black",
                 }}
               >
-                <Text
-                  numberOfLines={2}
+                <View
                   style={{
-                    fontSize: 24,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    margin: 10,
-                    color: "white",
-                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
-                  {recipe?.name}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "80%",
-                  alignSelf: "center",
-                  justifyContent: "space-between",
-                  marginBottom: 20,
-                }}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text
-                    style={{ fontSize: 18, color: "white", marginRight: 5 }}
+                    numberOfLines={2}
+                    style={{
+                      fontSize: 24,
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      margin: 10,
+                      color: "white",
+                      flex: 1,
+                    }}
                   >
-                    620
+                    {recipe?.name}
                   </Text>
-                  <AntDesign name="heart" size={14} color={COLORS.primary} />
                 </View>
-                <Text style={{ fontSize: 18, color: "white" }}>
-                  {recipe?.tempsPreparation + recipe?.tempsCuisson} min
-                </Text>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text
-                    style={{ fontSize: 18, color: "white", marginRight: 5 }}
-                  >
-                    N/A
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "80%",
+                    alignSelf: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 20,
+                  }}
+                >
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text
+                      style={{ fontSize: 18, color: "white", marginRight: 5 }}
+                    >
+                      620
+                    </Text>
+                    <AntDesign name="heart" size={14} color={COLORS.primary} />
+                  </View>
+                  <Text style={{ fontSize: 18, color: "white" }}>
+                    {recipe?.tempsPreparation + recipe?.tempsCuisson} min
                   </Text>
-                  <AntDesign name="star" size={15} color={COLORS.primary} />
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text
+                      style={{ fontSize: 18, color: "white", marginRight: 5 }}
+                    >
+                      N/A
+                    </Text>
+                    <AntDesign name="star" size={15} color={COLORS.primary} />
+                  </View>
                 </View>
-              </View>
-              <View style={{ flexDirection: "row", backgroundColor: "black" }}>
+
                 <View
                   style={{
                     backgroundColor: COLORS.primary,
-                    width: "50%",
                     height: height * 0.08,
                     justifyContent: "center",
                     alignItems: "center",
@@ -291,71 +319,59 @@ const IngredientScreen = ({ route }) => {
                   }}
                 >
                   <Text
-                    style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
+                    style={{
+                      color: "white",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
                   >
                     La recette
                   </Text>
                 </View>
                 <View
                   style={{
-                    backgroundColor: "white",
-                    width: "50%",
-                    height: height * 0.08,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: 10,
+                    flexDirection: "row",
+                    marginVertical: 10,
+                    justifyContent: "space-evenly",
+                    backgroundColor: "black",
                   }}
                 >
                   <Text
-                    style={{ color: "black", fontSize: 20, fontWeight: "bold" }}
+                    style={{
+                      fontSize: 18,
+
+                      color: "white",
+                      textAlign: "center",
+                    }}
                   >
-                    Nutrition
+                    Difficulté {"\n"} {recipe?.difficulty}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 18,
+
+                      color: "white",
+                      textAlign: "center",
+                    }}
+                  >
+                    Préparation {"\n"} {recipe?.tempsPreparation} min
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 18,
+
+                      color: "white",
+                      textAlign: "center",
+                    }}
+                  >
+                    Cuisson {"\n"} {recipe?.tempsCuisson} min
                   </Text>
                 </View>
               </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  paddingVertical: 10,
-                  justifyContent: "space-evenly",
-                  backgroundColor: "black",
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 18,
+            </View>
 
-                    color: "white",
-                    textAlign: "center",
-                  }}
-                >
-                  Difficulté {"\n"} {recipe?.difficulty}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 18,
-
-                    color: "white",
-                    textAlign: "center",
-                  }}
-                >
-                  Préparation {"\n"} {recipe?.tempsPreparation} min
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 18,
-
-                    color: "white",
-                    textAlign: "center",
-                  }}
-                >
-                  Cuisson {"\n"} {recipe?.tempsCuisson} min
-                </Text>
-              </View>
-            </LinearGradient>
             <View
               style={{
-                marginTop: "30%",
                 alignItems: "center",
                 paddingVertical: 10,
               }}
@@ -373,7 +389,7 @@ const IngredientScreen = ({ route }) => {
                   <MaterialIcons
                     name="report"
                     size={30}
-                    color="red"
+                    color={COLORS.red}
                     style={{ padding: 5 }}
                   />
                 </TouchableOpacity>
@@ -437,7 +453,42 @@ const IngredientScreen = ({ route }) => {
               {recipe?.steps?.map((item, index) => {
                 return <StepComponent step={item} index={index} key={index} />;
               })}
-              <View style={{}}></View>
+
+              {favorites.includes(
+                route.params._id ?? route.params.recipe._id
+              ) ? (
+                <CustomButton
+                  style={{
+                    width: "60%",
+                    marginBottom: 5,
+                    marginTop: 10,
+                    backgroundColor: COLORS.red,
+                  }}
+                  textStyle={{ fontSize: 18 }}
+                  title="Supprimer des favoris"
+                  onPress={() => {
+                    deleteFav(recipe._id);
+                    dispatch(deleteFavorite(recipe._id));
+                    setIsFavorite(false);
+                  }}
+                />
+              ) : (
+                <CustomButton
+                  style={{ width: "60%", marginBottom: 5, marginTop: 10 }}
+                  textStyle={{ fontSize: 18 }}
+                  title="Ajouter aux favoris"
+                  onPress={() => {
+                    addToFav(
+                      recipe._id,
+                      recipe.imgURL,
+                      recipe.name,
+                      recipe.dateTime
+                    );
+                    dispatch(addFavorite(recipe._id));
+                    setIsFavorite(true);
+                  }}
+                />
+              )}
             </View>
             {route.params._id && (
               <>
@@ -462,7 +513,7 @@ const IngredientScreen = ({ route }) => {
                           textAlign: "center",
                         }}
                       >
-                        Ca nous fera plaisir d'avoir votre avis
+                        Est-ce que vous avez aimé cette recette ?
                       </Text>
                       <View
                         style={{
@@ -473,23 +524,25 @@ const IngredientScreen = ({ route }) => {
                         }}
                       >
                         <TouchableOpacity onPress={() => setShowVote(false)}>
-                          <AntDesign name="like2" size={30} color="black" />
+                          <AntDesign name="like2" size={50} color="black" />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => setShowVote(false)}>
-                          <AntDesign name="dislike2" size={30} color="black" />
+                          <AntDesign name="dislike2" size={50} color="black" />
                         </TouchableOpacity>
                       </View>
                     </View>
                   </DialogContent>
                 </Dialog>
                 <CustomButton
-                  title="Donner mon avis"
+                  style={{ width: "60%", marginBottom: 20 }}
+                  textStyle={{ fontSize: 18 }}
+                  title="J'ai cuisiné cette recette"
                   onPress={() => setShowVote(true)}
                 />
               </>
             )}
           </ScrollView>
-        </>
+        </View>
       )}
     </>
   );

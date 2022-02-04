@@ -3,10 +3,19 @@ import React, { useEffect, useState } from "react";
 import { Image, TouchableOpacity } from "react-native";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FastImage from "react-native-fast-image";
+import { useDispatch } from "react-redux";
+import CustomButton from "../components/CustomButton";
 import { COLORS } from "../consts/colors";
+import { setCommandes } from "../helpers/db";
+import { resetMatches } from "../redux/slicer/MatchSlicer";
+import {
+  setCuisineNotification,
+  setListNotification,
+} from "../redux/slicer/notificationSlicer";
 
 const IngredientCartScreen = ({ route, navigation }) => {
   const { cart } = route.params;
+  const dispatch = useDispatch();
   let finalCart = {};
 
   useEffect(() => {
@@ -15,13 +24,12 @@ const IngredientCartScreen = ({ route, navigation }) => {
         ingredients: item.ingredients,
         name: item.name,
         imgURL: item.imgURL,
+        nbrPersonne: item.nbrPersonne,
       };
     });
   }, []);
 
   const onPress = (ingredient, title) => {
-    console.log("erd", finalCart[title].ingredients);
-    console.log("bname", JSON.stringify(ingredient), title);
     if (finalCart[title].ingredients?.includes(ingredient)) {
       finalCart[title].ingredients = finalCart[title].ingredients.filter(
         (item) => item != ingredient
@@ -31,7 +39,6 @@ const IngredientCartScreen = ({ route, navigation }) => {
         ? [...finalCart[title].ingredients, ingredient]
         : [ingredient];
     }
-    console.log("tmopppib", finalCart);
   };
 
   const IngredientItemComponent = ({ ingredient, title }) => {
@@ -52,11 +59,27 @@ const IngredientCartScreen = ({ route, navigation }) => {
         }}
       >
         <Text style={{ marginLeft: 20, width: "80%" }}>
-          {ingredient.quantity}{" "}
-          {ingredient.unite == "unite" ? "" : ingredient.unite}{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            {" "}
+            {!ingredient.newQuantity
+              ? ingredient.quantity
+              : ingredient.newQuantity}{" "}
+            {ingredient.unite == "unite" ? "" : ingredient.unite}{" "}
+          </Text>
           {ingredient.name}
         </Text>
         <CheckBox
+          style={[
+            {
+              transform: [{ scale: 0.8 }],
+            },
+          ]}
+          onTintColor={COLORS.primary}
+          onFillColor={COLORS.primary}
+          onCheckColor={"white"}
+          onAnimationType="fill"
+          offAnimationType="fade"
+          boxType="square"
           disabled
           value={toggle}
           tintColors={{ true: COLORS.primary, false: "gray" }}
@@ -149,14 +172,25 @@ const IngredientCartScreen = ({ route, navigation }) => {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity
+        <CustomButton
+          onPress={() => {
+            let arr = [];
+            Object.entries(finalCart).forEach(([key, value]) => {
+              arr.push({ _id: key, ...value });
+            });
+            setCommandes(arr);
+            dispatch(setCuisineNotification(true));
+            dispatch(setListNotification(true));
+            dispatch(resetMatches());
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "TinderScreen" }],
+            });
+          }}
+          title="Créer ma liste de courses"
           style={{ ...styles.buttonContainer, backgroundColor: COLORS.primary }}
-          onPress={() => navigation.navigate("SummarizeScreen", { finalCart })}
-        >
-          <Text style={{ fontWeight: "bold", color: "white", fontSize: 18 }}>
-            Valider les ingrédients
-          </Text>
-        </TouchableOpacity>
+          textStyle={{ fontWeight: "bold", color: "white", fontSize: 18 }}
+        />
       </View>
     </View>
   );
