@@ -25,7 +25,7 @@ const IntroScreen = ({ navigation }) => {
           source={require("../assets/logo.png")}
           style={styles.logoContainer}
         />
-        <Text style={styles.descriptionText}>Bien manger, simplement.</Text>
+        <Text style={styles.descriptionText}>Bien manger, simplement .</Text>
       </View>
       <View style={styles.middleBottomScreen}>
         <View style={styles.bottomContainer}>

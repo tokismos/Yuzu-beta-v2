@@ -54,7 +54,8 @@ const EmailComponent = ({ setEmail, refe, email }) => {
     </View>
   );
 };
-const PasswordComponent = ({ setPassword, refe, password }) => {
+const PasswordComponent = ({ setPassword, refe, password, email }) => {
+  const { verifyCode, signUp } = useAuth();
   return (
     <View style={{ width }}>
       <View style={{ padding: 20 }}>
@@ -74,8 +75,9 @@ const PasswordComponent = ({ setPassword, refe, password }) => {
       </View>
       <NextButton
         disabled={password.length < 8}
-        onPress={() => {
-          refe.current.setPage(2);
+        onPress={async () => {
+          // refe.current.setPage(2);
+          await signUp(email, password);
         }}
       />
     </View>
@@ -112,24 +114,6 @@ const PhoneComponent = ({
           }
         }}
       />
-    </View>
-  );
-};
-const NameComponent = ({
-  refe,
-  setIndex,
-  index,
-  setPhoneNumber,
-  setCountryCode,
-  fullNumber,
-}) => {
-  const { sendPhoneVerification } = useAuth();
-  return (
-    <View style={{ width }}>
-      <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-        Comment vous appelez vous ?
-      </Text>
-      <NextButton onPress={async () => {}} />
     </View>
   );
 };
@@ -233,9 +217,12 @@ const SignUpScreen = ({}) => {
             refe={ref}
             password={password}
             setPassword={setPassword}
+            //////////////////////////
+            email={email}
+            password={password}
           />
         </View>
-        <View key="3">
+        {/* <View key="3">
           <PhoneComponent
             refe={ref}
             setPhoneNumber={setPhoneNumber}
@@ -250,7 +237,7 @@ const SignUpScreen = ({}) => {
             password={password}
             fullNumber={fullNumber}
           />
-        </View>
+        </View> */}
       </PagerView>
     </View>
   );

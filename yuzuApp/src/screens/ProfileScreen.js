@@ -188,7 +188,7 @@ const ProfileScreen = () => {
         <View style={{ width: "100%", padding: 20 }}>
           {!user.phoneNumber && (
             <TouchableOpacity
-              onPress={() => navigation.navigate("PhoneScreen")}
+              //////////////////  onPress={() => navigation.navigate("PhoneScreen")}
               style={{
                 height: 50,
                 justifyContent: "space-between",
@@ -265,7 +265,7 @@ const ProfileScreen = () => {
           </TouchableOpacity>
           {user.phoneNumber && (
             <TouchableOpacity
-              onPress={() => navigation.navigate("PhoneScreen")}
+              ////////////////////   onPress={() => navigation.navigate("PhoneScreen")}
               style={{
                 height: 50,
                 justifyContent: "space-between",

@@ -14,10 +14,10 @@ export const store = configureStore({
     favoritesStore: favoritesReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    const createDebugger = require("redux-flipper").default;
+    // const createDebugger = require("redux-flipper").default;
 
     return getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(createDebugger());
+    });
   },
 });

@@ -316,7 +316,7 @@ const TinderScreen = ({ navigation }) => {
         if (!e.phoneNumber) {
           setHeaderLoading(false);
 
-          return navigation.navigate("PhoneScreen");
+          //  return navigation.navigate("PhoneScreen");
         }
         dispatch(setUser({ ...user, phoneNumber: e.phoneNumber }));
         setHeaderLoading(false);

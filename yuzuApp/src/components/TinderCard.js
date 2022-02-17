@@ -19,10 +19,10 @@ import { Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 const Imagee = ({ uri, loaded, setLoaded }) => {
   return (
     <FastImage
-      style={loaded ? { ...styles.image, marginTop: -5 } : { display: "none" }}
+      style={{ ...styles.image, marginTop: -5 }}
       source={{ uri, priority: FastImage.priority.high }}
       resizeMode={FastImage.resizeMode.cover}
-      onLoad={() => setLoaded(true)}
+      // onLoad={() => setLoaded(true)}
     />
   );
 };
@@ -152,12 +152,12 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
               </View>
             </View> */}
         </View>
-
-        <Image
+        <Imagee uri={recipe?.imgURL} loaded={loaded} />
+        {/* <Image
           source={{ uri: recipe?.imgURL }}
           style={{ ...styles.image, marginTop: -5 }}
           onLoad={() => setLoaded(true)}
-        />
+        /> */}
 
         <LinearGradient
           colors={["rgba(0, 0, 0, 0)", "rgba(0, 0,0, 1)"]}

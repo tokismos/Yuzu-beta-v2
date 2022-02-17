@@ -113,6 +113,7 @@ const AnimatedStack = (props) => {
         },
         () => {
           runOnJS(setCurrentIndex)(currentIndex + 1);
+          runOnJS(setNextIndex)(nextIndex + 1);
         }
       );
 
@@ -128,9 +129,11 @@ const AnimatedStack = (props) => {
   }, [data]);
 
   useEffect(() => {
-    translateX.value = 0;
     setNextIndex(currentIndex + 1);
-  }, [currentIndex, translateX]);
+  }, [currentIndex]);
+  useEffect(() => {
+    translateX.value = 0;
+  }, [nextIndex]);
   useEffect(() => {
     if (swiped == "right") {
       onSwipeRight(currentProfile);

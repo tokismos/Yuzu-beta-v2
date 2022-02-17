@@ -1,56 +1,75 @@
 import { format } from "date-fns";
-import React, { useLayoutEffect } from "react";
-import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import {
+  Alert,
+  Dimensions,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import FastImage from "react-native-fast-image";
 import { COLORS } from "../consts/colors";
+import TextInputColored from "../components/TextInputColored";
+import CustomButton from "../components/CustomButton";
 const { height, width } = Dimensions.get("screen");
+import { FontAwesome } from "@expo/vector-icons";
+import IngredientComponent from "../components/IngredientComponent";
+import CheckBox from "@react-native-community/checkbox";
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-community/async-storage";
 
-const CartComponent = ({ imgURL, name, ingredients }) => {
+// Each recipe which contain ingredients
+const CartComponent = ({
+  imgURL,
+  name,
+  ingredients,
+  setSelectedIngredients,
+  selectedIngredients,
+}) => {
   return (
     <>
-      <View
-        style={{
-          ...styles.itemComponent,
-          backgroundColor: "white",
-          padding: 10,
-          borderRadius: 10,
-          borderWidth: 1,
-          width: "90%",
-          alignSelf: "center",
-        }}
-      >
-        <View style={styles.imageContainer}>
+      <View style={styles.cartComponent}>
+        <View style={styles.titleComponent}>
           <FastImage
-            style={styles.image}
+            style={{
+              backgroundColor: COLORS.secondary,
+              height: 70,
+              borderRadius: 10,
+              aspectRatio: 1,
+            }}
             source={{
               uri: imgURL,
               headers: { Authorization: "someAuthToken" },
-              priority: FastImage.priority.normal,
+              priority: FastImage.priority.high,
             }}
-            resizeMode={FastImage.resizeMode.contain}
+            resizeMode={FastImage.resizeMode.cover}
           />
-          {/* <Image source={{ uri: imgURL }} style={styles.image} /> */}
-        </View>
-        <View style={{ flex: 1 }}>
           <Text
             style={{
               fontSize: 18,
               fontWeight: "bold",
-              marginLeft: 10,
-              width: "90%",
+              textAlign: "center",
+              width: "70%",
             }}
           >
             {name}
           </Text>
+        </View>
+        <View style={{ width: "80%", alignSelf: "center" }}>
           {ingredients?.map((item, index) => (
-            <Text key={index} style={{ marginLeft: 10 }}>
-              <Text style={{ fontWeight: "bold" }}>
-                {" "}
-                {!item.newQuantity ? item.quantity : item.newQuantity}{" "}
-                {item.unite == "unite" ? "" : item.unite}{" "}
-              </Text>
-              {item.name}
-            </Text>
+            <>
+              <IngredientComponent
+                setSelectedIngredients={setSelectedIngredients}
+                selectedIngredients={selectedIngredients}
+                isSaved={selectedIngredients.indexOf(item.name) > -1}
+                ingredient={item}
+                key={index}
+                isCommandeScreen={true}
+              />
+            </>
           ))}
         </View>
       </View>
@@ -58,8 +77,91 @@ const CartComponent = ({ imgURL, name, ingredients }) => {
     </>
   );
 };
+
+const ProductComponent = ({ product }) => {
+  const [toggle, setToggle] = useState(true);
+  return (
+    <TouchableOpacity
+      onPress={() => setToggle((p) => !p)}
+      style={styles.productItemComponent}
+    >
+      <Text style={styles.productItemText}>{product}</Text>
+      <CheckBox
+        style={[
+          {
+            transform: [{ scale: Platform.OS === "ios" ? 0.8 : 1.2 }],
+          },
+        ]}
+        onTintColor={COLORS.primary}
+        onFillColor={COLORS.primary}
+        onCheckColor={"white"}
+        onAnimationType="fill"
+        offAnimationType="fade"
+        boxType="square"
+        disabled
+        value={toggle}
+        tintColors={{ true: COLORS.primary, false: "gray" }}
+      />
+    </TouchableOpacity>
+  );
+};
+// Component where we add a product with button
+const AddProductComponent = ({ setProducts, products }) => {
+  const [isRecurrent, setIsRecurrent] = useState(true);
+  const [productText, setProductText] = useState();
+  return (
+    <View style={styles.addProductComponent}>
+      <TextInputColored
+        style={{ width: "50%", height: 40 }}
+        label="Ajouter un produit"
+        setChangeText={setProductText}
+        value={productText}
+      />
+      <TouchableOpacity
+        style={{ padding: 10 }}
+        onPress={() => setIsRecurrent((p) => !p)}
+      >
+        <FontAwesome
+          name="refresh"
+          size={24}
+          color={isRecurrent ? COLORS.primary : "gray"}
+        />
+      </TouchableOpacity>
+      <CustomButton
+        title="Ajouter"
+        style={{ height: 40 }}
+        onPress={() => {
+          if (!productText) {
+            return;
+          }
+          if (products.indexOf(productText) > -1) {
+            return Alert.alert("Vous avez deja ajouté ce produit !");
+          }
+          setProducts((p) => [...p, productText]);
+        }}
+      />
+    </View>
+  );
+};
+
+//List of all the products we added
+const AllProductsComponent = ({ products }) => {
+  return (
+    <View style={styles.productsComponent}>
+      <Text style={styles.productsTitle}>Articles Ajoutés</Text>
+      {products.map((item, i) => (
+        <ProductComponent product={item} key={i} />
+      ))}
+    </View>
+  );
+};
+
 const InfoCommandeScreen = ({ navigation, route }) => {
   const { params } = route;
+
+  const [products, setProducts] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+
   useLayoutEffect(() => {
     let time = new Date(params.historyDetail.dateTime);
 
@@ -67,12 +169,47 @@ const InfoCommandeScreen = ({ navigation, route }) => {
       title: `Liste du ${format(time, "dd/MM/yyyy")}`,
     });
   }, []);
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    (async () => {
+      if (!isFocused) {
+        await AsyncStorage.setItem(
+          "selectedIngredients",
+          JSON.stringify(selectedIngredients)
+        );
+        const value = await AsyncStorage.getItem("selectedIngredients");
+        console.log("AFTER NOT FOCYS", value);
+      }
+    })();
+  }, [isFocused]);
 
+  useEffect(() => {
+    (async () => {
+      const value = await AsyncStorage.getItem("selectedIngredients");
+      console.log("thos are valie", value);
+      if (value != null) {
+        setSelectedIngredients(value);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    console.log("PROOOOOOD", selectedIngredients);
+  }, [selectedIngredients]);
   return (
     <ScrollView style={{}}>
+      <AddProductComponent setProducts={setProducts} products={products} />
+      {products.length != 0 && <AllProductsComponent products={products} />}
+      <Text style={{ fontSize: 24, fontWeight: "bold", paddingVertical: 10 }}>
+        {" "}
+        Recettes :
+      </Text>
+
       {params.historyDetail.recipes.map((item, i) => {
         return (
           <CartComponent
+            setSelectedIngredients={setSelectedIngredients}
+            selectedIngredients={selectedIngredients}
             key={i}
             imgURL={item.imgURL}
             name={item.name}
@@ -139,10 +276,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  itemComponent: {
-    flexDirection: "row",
+  cartComponent: {
     marginVertical: 5,
-    width,
+
+    backgroundColor: "white",
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    width: "90%",
+    alignSelf: "center",
   },
   imageContainer: {
     height: 60,
@@ -151,9 +293,50 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    height: "90%",
-    width: "90%",
+    height: 60,
+    aspectRatio: 1.5,
+  },
+  productsComponent: {
+    backgroundColor: "white",
+    width: "70%",
+    alignSelf: "center",
+    borderWidth: 1,
     borderRadius: 10,
-    resizeMode: "contain",
+    padding: 10,
+  },
+  productsTitle: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "gray",
+  },
+  titleComponent: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "center",
+  },
+  productItemComponent: {
+    flexDirection: "row",
+    width: "90%",
+    justifyContent: "space-between",
+    alignSelf: "center",
+    alignItems: "center",
+    marginVertical: 5,
+  },
+  addProductComponent: {
+    backgroundColor: "white",
+    height: height * 0.1,
+    flexDirection: "row",
+    width,
+    justifyContent: "space-around",
+    alignItems: "center",
+    padding: 10,
+    marginBottom: 20,
+  },
+  productItemText: {
+    fontSize: 18,
+    width: "80%",
+    fontWeight: "bold",
   },
 });

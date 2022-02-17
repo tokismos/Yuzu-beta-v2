@@ -27,63 +27,64 @@ import { getRecipe } from "../axios";
 import { addToFav, deleteFav, getFavoris } from "../helpers/db";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, deleteFavorite } from "../redux/slicer/favoritesSlicer";
+import IngredientComponent from "../components/IngredientComponent";
 
 const { height, width } = Dimensions.get("screen");
 
-const IngredientComponent = ({
-  ingredient: { name, quantity, unite },
-  defaultNbrPersonne,
-  nbrPersonne,
-}) => {
-  const [toggle, setToggle] = useState(true);
+// const IngredientComponent = ({
+//   ingredient: { name, quantity, unite },
+//   defaultNbrPersonne,
+//   nbrPersonne,
+// }) => {
+//   const [toggle, setToggle] = useState(true);
 
-  return (
-    <>
-      <TouchableOpacity
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          alignSelf: "center",
-          marginVertical: 3,
-        }}
-        onPress={() => setToggle((p) => !p)}
-      >
-        <Text style={{ fontSize: 16 }} style={{ width: "25%" }}>{`${+(
-          (quantity * nbrPersonne) /
-          defaultNbrPersonne
-        ).toFixed(1)} ${unite == "unite" ? "" : unite}`}</Text>
-        <View
-          style={{
-            width: "75%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ marginLeft: 20, width: "75%" }}>{name}</Text>
-          <CheckBox
-            style={[
-              {
-                transform: [{ scale: 0.8 }],
-              },
-            ]}
-            onTintColor={COLORS.primary}
-            onFillColor={COLORS.primary}
-            onCheckColor={"white"}
-            onAnimationType="fill"
-            offAnimationType="fade"
-            boxType="square"
-            disabled
-            value={toggle}
-            tintColors={{ true: COLORS.primary, false: "gray" }}
-          />
-        </View>
-      </TouchableOpacity>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <TouchableOpacity
+//         style={{
+//           flexDirection: "row",
+//           alignItems: "center",
+//           justifyContent: "center",
+//           width: "100%",
+//           alignSelf: "center",
+//           marginVertical: 3,
+//         }}
+//         onPress={() => setToggle((p) => !p)}
+//       >
+//         <Text style={{ fontSize: 16 }} style={{ width: "25%" }}>{`${+(
+//           (quantity * nbrPersonne) /
+//           defaultNbrPersonne
+//         ).toFixed(1)} ${unite == "unite" ? "" : unite}`}</Text>
+//         <View
+//           style={{
+//             width: "75%",
+//             flexDirection: "row",
+//             justifyContent: "space-between",
+//             alignItems: "center",
+//           }}
+//         >
+//           <Text style={{ marginLeft: 20, width: "75%" }}>{name}</Text>
+//           <CheckBox
+//             style={[
+//               {
+//                 transform: [{ scale: 0.8 }],
+//               },
+//             ]}
+//             onTintColor={COLORS.primary}
+//             onFillColor={COLORS.primary}
+//             onCheckColor={"white"}
+//             onAnimationType="fill"
+//             offAnimationType="fade"
+//             boxType="square"
+//             disabled
+//             value={toggle}
+//             tintColors={{ true: COLORS.primary, false: "gray" }}
+//           />
+//         </View>
+//       </TouchableOpacity>
+//     </>
+//   );
+// };
 
 const StepComponent = ({ step, index }) => {
   const [toggle, setToggle] = useState(false);

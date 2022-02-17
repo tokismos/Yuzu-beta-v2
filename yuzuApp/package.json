@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
+    "@invertase/react-native-apple-authentication": "^2.1.5",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/checkbox": "^0.5.8",
     "@react-native-community/clipboard": "^1.5.1",
@@ -37,7 +38,6 @@
     "react-native-countdown-circle-timer": "^2.5.4",
     "react-native-elements": "^3.4.2",
     "react-native-fast-image": "^8.5.11",
-    "react-native-flipper": "^0.131.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-head-tab-view": "^4.0.0-rc.13",
     "react-native-linear-gradient": "^2.5.6",
@@ -58,7 +58,6 @@
     "react-native-web": "0.17.1",
     "react-redux": "^7.2.5",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
-    "redux-flipper": "^2.0.1",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {

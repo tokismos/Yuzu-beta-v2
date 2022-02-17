@@ -13,6 +13,7 @@ import useAuth from "../hooks/useAuth";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import GoogleIcon from "../assets/GoogleIcon.svg";
+import { AppleButton } from "@invertase/react-native-apple-authentication";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -20,8 +21,8 @@ const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-  const { signIn, signInWithGoogle, signInWithFb } = useAuth();
-
+  const { signIn, signInWithGoogle, signInWithFb, onAppleButtonPress } =
+    useAuth();
   return (
     <>
       <View
@@ -60,7 +61,7 @@ const SignInScreen = () => {
             disabled={password.length == 0}
           />
         </View>
-        <View style={{ width: "100%", flex: 1 }}>
+        {/* <View style={{ width: "100%", flex: 1 }}>
           <View
             style={{
               flexDirection: "row",
@@ -114,7 +115,21 @@ const SignInScreen = () => {
               </View>
             </View>
           </TouchableOpacity>
-        </View>
+          <AppleButton
+            buttonStyle={AppleButton.Style.WHITE}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={{
+              width: 160,
+              height: 60,
+              alignSelf: "center",
+            }}
+            onPress={() =>
+              onAppleButtonPress().then(() =>
+                console.log("Apple sign-in complete!")
+              )
+            }
+          />
+        </View> */}
       </View>
     </>
   );

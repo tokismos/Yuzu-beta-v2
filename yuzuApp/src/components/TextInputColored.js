@@ -13,8 +13,6 @@ const TextInputColored = forwardRef(
       setChangeText,
       leftIcon,
       secured,
-      index,
-      currentIndex,
       style,
     },
     ref
