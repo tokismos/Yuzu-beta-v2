@@ -1,7 +1,11 @@
-import React, { forwardRef, useEffect } from "react";
+// Le header qu on trouve dans le signUp screen,ici l'index est important parceque c'est lui qui
+// nous permet de savoir ce que la touche precedent fait , si l'index est egal a 0 il retourne vers l'ecran precedent
+// sinon il change le pageViewer
+
+import React from "react";
 import {
   Dimensions,
-  SafeAreaView,
+  NativeModules,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,7 +14,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
 import { useNavigation } from "@react-navigation/core";
-import { NavigationContainer } from "@react-navigation/native";
+import FastImage from "react-native-fast-image";
 
 const { height, width } = Dimensions.get("screen");
 

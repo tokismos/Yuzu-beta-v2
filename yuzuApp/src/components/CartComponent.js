@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+// Every item qui compose notre cart dans PanierScreen , ce composent est chaque item de la liste qui
+// se compose des details plus le checkbox
+
+import React, { useState } from "react";
 import {
   Dimensions,
   Image,
@@ -6,72 +9,66 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Button,
 } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
 import { COLORS } from "../consts/colors";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
 
 const { width, height } = Dimensions.get("screen");
-const CartComponent = ({ item, onPress, finalCart, setFinalCart, index }) => {
-  const [toggle, setToggle] = useState(true);
-  const [nbrPersonne, setNbrPersonne] = useState(+item.nbrPersonne);
-  const { matches } = useSelector((state) => state.matchStore);
-
-
-  const NbrPersonneComponent = () => {
-    return (
-      <View
-        style={{
-          height: "100%",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          marginLeft: "10%",
+const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
+  return (
+    <View
+      style={{
+        height: "100%",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginLeft: "10%",
+      }}
+    >
+      <TouchableOpacity
+        style={{ padding: 10, marginRight: "-15%" }}
+        onPress={() => {
+          setFinalCart((p) => {
+            const tmp = JSON.parse(JSON.stringify(p));
+            if (tmp[index].nbrPersonne > 2) {
+              tmp[index].nbrPersonne = parseInt(tmp[index].nbrPersonne) - 1;
+            }
+            return [...tmp];
+          });
+          // setNbrPersonne((p) => p - 1);
         }}
       >
-        <TouchableOpacity
-          style={{ padding: 10, marginRight: "-15%" }}
-          onPress={() => {
-            setFinalCart((p) => {
-              const tmp = JSON.parse(JSON.stringify(p));
-              if (tmp[index].nbrPersonne > 2) {
-                tmp[index].nbrPersonne = parseInt(tmp[index].nbrPersonne) - 1;
-              }
-              return [...tmp];
-            });
-            // setNbrPersonne((p) => p - 1);
-          }}
-        >
-          <AntDesign name="minuscircleo" size={24} color={COLORS.primary} />
-        </TouchableOpacity>
-        <Text style={{ fontWeight: "bold", color: "gray", marginLeft: 5 }}>
-          {item.nbrPersonne}
-        </Text>
-        <MaterialCommunityIcons
-          name="snowman"
-          size={24}
-          color="gray"
-          style={{ marginRight: 5 }}
-        />
-        <TouchableOpacity
-          style={{ padding: 10, marginLeft: "-15%" }}
-          onPress={() => {
-            setFinalCart((p) => {
-              const tmp = JSON.parse(JSON.stringify(p));
-              if (tmp[index].nbrPersonne < 8) {
-                tmp[index].nbrPersonne = parseInt(tmp[index].nbrPersonne) + 1;
-              }
-              return [...tmp];
-            });
-          }}
-        >
-          <AntDesign name="pluscircleo" size={24} color={COLORS.primary} />
-        </TouchableOpacity>
-      </View>
-    );
-  };
+        <AntDesign name="minuscircleo" size={24} color={COLORS.primary} />
+      </TouchableOpacity>
+      <Text style={{ fontWeight: "bold", color: "gray", marginLeft: 5 }}>
+        {item.nbrPersonne}
+      </Text>
+      <MaterialCommunityIcons
+        name="human-male"
+        size={24}
+        color="gray"
+        style={{ marginRight: 5 }}
+      />
+      <TouchableOpacity
+        style={{ padding: 10, marginLeft: "-15%" }}
+        onPress={() => {
+          setFinalCart((p) => {
+            const tmp = JSON.parse(JSON.stringify(p));
+            if (tmp[index].nbrPersonne < 8) {
+              tmp[index].nbrPersonne = parseInt(tmp[index].nbrPersonne) + 1;
+            }
+            return [...tmp];
+          });
+        }}
+      >
+        <AntDesign name="pluscircleo" size={24} color={COLORS.primary} />
+      </TouchableOpacity>
+    </View>
+  );
+};
+const CartComponent = ({ item, onPress, setFinalCart, index }) => {
+  const [toggle, setToggle] = useState(true);
 
   return (
     <>
@@ -124,26 +121,27 @@ const CartComponent = ({ item, onPress, finalCart, setFinalCart, index }) => {
                   </Text>
                 </View>
 
-                <NbrPersonneComponent />
+                <NbrPersonneComponent
+                  item={item}
+                  setFinalCart={setFinalCart}
+                  index={index}
+                />
               </View>
             </View>
           </View>
         </View>
         <View style={styles.checkBoxContainer}>
           <CheckBox
-
-
-
-onTintColor={COLORS.primary}
-onFillColor={COLORS.primary}
-onCheckColor={'white'}
-onAnimationType='fill'
-
-boxType='square'
-
-style={[ {
-  transform: [{ scale: .8 }]
-}]}
+            onTintColor={COLORS.primary}
+            onFillColor={COLORS.primary}
+            onCheckColor={"white"}
+            onAnimationType="fill"
+            boxType="square"
+            style={[
+              {
+                transform: [{ scale: 0.8 }],
+              },
+            ]}
             value={toggle}
             onValueChange={(newValue) => setToggle(newValue)}
             disabled

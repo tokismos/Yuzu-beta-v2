@@ -1,8 +1,10 @@
+// C'est ici qu'on gere toutes les fonctions pour appeler notre API et pour les differentes connections
+// avec Firebase
+
 import { Alert, StyleSheet } from "react-native";
 
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-// import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { appleAuth } from "@invertase/react-native-apple-authentication";
@@ -178,7 +180,6 @@ export default useAuth = () => {
     signIn,
     signOut,
     signInWithGoogle,
-
     sendPhoneVerification,
     verifyCode,
     signUp,

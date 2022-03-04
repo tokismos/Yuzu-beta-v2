@@ -1,3 +1,7 @@
+// Le dialog qui saffiche lorsqu'on clique sur le bouton report pour une recette,si on veut ajouter un autre champs
+// on l'ajoute dans l'array reportsTab, et on appele un api qui nous permets d'envoyer un message
+// vers l'adresse email
+
 import React, { useState } from "react";
 import {
   Dimensions,

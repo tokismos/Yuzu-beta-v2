@@ -1,5 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, useWindowDimensions, Text } from "react-native";
+// Cette page contient l'animation du stack du tinderScreen , le stack se compose de deux Views
+// la premiere qui affiche la recipe de currentIndex,et la deuxieme qui affiche avec nextIndex,quand l'animation se termmine
+// on remet sa valeur à 0 pour qu'elle retourne a sa place originale et on change son index vers le prochain
+// comme ca on a une impression de plusieurs cartes alors ce n'est que 2.
+
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, useWindowDimensions } from "react-native";
 
 import Animated, {
   useSharedValue,
@@ -9,23 +14,15 @@ import Animated, {
   interpolate,
   withSpring,
   runOnJS,
-  FadeInUp,
-  FadeIn,
-  withTiming,
 } from "react-native-reanimated";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Like from "../assets/LIKE.png";
 import Nope from "../assets/nope.png";
-import { useDispatch, useSelector } from "react-redux";
-import { addMatch } from "../redux/slicer/MatchSlicer";
-import { current } from "immer";
-import LottieView from "lottie-react-native";
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
 const AnimatedStack = (props) => {
-  const dispatch = useDispatch();
   const { data, renderItem, onSwipeRight, onSwipeLeft } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swiped, setSwipe] = useState();
@@ -38,13 +35,6 @@ const AnimatedStack = (props) => {
   const { width: screenWidth } = useWindowDimensions();
 
   const hiddenTranslateX = 2 * screenWidth;
-
-  const test = () => {
-    console.log("yeah");
-
-    translateX.value = 0;
-    setNextIndex(currentIndex + 1);
-  };
 
   const translateX = useSharedValue(0);
   const rotate = useDerivedValue(
@@ -140,6 +130,11 @@ const AnimatedStack = (props) => {
       console.log("swiped right");
       setSwipe("");
     }
+    if (swiped == "left") {
+      onSwipeLeft(currentProfile);
+      console.log("swiped leeft");
+      setSwipe("");
+    }
   }, [swiped]);
 
   //   To show or not the oops view if theres no data or end of list
@@ -151,7 +146,7 @@ const AnimatedStack = (props) => {
     }
   }, [data, currentIndex]);
 
-  return show ? (
+  return (
     <View style={styles.root}>
       {nextProfile && (
         <View style={styles.nextCardContainer}>
@@ -196,22 +191,6 @@ const AnimatedStack = (props) => {
         </PanGestureHandler>
       )}
     </View>
-  ) : (
-    //The oops View
-    <Animated.View
-      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      entering={FadeIn}
-    >
-      <LottieView
-        source={require("../assets/oops.json")}
-        autoPlay
-        loop={false}
-      />
-      <Text style={{ fontSize: 20, textAlign: "center", marginTop: 100 }}>
-        OOPS, il n'y a plus de recette disponible pour l'instant. Veuillez
-        désactiver certains de vos filtres si activés.
-      </Text>
-    </Animated.View>
   );
 };
 

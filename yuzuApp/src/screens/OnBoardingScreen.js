@@ -1,3 +1,6 @@
+// Le screen qui nous montre le tutorial et les informations a propos de l'applicatio,
+// Ce screen n'est pas actif pour le moment
+
 import React, { useEffect } from "react";
 import {
   Button,

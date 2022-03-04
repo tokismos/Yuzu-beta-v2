@@ -1,9 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-} from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
 
 import { store } from "./src/redux/store";
 import { Provider } from "react-redux";
@@ -12,20 +8,16 @@ import SplashScreen from "react-native-splash-screen";
 
 require("./src/helpers/db");
 
-
 export default function App() {
-   useEffect(() => {
-    SplashScreen.hide();
-  });
-  
-  return (
-  
-      <Provider store={store}>
-        <StatusBar translucent />
-        <RootNavigation />
-     
-      </Provider>
+  useEffect(() => {
+    // SplashScreen.hide();
+  }, []);
 
+  return (
+    <Provider store={store}>
+      <StatusBar translucent backgroundColor="transparent" />
+      <RootNavigation />
+    </Provider>
   );
 }
 const styles = StyleSheet.create({

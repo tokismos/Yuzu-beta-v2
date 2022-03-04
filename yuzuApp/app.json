@@ -2,29 +2,26 @@
   "expo": {
     "facebookScheme": "fb593620908653647",
     "facebookAppId": "593620908653647",
-    "facebookDisplayName": "Helllo",
     "name": "Yuzu",
     "slug": "Yuzu",
-
-    "sdkVersion": "43.0.0",
-
     "version": "1.0.2",
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffc700"
     },
     "updates": {
       "fallbackToCacheTimeout": 30000,
       "enabled": true,
       "checkAutomatically": "ON_LOAD"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "buildNumber":"9",
+      "buildNumber": "9",
       "supportsTablet": true,
       "bundleIdentifier": "com.yuzu.itten",
       "googleServicesFile": "./GoogleService-Info.plist"
@@ -34,11 +31,13 @@
       "googleServicesFile": "./google-services.json",
       "versionCode": 2,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/icontest.png",
+        "backgroundColor": "#ffc700"
       }
     },
-    "plugins": ["@react-native-firebase/app"],
+    "plugins": [
+      "@react-native-firebase/app"
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },

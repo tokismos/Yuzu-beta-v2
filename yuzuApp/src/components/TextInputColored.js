@@ -1,5 +1,8 @@
+// C'est un textInput modifié qu'on trouve dans toute notre App, elle plusieurs attributs, dont leftIcon
+// qui nous permet de choisir l'icon qui s'affiche a gauche, secured si c'est true il cache les données saisies
+
 import React, { forwardRef, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 import { COLORS } from "../consts/colors";
 

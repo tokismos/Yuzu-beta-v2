@@ -1,20 +1,17 @@
-import { Alert } from "react-native";
-
-import database from "@react-native-firebase/database";
+//Ici on trouve toutes les fonctions qui sont en relation avec la Database de Firebase,
 
 import firebase from "@react-native-firebase/app";
 import auth from "@react-native-firebase/auth";
-const firebaseDbURL =
-  "https://yuzu-a0d71-default-rtdb.europe-west1.firebasedatabase.app/";
+const firebaseDbURL = "https://yuzu-5720e-default-rtdb.firebaseio.com";
 const firebaseConfig = {
-  apiKey: "AIzaSyC_Khzc-fgbnfetYLwwdkSiNYPuRVjbdN8",
-  authDomain: "yuzu-a0d71.firebaseapp.com",
-  databaseURL:
-    "https://yuzu-a0d71-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "yuzu-a0d71",
-  storageBucket: "yuzu-a0d71.appspot.com",
-  messagingSenderId: "768418404122",
-  appId: "1:768418404122:web:07f4cd1177316436107ea3",
+  apiKey: "AIzaSyDp2NnsdP0i01XwJMmSynmmSrC_R23MUiQ",
+  authDomain: "yuzu-5720e.firebaseapp.com",
+  databaseURL: "https://yuzu-5720e-default-rtdb.firebaseio.com",
+  projectId: "yuzu-5720e",
+  storageBucket: "yuzu-5720e.appspot.com",
+  messagingSenderId: "246034960415",
+  appId: "1:246034960415:web:c4aa304ce2a2bc379bc52a",
+  measurementId: "G-N0G4M012VE",
 };
 
 if (!firebase.apps.length) {
@@ -36,7 +33,7 @@ const setAdditionalInfo = async (info) => {
   }
 };
 
-//get num from realtime DB
+//get Additional infos  from realtime DB
 const getAdditionalInfo = async () => {
   const snapshot = await firebase
     .app()
@@ -79,19 +76,6 @@ const deleteFav = async (id) => {
   }
 };
 
-// const getFavoris = async () => {
-//   let favoritesArray = [""];
-//   firebase
-//     .app()
-//     .database(firebaseDbURL)
-//     .ref(`/users/${auth().currentUser?.uid}/favoris`)
-//     .on("value", (snapshot) => {
-//       if (snapshot.exists()) {
-//         snapshot.forEach((item) => favoritesArray.push(item.key));
-//       }
-//     });
-//     return favoritesArray;
-// };
 const getFavoris = async (tmp) => {
   let favoritesArray = [];
   firebase
@@ -166,60 +150,6 @@ const getCommandes = async (setCommandes) => {
       setCommandes(arr);
     });
 };
-
-// const LoginWithFb = async () => {
-//   // Attempt login with permissions
-//   const result = await LoginManager.logInWithPermissions([
-//     "public_profile",
-//     "email",
-//   ]);
-//   if (result.isCancelled) {
-//     throw "User cancelled the login process";
-//   }
-//   // Once signed in, get the users AccesToken
-//   const data = await AccessToken.getCurrentAccessToken();
-
-//   if (!data) {
-//     throw "Something went wrong obtaining access token";
-//   }
-//   // Create a Firebase credential with the AccessToken
-//   const facebookCredential = auth.FacebookAuthProvider.credential(
-//     data.accessToken
-//   );
-//   // Sign-in the user with the credential
-//   return auth().signInWithCredential(facebookCredential);
-// };
-
-const logInWithFb = async () => {
-  try {
-    await Facebook.initializeAsync({
-      appId: "593620908653647",
-    });
-    const { type, token, expirationDate, permissions, declinedPermissions } =
-      await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"],
-      });
-    if (type === "success") {
-      // Get the user's name using Facebook's Graph API
-      const response = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}`
-      );
-      Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
-    } else {
-      // type === 'cancel'
-    }
-  } catch ({ message }) {
-    alert(`Facebook Login Error: ${message}`);
-  }
-};
-// const getData = async (loadMood) => {
-//   await db
-//     .ref(`users/`)
-//     .on("value", (snapshot) => {
-//       const data = snapshot.val();
-//       loadMood(data);
-//     });
-// };
 
 export {
   setAdditionalInfo,

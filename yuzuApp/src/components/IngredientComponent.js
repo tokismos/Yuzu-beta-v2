@@ -5,10 +5,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CheckBox from "@react-native-community/checkbox";
 import { COLORS } from "../consts/colors";
-import AsyncStorage from "@react-native-community/async-storage";
 
 const IngredientComponent = ({
   ingredient: { name, quantity, unite, newQuantity },
@@ -19,27 +18,17 @@ const IngredientComponent = ({
   setSelectedIngredients,
   selectedIngredients,
 }) => {
-  const [toggle, setToggle] = useState(isSaved);
+  const [toggle, setToggle] = useState();
 
-  // const addToStorage = (item) => {
-  //   try {
-  //     await AsyncStorage.setItem("@storage_Key", value);
-  //   } catch (e) {
-  //     // saving error
-  //   }
-  // };
+  //To check if its saved in th asyncstorage, for whatever reason it didnt work when i put useState(isSaved)
+  useEffect(() => {
+    setToggle(isSaved);
+  }, [isSaved]);
 
   return (
     <>
       <TouchableOpacity
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          alignSelf: "center",
-          marginVertical: 3,
-        }}
+        style={styles.ingredientComponent}
         onPress={() => {
           if (setSelectedIngredients) {
             if (!toggle) {
@@ -56,7 +45,13 @@ const IngredientComponent = ({
         {/* We have new Quantity in the commande screen and we dont have nbrPersonne ,so we dont need to calcul it  */}
         {isCommandeScreen ? (
           <Text
-            style={{ fontWeight: "bold", width: "25%", textAlign: "center" }}
+            style={{
+              fontWeight: "bold",
+              width: "25%",
+              textAlign: "center",
+              fontSize: 16,
+              textDecorationLine: toggle ? "line-through" : null,
+            }}
           >
             {!newQuantity ? quantity : newQuantity}{" "}
             {unite == "unite" ? "" : unite}{" "}
@@ -64,24 +59,24 @@ const IngredientComponent = ({
         ) : (
           <Text
             style={{
-              fontSize: 16,
-              width: "25%",
-              textAlign: "center",
-              fontWeight: "bold",
+              ...styles.textQuantity,
+              textDecorationLine: toggle ? "line-through" : null,
             }}
           >{`${+((quantity * nbrPersonne) / defaultNbrPersonne).toFixed(1)} ${
             unite == "unite" ? "" : unite
           }`}</Text>
         )}
-        <View
-          style={{
-            width: "75%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ marginLeft: 20, width: "75%" }}>{name}</Text>
+        <View style={styles.nameContainer}>
+          <Text
+            style={{
+              marginLeft: 20,
+              fontSize: 16,
+              width: "75%",
+              textDecorationLine: toggle ? "line-through" : null,
+            }}
+          >
+            {name}
+          </Text>
           <CheckBox
             style={{
               transform: [{ scale: Platform.OS === "ios" ? 0.8 : 1.2 }],
@@ -104,4 +99,32 @@ const IngredientComponent = ({
 
 export default IngredientComponent;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  ingredientComponent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    alignSelf: "center",
+    marginVertical: 3,
+  },
+  textQuantity: {
+    fontSize: 16,
+    width: "25%",
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  textQuantityCrossed: {
+    fontSize: 16,
+    width: "25%",
+    textAlign: "center",
+    fontWeight: "bold",
+    textDecorationLine: "line-through",
+  },
+  nameContainer: {
+    width: "75%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+});

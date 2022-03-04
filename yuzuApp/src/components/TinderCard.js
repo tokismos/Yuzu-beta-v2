@@ -1,186 +1,115 @@
-import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+// Notre component qui affiche les tinder Swipe c'est  ici qu'on regle le design est tous ses composants
+
+import React from "react";
 import {
-  ImageBackground,
   StyleSheet,
   Text,
-  Image,
   View,
   TouchableOpacity,
-  Alert,
   Pressable,
 } from "react-native";
 import { COLORS } from "../consts/colors";
-import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import FastImage from "react-native-fast-image";
 import { Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { Avatar } from "react-native-paper";
+import { Swipeable } from "react-native-gesture-handler";
 
-const Imagee = ({ uri, loaded, setLoaded }) => {
+const ImageFast = ({ uri }) => {
   return (
     <FastImage
-      style={{ ...styles.image, marginTop: -5 }}
+      style={{ ...styles.image }}
       source={{ uri, priority: FastImage.priority.high }}
       resizeMode={FastImage.resizeMode.cover}
-      // onLoad={() => setLoaded(true)}
     />
   );
 };
 
+const HeadComponent = ({ name, like }) => {
+  return (
+    <View style={styles.headComponent}>
+      <View style={styles.leftHeaderComponent}>
+        <Avatar.Image
+          size={50}
+          source={require("../assets/avatar.png")}
+          theme={{ colors: { backgroundColor: COLORS.primary } }}
+        />
+        <View style={{ flex: 1 }}>
+          <Text numberOfLines={2} style={styles.titleName}>
+            {name}
+          </Text>
+          <Text style={{ color: "gray", marginLeft: 5, fontSize: 12 }}>
+            Créé par Yuzu
+          </Text>
+        </View>
+      </View>
+      <View style={styles.rightHeaderComponent}>
+        <View style={{ alignItems: "center" }}>
+          <FontAwesome name="heart" size={25} color={COLORS.primary} />
+          <Text style={styles.nbrHeader}>{like}</Text>
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <FontAwesome name="star" size={25} color={COLORS.primary} />
+          <Text style={styles.nbrHeader}>3,5</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
 const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
-  const [loaded, setLoaded] = useState(false);
-
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(true);
 
-  const { nbrOfRecipes, matches } = useSelector((state) => state.matchStore);
-  //The progress bar
   return (
     <>
-      {/* <View
-        style={{
-          backgroundColor: "#f5f4f4",
-          position: "absolute",
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-        }}
-      /> */}
       <Pressable
-        disabled
         style={{
           height: "100%",
           width: "100%",
         }}
-        onPress={() =>
-          navigation.navigate("IngredientScreen", { recipe: recipe })
-        }
       >
-        {/* <ImageBackground style={styles.image} source={{ uri: recipe?.imgURL }}> */}
-        <View
-          // colors={["rgba(0, 0, 0, 0)", "rgba(0, 0,0, 1)"]}
-          // start={{ x: 0, y: 1 }}
-          // end={{ x: 0, y: 1 }}
-          style={{
-            height: "20%",
-            width: "100%",
-            borderTopRightRadius: 20,
+        <HeadComponent name={recipe.name} like={recipe.stats?.nbrRight} />
 
-            borderTopLeftRadius: 20,
-            backgroundColor: "black",
-            // position: "absolute",
-            // top: 10,
-            // left: 0,
-            // right: 0,
-          }}
-        >
-          <View
-            style={{
-              height: "50%",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: 0,
-              flexDirection: "row",
-            }}
-          >
-            <View style={{ width: "90%" }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: "white",
-                  height: "100%",
-                  marginTop: 10,
-                }}
-              >
-                {recipe?.name}
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              height: "50%",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignSelf: "center",
-              paddingHorizontal: 10,
-              paddingBottom: 10,
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ width: "30%", textAlign: "center", color: "white" }}>
-              {recipe.tempsPreparation} min de préparation
-            </Text>
-            <Text style={{ width: "40%", textAlign: "center", color: "white" }}>
-              {" "}
-              $
-            </Text>
+        <ImageFast uri={recipe?.imgURL} />
+        <View style={styles.bottomContainer}>
+          <View style={styles.descriptionContainer}>
             <View
-              style={{
-                width: "30%",
-                textAlign: "center",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                {recipe.ingredients.length}{" "}
+              <Text style={{ color: "white" }}>
+                Temps Préparation :{" "}
+                <Text style={{ fontWeight: "bold" }}>
+                  {" "}
+                  {recipe.tempsPreparation} min{" "}
+                </Text>
               </Text>
-              <Text style={{ color: "white" }}>Ingrédients</Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                {recipe.difficulty}
+              </Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text style={{ color: "white" }}>
+                Temps total :
+                <Text style={{ fontWeight: "bold" }}>
+                  {" "}
+                  {recipe.tempsPreparation + recipe.tempsCuisson} min
+                </Text>
+              </Text>
+              <Text style={{ color: "white" }}>
+                <Text style={{ fontWeight: "bold" }}>
+                  {" "}
+                  {recipe.ingredients.length}{" "}
+                </Text>{" "}
+                ingrédients
+              </Text>
             </View>
           </View>
-          {/* <View style={styles.headerContainer}>
-              <Text style={styles.title}>{recipe?.name}</Text>
-              <View style={styles.descriptionContainer}>
-                <Text
-                  style={{ color: "white", textAlign: "center", flex: 1 / 3 }}
-                >
-                  15 min de preparation
-                </Text>
-                <Text
-                  style={{ color: "white", textAlign: "center", flex: 1 / 3 }}
-                >
-                  634 kcal
-                </Text>
-                <Text
-                  style={{ color: "white", textAlign: "center", flex: 1 / 3 }}
-                >
-                  95% ont aime la recette
-                </Text>
-              </View>
-            </View> */}
-        </View>
-        <Imagee uri={recipe?.imgURL} loaded={loaded} />
-        {/* <Image
-          source={{ uri: recipe?.imgURL }}
-          style={{ ...styles.image, marginTop: -5 }}
-          onLoad={() => setLoaded(true)}
-        /> */}
 
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", "rgba(0, 0,0, 1)"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.3 }}
-          style={{
-            ...styles.gradient,
-            position: "absolute",
-            bottom: 35,
-            right: 0,
-            left: 0,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
-          }}
-        >
-          {/* {
-              <View style={styles.progressContainer}>
-                <ProgressView />
-              </View>
-            } */}
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={onSwipeLeft} style={styles.leftButton}>
-              <FontAwesome name="close" size={50} color={COLORS.red} />
+              <FontAwesome name="close" size={30} color={COLORS.red} />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -204,11 +133,10 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
               onPress={onSwipeRight}
               style={[styles.leftButton, { borderColor: COLORS.primary }]}
             >
-              <FontAwesome name="heart" size={45} color={COLORS.primary} />
+              <FontAwesome name="heart" size={30} color={COLORS.primary} />
             </TouchableOpacity>
           </View>
-        </LinearGradient>
-        {/* </ImageBackground> */}
+        </View>
       </Pressable>
     </>
   );
@@ -217,58 +145,72 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
 export default TinderCard;
 
 const styles = StyleSheet.create({
-  imgText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 24,
-    textAlign: "center",
-    marginBottom: 10,
-  },
   image: {
-    height: "60%",
-    width: "100%",
+    aspectRatio: 1,
   },
-  headerContainer: {
-    height: "70%",
-    justifyContent: "space-between",
-    paddingTop: 0,
-  },
-  descriptionContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    marginHorizontal: 20,
-  },
-  gradient: {
-    height: "20%",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingBottom: 10,
-  },
-  progressContainer: {
-    flexDirection: "row",
-    width: "100%",
-    marginVertical: 10,
-  },
+
   buttonContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
     width: "90%",
+    height: "50%",
+    alignSelf: "center",
+    marginTop: 5,
   },
   leftButton: {
-    height: 80,
-    width: 80,
-    borderRadius: 50,
+    height: 60,
+    width: 60,
+    borderRadius: 35,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
     borderColor: COLORS.red,
   },
-  title: {
+
+  headComponent: {
+    backgroundColor: COLORS.darkGray,
+    height: "11%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    marginBottom: -3,
+  },
+  leftHeaderComponent: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    width: "80%",
+  },
+  titleName: {
+    marginLeft: 5,
     color: "white",
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 10,
+    fontWeight: "bold",
+    width: "100%",
+    fontSize: 15,
+  },
+  nbrHeader: { color: "white", fontWeight: "bold" },
+  rightHeaderComponent: {
+    flexDirection: "row",
+    width: "20%",
+    justifyContent: "space-around",
+  },
+  descriptionContainer: {
+    backgroundColor: "black",
+    height: "40%",
+    width: "90%",
+    alignSelf: "center",
+    borderRadius: 5,
+    padding: 10,
+    justifyContent: "center",
+  },
+  bottomContainer: {
+    backgroundColor: COLORS.darkGray,
+    height: "22%",
+    justifyContent: "center",
+    marginTop: -3,
   },
 });

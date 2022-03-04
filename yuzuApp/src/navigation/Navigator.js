@@ -1,30 +1,38 @@
+// Tout simplement c'est ici ou on gere tous les screens de la navigation
+
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
-import { Animated, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import {
+  Animated,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  StatusBar,
+} from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import {
+  MaterialCommunityIcons,
+  FontAwesome,
+  Entypo,
+} from "@expo/vector-icons";
 import auth from "@react-native-firebase/auth";
-import { StatusBar } from "expo-status-bar";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import { COLORS } from "../consts/colors";
 import IngredientScreen from "../screens/IngredientScreen";
 import TinderScreen from "../screens/TinderScreen";
 import PanierScreen from "../screens/PanierScreen";
 import IngredientCartScreen from "../screens/IngredientCartScreen";
-import HeaderComponent from "../components/HeaderComponent";
 import SummarizeScreen from "../screens/SummarizeScreen";
 import IntroScreen from "../screens/IntroScreen";
-
 const Stack = createStackNavigator();
-const LoginStac = createStackNavigator();
+import Recipe from "../assets/recipe.svg";
+import ProfileIcon from "../assets/profile.svg";
+import MyRecipes from "../assets/MyRecipes.svg";
 const Tab = createBottomTabNavigator();
-import { setUser, setAccessToken } from "../redux/slicer/userSlicer";
+import { setUser } from "../redux/slicer/userSlicer";
 import { useDispatch, useSelector } from "react-redux";
-import AsyncStorage from "@react-native-community/async-storage";
-// import { GraphRequest, GraphRequestManager } from "react-native-fbsdk-next";
 import SignUpScreen from "../screens/createAccountScreens/SignUpScreen";
-import PasswordScreen from "../screens/createAccountScreens/PasswordScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -34,6 +42,10 @@ import PhoneScreen from "../screens/PhoneScreen";
 import MyRecipesScreen from "../screens/MyRecipesScreen";
 import CommandesScreen from "../screens/CommandesScreen";
 import InfoCommandeScreen from "../screens/InfoCommandeScreen";
+import FilterScreen from "../screens/FilterScreen";
+import RateScreen from "../screens/RateScreen";
+
+const TopTab = createMaterialTopTabNavigator();
 
 export const MyRecipesTabScreen = () => {
   return (
@@ -83,6 +95,147 @@ export const MyRecipesTabScreen = () => {
     </Tab.Navigator>
   );
 };
+const TopTabScreen = () => {
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <TopTab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: "white",
+            marginTop: StatusBar.currentHeight,
+          },
+          tabBarIndicatorStyle: { backgroundColor: COLORS.primary },
+          tabBarLabelStyle: { fontWeight: "bold", fontSize: 14 },
+        }}
+      >
+        <TopTab.Screen name="Mes recettes" component={MyRecipesScreen} />
+        <TopTab.Screen name="Recettes favories" component={MyRecipesScreen} />
+      </TopTab.Navigator>
+    </SafeAreaView>
+  );
+};
+const BottomTabScreen = () => {
+  const { listNotification, cuisineNotification } = useSelector(
+    (state) => state.notificationStore
+  );
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {},
+      }}
+    >
+      <Tab.Screen
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Recipe
+              width={"100%"}
+              height={"100%"}
+              fill={focused ? COLORS.primary : "gray"}
+            />
+          ),
+          tabBarLabel: ({ focused }) => (
+            <Text
+              style={{
+                color: focused ? COLORS.primary : "gray",
+                fontWeight: focused ? "bold" : null,
+              }}
+            >
+              Recettes
+            </Text>
+          ),
+        }}
+        name="Recettes"
+        component={TinderScreen}
+      />
+      <Tab.Screen
+        options={{
+          tabBarBadge: listNotification,
+          tabBarBadgeStyle: {
+            backgroundColor: COLORS.red,
+            top: 0,
+            transform: [{ scale: 0.5 }],
+          },
+          tabBarIcon: ({ focused }) => (
+            <Entypo
+              name="list"
+              size={30}
+              color={focused ? COLORS.primary : "gray"}
+            />
+          ),
+          tabBarLabel: ({ focused, color, size }) => (
+            <Text
+              style={{
+                color: focused ? COLORS.primary : "gray",
+                fontWeight: focused ? "bold" : null,
+              }}
+            >
+              Courses
+            </Text>
+          ),
+        }}
+        name="Liste de courses"
+        component={CommandesScreen}
+      />
+
+      <Tab.Screen
+        options={{
+          tabBarBadge: cuisineNotification,
+          tabBarBadgeStyle: {
+            backgroundColor: COLORS.red,
+            top: 0,
+            transform: [{ scale: 0.5 }],
+          },
+          tabBarIcon: ({ focused }) => (
+            <MyRecipes
+              width={"90%"}
+              height={"90%"}
+              fill={focused ? COLORS.primary : "gray"}
+            />
+          ),
+          tabBarLabel: ({ focused, color, size }) => (
+            <Text
+              style={{
+                color: focused ? COLORS.primary : "gray",
+                fontWeight: focused ? "bold" : null,
+              }}
+            >
+              En cuisine
+            </Text>
+          ),
+        }}
+        name="En cuisine"
+        component={TopTabScreen}
+      />
+      {auth().currentUser && (
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <ProfileIcon
+                width={"90%"}
+                height={"90%"}
+                fill={focused ? COLORS.primary : "gray"}
+              />
+            ),
+            tabBarLabel: ({ focused, color, size }) => (
+              <Text
+                style={{
+                  color: focused ? COLORS.primary : "gray",
+                  fontWeight: focused ? "bold" : null,
+                }}
+              >
+                Mon profil
+              </Text>
+            ),
+          }}
+          name="Profile"
+          component={ProfileScreen}
+        />
+      )}
+    </Tab.Navigator>
+  );
+};
 const horizontalAnimation = {
   cardStyleInterpolator: ({ current, layouts: { screen }, next, inverted }) => {
     const progress = Animated.add(
@@ -123,77 +276,6 @@ const horizontalAnimation = {
 };
 
 const LoggedStackScreen = () => {
-  const [accessTokenFb, setAccessTokenFb] = useState(null);
-  const [info, setInfo] = useState(null);
-  const dispatch = useDispatch();
-  // const { accessTokenFb } = useSelector((state) => state.userStore);
-
-  //Get the information from the token we get after connecting to fb
-  // const getInfoFromTokenFb = (token) => {
-  //   const PROFILE_REQUEST_PARAMS = {
-  //     fields: {
-  //       string: "id,name,first_name,last_name,email,picture.type(large)",
-  //     },
-  //   };
-  //   const profileRequest = new GraphRequest(
-  //     "/me",
-  //     { token, parameters: PROFILE_REQUEST_PARAMS },
-  //     (error, user) => {
-  //       if (error) {
-  //         console.log("login info has error: " + error);
-  //       } else {
-  //         setInfo(user);
-  //       }
-  //     }
-  //   );
-  //   new GraphRequestManager().addRequest(profileRequest).start();
-  // };
-
-  //Get the access Token of Fb from the storage if it exists
-  useEffect(() => {
-    const getAccessToken = async () => {
-      try {
-        const accessToken = await AsyncStorage.getItem("accessTokenFb");
-        if (accessToken !== null) {
-          setAccessTokenFb(accessToken);
-        } else {
-          console.log("noo toooken");
-        }
-      } catch (e) {
-        // error reading value
-      }
-    };
-    getAccessToken();
-  }, []);
-
-  //Get the authenticated user and set it to the redux store in user state
-
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!HADCHI N9DER NHTAJO MNB3D!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // useEffect(() => {
-  //   const func = async () => {
-  //     const user = await auth().currentUser;
-  //     console.log("hna UUUUUUSERRR0", user);
-  //     const userObj = {
-  //       uid: user.uid,
-  //       displayName: user.displayName,
-  //       email: info ? info.email : user.email, //if we log with FB we get the info
-  //       phoneNumber: user.phoneNumber,
-  //       photoURL: info ? info.picture.data.url : user.photoURL,
-  //     };
-
-  //     dispatch(setUser(userObj));
-  //   };
-  //   func();
-  // }, [info]);
-
-  //Get the info from facebook API if the access token exists in storage
-  // useEffect(() => {
-  //   if (accessTokenFb) {
-  //     getInfoFromTokenFb(accessTokenFb);
-  //     console.log("laast effect ", info);
-  //   }
-  // }, [accessTokenFb]);
-
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: true }}>
@@ -202,7 +284,14 @@ const LoggedStackScreen = () => {
             headerShown: false,
           }}
           name="TinderScreen"
-          component={TinderScreen}
+          component={BottomTabScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="RateScreen"
+          component={RateScreen}
         />
         <Stack.Screen
           options={{
@@ -256,16 +345,13 @@ const LoggedStackScreen = () => {
         />
 
         <Stack.Screen
-          options={{
-            header: () => <HeaderComponent page="2" />,
-          }}
+          options={{}}
           name="PanierScreen"
           component={PanierScreen}
         />
         <Stack.Screen
           options={{
             ...horizontalAnimation,
-            header: () => <HeaderComponent page="3" />,
           }}
           name="IngredientsCartScreen"
           component={IngredientCartScreen}
@@ -280,14 +366,12 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             ...horizontalAnimation,
-            header: () => <HeaderComponent page="4" />,
           }}
           name="SummarizeScreen"
           component={SummarizeScreen}
         />
         <Stack.Screen
           options={{
-            // header: () => <HeaderComponent page="1" />,
             headerShown: false,
           }}
           name="IngredientScreen"
@@ -296,11 +380,17 @@ const LoggedStackScreen = () => {
 
         <Stack.Screen
           options={{
-            // header: () => <HeaderComponent page="1" />,
             headerShown: false,
           }}
           name="SignUpScreen"
           component={SignUpScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="FilterScreen"
+          component={FilterScreen}
         />
 
         <Stack.Screen
@@ -345,13 +435,29 @@ const LoggedStackScreen = () => {
 const LoginStackScreen = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: true }}>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, tabBarStyle: { height: 120 } }}
+      >
         <Stack.Screen
           options={{
             headerShown: false,
           }}
           name="IntroScreen"
           component={IntroScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="RateScreen"
+          component={RateScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="TinderScreen"
+          component={BottomTabScreen}
         />
         <Stack.Screen
           options={{
@@ -369,6 +475,13 @@ const LoginStackScreen = () => {
           }}
           name="PhoneScreen"
           component={PhoneScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="FilterScreen"
+          component={FilterScreen}
         />
         <Stack.Screen
           options={{
@@ -438,19 +551,13 @@ const LoginStackScreen = () => {
           name="SignUpScreen"
           component={SignUpScreen}
         />
-        <Stack.Screen
-          options={{
-            ...horizontalAnimation,
-          }}
-          name="PasswordScreen"
-          component={PasswordScreen}
-        />
+
         <Stack.Screen
           options={{
             ...horizontalAnimation,
             headerShown: false,
           }}
-          name="TinderScreen"
+          name="TinderScreen2"
           component={TinderScreen}
         />
 
@@ -465,7 +572,6 @@ const LoginStackScreen = () => {
 
         <Stack.Screen
           options={{
-            header: () => <HeaderComponent page="2" />,
             headerLeft: null,
           }}
           name="PanierScreen"
@@ -474,7 +580,6 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             ...horizontalAnimation,
-            header: () => <HeaderComponent page="3" />,
           }}
           name="IngredientsCartScreen"
           component={IngredientCartScreen}
@@ -506,7 +611,6 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             ...horizontalAnimation,
-            header: () => <HeaderComponent page="4" />,
           }}
           name="SummarizeScreen"
           component={SummarizeScreen}
@@ -523,7 +627,7 @@ const RootNavigation = () => {
 
   const config = {
     webClientId:
-      "768418404122-out2q1cfkp99u5bs6sb5gsnhs9tl98sl.apps.googleusercontent.com",
+      "246034960415-88hrrb30cvbficqm01le7hh121juj8jl.apps.googleusercontent.com",
 
     scopes: ["profile", "email"],
     permissions: ["public_profile", "location", "email"],
@@ -553,12 +657,7 @@ const RootNavigation = () => {
     return sub;
   }, []);
 
-  return (
-    <>
-      <StatusBar translucent />
-      {user ? <LoggedStackScreen /> : <LoginStackScreen />}
-    </>
-  );
+  return <>{user ? <LoggedStackScreen /> : <LoginStackScreen />}</>;
 };
 export default RootNavigation;
 const styles = StyleSheet.create({});

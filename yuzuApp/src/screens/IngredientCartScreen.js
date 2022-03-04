@@ -1,6 +1,11 @@
 import CheckBox from "@react-native-community/checkbox";
 import React, { useEffect, useState } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FastImage from "react-native-fast-image";
 import { useDispatch } from "react-redux";
@@ -117,7 +122,6 @@ const IngredientCartScreen = ({ route, navigation }) => {
                 margin: 10,
                 fontSize: 16,
                 fontWeight: "bold",
-                marginBottom: -5,
               }}
             >
               {item.name}
@@ -136,17 +140,16 @@ const IngredientCartScreen = ({ route, navigation }) => {
       </>
     );
   };
-  //   useEffect(() => {
-  //     cart.map((item) => {
-  //       [finalCart.name] = item.name;
-  //       [finalCart.ingredients] = item.ingredients;
-  //     });
-  //   }, [cart]);
-  //   useEffect(() => {
-  //     console.log("this is fiiiinal", finalCart);
-  //   }, [finalCart]);
+
   return (
-    <View style={{ alignItems: "center", flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView
+      style={{
+        alignItems: "center",
+        flex: 1,
+        backgroundColor: "white",
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+      }}
+    >
       <Text
         style={{
           textAlign: "center",
@@ -192,7 +195,7 @@ const IngredientCartScreen = ({ route, navigation }) => {
           textStyle={{ fontWeight: "bold", color: "white", fontSize: 18 }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

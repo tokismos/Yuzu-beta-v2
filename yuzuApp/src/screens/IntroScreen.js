@@ -1,19 +1,12 @@
+//Le tout premier ecran d'acceuil , qui nous donne le choix de sois s'inscrire,sois se connecter ou d'accepter sans insription
+
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../consts/colors";
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from "@react-native-google-signin/google-signin";
-import FbIcon from "../assets/fbIcon.svg";
-import GoogleIcon from "../assets/GoogleIcon.svg";
 
-import useAuth from "../hooks/useAuth";
 import CustomButton from "../components/CustomButton";
 
 const IntroScreen = ({ navigation }) => {
-  const { signIn, signInWithGoogle, signInWithFb } = useAuth();
-
   return (
     <View style={{ width: "100%", height: "100%" }}>
       <Image
@@ -25,12 +18,11 @@ const IntroScreen = ({ navigation }) => {
           source={require("../assets/logo.png")}
           style={styles.logoContainer}
         />
-        <Text style={styles.descriptionText}>Bien manger, simplement .</Text>
+        <Text style={styles.descriptionText}>Bien manger, simplement.</Text>
       </View>
       <View style={styles.middleBottomScreen}>
         <View style={styles.bottomContainer}>
           {/* Sign Up  */}
-
           <CustomButton
             onPress={() => {
               navigation.navigate("SignInScreen");
@@ -52,43 +44,7 @@ const IntroScreen = ({ navigation }) => {
             }}
             textStyle={{ ...styles.text, color: COLORS.primary }}
           />
-
           {/* Sign In from Google */}
-          {/* <TouchableOpacity
-            activeOpacity={0.95}
-            style={{ ...styles.button, backgroundColor: "white" }}
-            onPress={async () => {
-              await signInWithGoogle();
-            }}
-          >
-            <View style={styles.buttonContainer}>
-              <GoogleIcon width={40} height={40} style={{}} />
-
-              <View style={{ width: "85%" }}>
-                <Text style={{ ...styles.socialText, color: "#757575" }}>
-                  Se connecter avec Google
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity> */}
-          {/* Sign In from Facebook */}
-          {/* <TouchableOpacity
-            activeOpacity={0.95}
-            style={{ ...styles.button, backgroundColor: "#4267B2" }}
-            onPress={async () => {
-              await signInWithFb();
-            }}
-          >
-            <View style={styles.buttonContainer}>
-              <FbIcon width={40} height={40} fill={"white"} style={{}} />
-
-              <View style={{ width: "85%" }}>
-                <Text style={{ ...styles.socialText, color: "white" }}>
-                  Se connecter avec Facebook
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity> */}
           <TouchableOpacity onPress={() => navigation.navigate("TinderScreen")}>
             <Text
               style={{

@@ -1,19 +1,18 @@
-import React, { createRef, useRef, useState } from "react";
+//Le component qui nous permets d'entrer le code de verification recu par TWILIO API
+
+import React, { createRef, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Dimensions,
-  KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import LottieView from "lottie-react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
-import TextInputColored from "./TextInputColored";
 
 const { width, height } = Dimensions.get("window");
 
@@ -24,6 +23,7 @@ const CodeVerificationComponent = ({ fullNumber, setCode, goBack }) => {
   React.useEffect(() => {
     ref.current.play(0, 100);
   }, []);
+
   return (
     <View style={{ width, alignItems: "center" }}>
       <View style={{ height: 200, width: 150 }}>

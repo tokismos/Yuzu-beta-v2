@@ -1,9 +1,15 @@
+//Ecran ou l'on peut checker tous les ingredients qu'on a commandé , et on peut ajouter des ingredients
+// que l'on a pas avant
+
+// setSelectedIngredient we find here every selected ing que ca soit produits or from cart
+
 import { format } from "date-fns";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,13 +20,13 @@ import FastImage from "react-native-fast-image";
 import { COLORS } from "../consts/colors";
 import TextInputColored from "../components/TextInputColored";
 import CustomButton from "../components/CustomButton";
-const { height, width } = Dimensions.get("screen");
-import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import IngredientComponent from "../components/IngredientComponent";
 import CheckBox from "@react-native-community/checkbox";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
 
+const { height, width } = Dimensions.get("screen");
 // Each recipe which contain ingredients
 const CartComponent = ({
   imgURL,
@@ -28,10 +34,13 @@ const CartComponent = ({
   ingredients,
   setSelectedIngredients,
   selectedIngredients,
+  index,
 }) => {
   return (
     <>
       <View style={styles.cartComponent}>
+        {index == 0 && <Text style={styles.title}>Recettes :</Text>}
+
         <View style={styles.titleComponent}>
           <FastImage
             style={{
@@ -42,7 +51,7 @@ const CartComponent = ({
             }}
             source={{
               uri: imgURL,
-              headers: { Authorization: "someAuthToken" },
+              // headers: { Authorization: "someAuthToken" },
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
@@ -58,18 +67,16 @@ const CartComponent = ({
             {name}
           </Text>
         </View>
-        <View style={{ width: "80%", alignSelf: "center" }}>
+        <View style={{ width: "100%", alignSelf: "center" }}>
           {ingredients?.map((item, index) => (
-            <>
-              <IngredientComponent
-                setSelectedIngredients={setSelectedIngredients}
-                selectedIngredients={selectedIngredients}
-                isSaved={selectedIngredients.indexOf(item.name) > -1}
-                ingredient={item}
-                key={index}
-                isCommandeScreen={true}
-              />
-            </>
+            <IngredientComponent
+              setSelectedIngredients={setSelectedIngredients}
+              selectedIngredients={selectedIngredients}
+              isSaved={selectedIngredients.indexOf(item.name) > -1}
+              ingredient={item}
+              key={index}
+              isCommandeScreen={true}
+            />
           ))}
         </View>
       </View>
@@ -78,55 +85,18 @@ const CartComponent = ({
   );
 };
 
-const ProductComponent = ({ product }) => {
-  const [toggle, setToggle] = useState(true);
-  return (
-    <TouchableOpacity
-      onPress={() => setToggle((p) => !p)}
-      style={styles.productItemComponent}
-    >
-      <Text style={styles.productItemText}>{product}</Text>
-      <CheckBox
-        style={[
-          {
-            transform: [{ scale: Platform.OS === "ios" ? 0.8 : 1.2 }],
-          },
-        ]}
-        onTintColor={COLORS.primary}
-        onFillColor={COLORS.primary}
-        onCheckColor={"white"}
-        onAnimationType="fill"
-        offAnimationType="fade"
-        boxType="square"
-        disabled
-        value={toggle}
-        tintColors={{ true: COLORS.primary, false: "gray" }}
-      />
-    </TouchableOpacity>
-  );
-};
 // Component where we add a product with button
 const AddProductComponent = ({ setProducts, products }) => {
-  const [isRecurrent, setIsRecurrent] = useState(true);
   const [productText, setProductText] = useState();
   return (
     <View style={styles.addProductComponent}>
       <TextInputColored
-        style={{ width: "50%", height: 40 }}
-        label="Ajouter un produit"
+        style={{ width: "50%", height: 40, marginBottom: 10 }}
+        label="Ajouter un article"
         setChangeText={setProductText}
         value={productText}
       />
-      <TouchableOpacity
-        style={{ padding: 10 }}
-        onPress={() => setIsRecurrent((p) => !p)}
-      >
-        <FontAwesome
-          name="refresh"
-          size={24}
-          color={isRecurrent ? COLORS.primary : "gray"}
-        />
-      </TouchableOpacity>
+
       <CustomButton
         title="Ajouter"
         style={{ height: 40 }}
@@ -134,6 +104,7 @@ const AddProductComponent = ({ setProducts, products }) => {
           if (!productText) {
             return;
           }
+
           if (products.indexOf(productText) > -1) {
             return Alert.alert("Vous avez deja ajouté ce produit !");
           }
@@ -145,23 +116,116 @@ const AddProductComponent = ({ setProducts, products }) => {
 };
 
 //List of all the products we added
-const AllProductsComponent = ({ products }) => {
-  return (
-    <View style={styles.productsComponent}>
-      <Text style={styles.productsTitle}>Articles Ajoutés</Text>
-      {products.map((item, i) => (
-        <ProductComponent product={item} key={i} />
-      ))}
-    </View>
-  );
-};
 
 const InfoCommandeScreen = ({ navigation, route }) => {
   const { params } = route;
-
+  const idTime = params.historyDetail.dateTime;
   const [products, setProducts] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
 
+  const ProductComponent = ({ product, isSaved }) => {
+    const [toggle, setToggle] = useState();
+
+    useEffect(() => {
+      setToggle(isSaved);
+      console.log("THOSE ARE PRODUCTS", products);
+    }, [products]);
+
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          width: "100%",
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            if (!toggle) {
+              console.log("slct ing", selectedIngredients);
+              setSelectedIngredients((p) => [...p, product]);
+            } else {
+              setSelectedIngredients((p) =>
+                p.filter((item) => item != product)
+              );
+            }
+
+            setToggle((p) => !p);
+          }}
+          style={styles.productItemComponent}
+        >
+          <Text
+            style={{
+              ...styles.productItemText,
+              textDecorationLine: toggle ? "line-through" : null,
+              textDecorationStyle: "solid",
+
+              width: "65%",
+            }}
+          >
+            {product}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              setProducts(products.filter((i) => i != product));
+            }}
+            style={{
+              padding: 5,
+              borderRadius: 5,
+              width: "10%",
+              alignItems: "center",
+            }}
+          >
+            <AntDesign name="delete" size={24} color={COLORS.red} />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "10%",
+              left: 5,
+              top: 2,
+            }}
+          >
+            <CheckBox
+              style={[
+                {
+                  transform: [{ scale: Platform.OS === "ios" ? 0.8 : 1.2 }],
+                },
+              ]}
+              onTintColor={COLORS.primary}
+              onFillColor={COLORS.primary}
+              onCheckColor={"white"}
+              onAnimationType="fill"
+              offAnimationType="fade"
+              boxType="square"
+              disabled
+              value={isSaved}
+              tintColors={{ true: COLORS.primary, false: "gray" }}
+            />
+          </View>
+        </Pressable>
+      </View>
+    );
+  };
+  const AllProductsComponent = () => {
+    return (
+      <View style={styles.productsComponent}>
+        <Text style={styles.title}>Articles Ajoutés :</Text>
+
+        {products.map((item, i) => {
+          return (
+            <ProductComponent
+              product={item}
+              key={i}
+              isSaved={selectedIngredients.indexOf(item) > -1}
+            />
+          );
+        })}
+      </View>
+    );
+  };
+
+  //Calcul la date et l'affiche dans le header et cela avant que l'ecran ne se render
   useLayoutEffect(() => {
     let time = new Date(params.historyDetail.dateTime);
 
@@ -177,37 +241,37 @@ const InfoCommandeScreen = ({ navigation, route }) => {
           "selectedIngredients",
           JSON.stringify(selectedIngredients)
         );
-        const value = await AsyncStorage.getItem("selectedIngredients");
-        console.log("AFTER NOT FOCYS", value);
+        await AsyncStorage.setItem(idTime.toString(), JSON.stringify(products));
       }
     })();
   }, [isFocused]);
 
   useEffect(() => {
     (async () => {
-      const value = await AsyncStorage.getItem("selectedIngredients");
-      console.log("thos are valie", value);
-      if (value != null) {
-        setSelectedIngredients(value);
+      const selectedIngredientsResult = await AsyncStorage.getItem(
+        "selectedIngredients"
+      );
+      if (selectedIngredientsResult != null) {
+        setSelectedIngredients(JSON.parse(selectedIngredientsResult));
+      }
+      const productsResult = await AsyncStorage.getItem(idTime.toString());
+      if (productsResult != null) {
+        setProducts(JSON.parse(productsResult));
       }
     })();
   }, []);
 
-  useEffect(() => {
-    console.log("PROOOOOOD", selectedIngredients);
-  }, [selectedIngredients]);
   return (
-    <ScrollView style={{}}>
+    <ScrollView style={{ backgroundColor: "#cecece" }}>
       <AddProductComponent setProducts={setProducts} products={products} />
+
       {products.length != 0 && <AllProductsComponent products={products} />}
-      <Text style={{ fontSize: 24, fontWeight: "bold", paddingVertical: 10 }}>
-        {" "}
-        Recettes :
-      </Text>
 
       {params.historyDetail.recipes.map((item, i) => {
         return (
           <CartComponent
+            index={i}
+            idTime={params.historyDetail.dateTime}
             setSelectedIngredients={setSelectedIngredients}
             selectedIngredients={selectedIngredients}
             key={i}
@@ -228,7 +292,7 @@ const styles = StyleSheet.create({
     height: 0.4,
     width: "80%",
     alignSelf: "center",
-    backgroundColor: "gray",
+    backgroundColor: "white",
   },
   headerContainer: {
     width: "100%",
@@ -241,6 +305,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     fontWeight: "bold",
+    textAlign: "center",
   },
   bottomComponent: {
     width: "100%",
@@ -282,7 +347,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderRadius: 10,
-    borderWidth: 1,
     width: "90%",
     alignSelf: "center",
   },
@@ -298,11 +362,11 @@ const styles = StyleSheet.create({
   },
   productsComponent: {
     backgroundColor: "white",
-    width: "70%",
+    width: "90%",
     alignSelf: "center",
-    borderWidth: 1,
     borderRadius: 10,
     padding: 10,
+    marginBottom: 20,
   },
   productsTitle: {
     textAlign: "center",
@@ -318,8 +382,8 @@ const styles = StyleSheet.create({
   },
   productItemComponent: {
     flexDirection: "row",
-    width: "90%",
-    justifyContent: "space-between",
+    width: "100%",
+    justifyContent: "space-around",
     alignSelf: "center",
     alignItems: "center",
     marginVertical: 5,
@@ -336,7 +400,12 @@ const styles = StyleSheet.create({
   },
   productItemText: {
     fontSize: 18,
-    width: "80%",
+  },
+  title: {
+    fontSize: 22,
     fontWeight: "bold",
+    paddingVertical: 10,
+    marginLeft: 5,
+    textAlign: "center",
   },
 });

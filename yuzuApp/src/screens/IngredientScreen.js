@@ -1,3 +1,7 @@
+//La page  quand on clique sur le 'i' dans la premiere page,c'est ici qu'on trouve toutes les etapes ainsi qu'ingredients
+//Avant le chargement de cette page, on recupere les favoris a partir de notre redux store, et si l'id de ce dernier existe
+//on montre le bouton supprimer des favoris,sinon ajouter aux favoris.
+
 import React, { useEffect, useState } from "react";
 import {
   Dimensions,
@@ -24,67 +28,12 @@ import Dialog, {
 import CustomButton from "../components/CustomButton";
 import ReportComponent from "../components/ReportComponent";
 import { getRecipe } from "../axios";
-import { addToFav, deleteFav, getFavoris } from "../helpers/db";
+import { addToFav, deleteFav } from "../helpers/db";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, deleteFavorite } from "../redux/slicer/favoritesSlicer";
 import IngredientComponent from "../components/IngredientComponent";
 
 const { height, width } = Dimensions.get("screen");
-
-// const IngredientComponent = ({
-//   ingredient: { name, quantity, unite },
-//   defaultNbrPersonne,
-//   nbrPersonne,
-// }) => {
-//   const [toggle, setToggle] = useState(true);
-
-//   return (
-//     <>
-//       <TouchableOpacity
-//         style={{
-//           flexDirection: "row",
-//           alignItems: "center",
-//           justifyContent: "center",
-//           width: "100%",
-//           alignSelf: "center",
-//           marginVertical: 3,
-//         }}
-//         onPress={() => setToggle((p) => !p)}
-//       >
-//         <Text style={{ fontSize: 16 }} style={{ width: "25%" }}>{`${+(
-//           (quantity * nbrPersonne) /
-//           defaultNbrPersonne
-//         ).toFixed(1)} ${unite == "unite" ? "" : unite}`}</Text>
-//         <View
-//           style={{
-//             width: "75%",
-//             flexDirection: "row",
-//             justifyContent: "space-between",
-//             alignItems: "center",
-//           }}
-//         >
-//           <Text style={{ marginLeft: 20, width: "75%" }}>{name}</Text>
-//           <CheckBox
-//             style={[
-//               {
-//                 transform: [{ scale: 0.8 }],
-//               },
-//             ]}
-//             onTintColor={COLORS.primary}
-//             onFillColor={COLORS.primary}
-//             onCheckColor={"white"}
-//             onAnimationType="fill"
-//             offAnimationType="fade"
-//             boxType="square"
-//             disabled
-//             value={toggle}
-//             tintColors={{ true: COLORS.primary, false: "gray" }}
-//           />
-//         </View>
-//       </TouchableOpacity>
-//     </>
-//   );
-// };
 
 const StepComponent = ({ step, index }) => {
   const [toggle, setToggle] = useState(false);
@@ -178,7 +127,6 @@ const IngredientScreen = ({ route, navigation }) => {
   const [recipe, setRecipe] = useState();
   const [nbr, setNbr] = useState(+route.params.recipe?.nbrPersonne);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [showVote, setShowVote] = useState(false);
   const { favorites } = useSelector((state) => state.favoritesStore);
@@ -470,7 +418,6 @@ const IngredientScreen = ({ route, navigation }) => {
                   onPress={() => {
                     deleteFav(recipe._id);
                     dispatch(deleteFavorite(recipe._id));
-                    setIsFavorite(false);
                   }}
                 />
               ) : (
@@ -486,7 +433,6 @@ const IngredientScreen = ({ route, navigation }) => {
                       recipe.dateTime
                     );
                     dispatch(addFavorite(recipe._id));
-                    setIsFavorite(true);
                   }}
                 />
               )}
@@ -538,7 +484,13 @@ const IngredientScreen = ({ route, navigation }) => {
                   style={{ width: "60%", marginBottom: 20 }}
                   textStyle={{ fontSize: 18 }}
                   title="J'ai cuisiné cette recette"
-                  onPress={() => setShowVote(true)}
+                  onPress={() =>
+                    navigation.navigate("RateScreen", {
+                      imgURL: recipe?.imgURL,
+                      id: recipe?._id,
+                      name: recipe?.name,
+                    })
+                  }
                 />
               </>
             )}

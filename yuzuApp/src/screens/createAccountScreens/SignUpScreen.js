@@ -1,30 +1,18 @@
-import React, {
-  createRef,
-  forwardRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+//The first screen where you sign up ,where there's four components Email,p
+
+import React, { createRef, useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
-  FlatList,
   Dimensions,
-  BackHandler,
-  Button,
-  Alert,
 } from "react-native";
 import PagerView from "react-native-pager-view";
-import database from "@react-native-firebase/database";
 
-import HeaderComponent from "../../components/HeaderComponent";
 import LoginHeaderScreen from "../../components/LoginHeaderScreen";
 import TextInputColored from "../../components/TextInputColored";
-import { COLORS } from "../../consts/colors";
 import auth from "@react-native-firebase/auth";
 import useAuth from "../../hooks/useAuth";
 import PhoneInputComponent from "../../components/PhoneInputComponent";
@@ -54,8 +42,7 @@ const EmailComponent = ({ setEmail, refe, email }) => {
     </View>
   );
 };
-const PasswordComponent = ({ setPassword, refe, password, email }) => {
-  const { verifyCode, signUp } = useAuth();
+const PasswordComponent = ({ setPassword, refe, password }) => {
   return (
     <View style={{ width }}>
       <View style={{ padding: 20 }}>
@@ -75,9 +62,8 @@ const PasswordComponent = ({ setPassword, refe, password, email }) => {
       </View>
       <NextButton
         disabled={password.length < 8}
-        onPress={async () => {
-          // refe.current.setPage(2);
-          await signUp(email, password);
+        onPress={() => {
+          refe.current.setPage(2);
         }}
       />
     </View>
@@ -97,7 +83,6 @@ const PhoneComponent = ({
       <PhoneInputComponent
         setPhoneNumber={setPhoneNumber}
         setCountryCode={setCountryCode}
-        style={{}}
       />
       <CustomButton
         isLoading={isLoading}
@@ -217,12 +202,9 @@ const SignUpScreen = ({}) => {
             refe={ref}
             password={password}
             setPassword={setPassword}
-            //////////////////////////
-            email={email}
-            password={password}
           />
         </View>
-        {/* <View key="3">
+        <View key="3">
           <PhoneComponent
             refe={ref}
             setPhoneNumber={setPhoneNumber}
@@ -237,7 +219,7 @@ const SignUpScreen = ({}) => {
             password={password}
             fullNumber={fullNumber}
           />
-        </View> */}
+        </View>
       </PagerView>
     </View>
   );

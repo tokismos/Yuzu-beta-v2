@@ -1,3 +1,6 @@
+//Un page Viewer qui nour permets d'Afficher les diffecrent components de l'envoi de sms au numero de tel.Ici on ne fait qu'appel
+// à l'API pour envoyer un code de verification et puis pour verifier le code saisit par l'utilisateur
+
 import React, { useRef, useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, ToastAndroid, View } from "react-native";
 import PagerView from "react-native-pager-view";

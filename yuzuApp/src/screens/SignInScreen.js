@@ -1,3 +1,4 @@
+//La possibilite de se connecter avec email ou avec google,ici on fait appel aux fonctions crees dans useAuth , pour gerer la connexion
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -61,7 +62,7 @@ const SignInScreen = () => {
             disabled={password.length == 0}
           />
         </View>
-        {/* <View style={{ width: "100%", flex: 1 }}>
+        <View style={{ width: "100%", flex: 1 }}>
           <View
             style={{
               flexDirection: "row",
@@ -115,7 +116,7 @@ const SignInScreen = () => {
               </View>
             </View>
           </TouchableOpacity>
-          <AppleButton
+          {/* <AppleButton
             buttonStyle={AppleButton.Style.WHITE}
             buttonType={AppleButton.Type.SIGN_IN}
             style={{
@@ -128,8 +129,8 @@ const SignInScreen = () => {
                 console.log("Apple sign-in complete!")
               )
             }
-          />
-        </View> */}
+          /> */}
+        </View>
       </View>
     </>
   );

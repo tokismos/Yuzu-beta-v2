@@ -1,6 +1,14 @@
+//L'ecran où on choisit les differents ingredient qu'on veut, la logique derriere c'est qu'on recupere les differents ingredients
+// depuis la Base de données, et on ajoute un champ qui est isChecked, quand on clique sur un ingredient isChecked est true sinon c'est false,
+// et à la fin lorsqu'on clique sur creer la liste de recette,on parcours tous les ingredients avec ichecked true pour qu'on filtre ceux qui
+// ne sont pas checkés, et on ne garde que ceux checkés
+
 import React, { useState } from "react";
 import {
+  Platform,
+  SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -44,7 +52,7 @@ const PanierScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
       <Text style={styles.title}>Les recettes sélectionnées :</Text>
       <ScrollView>
         <View style={{ width: "100%" }}>
@@ -85,7 +93,7 @@ const PanierScreen = ({ navigation }) => {
           textStyle={{ fontSize: 20 }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -101,6 +109,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mainContainer: {
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     height: "100%",
     backgroundColor: "white",
   },

@@ -1,8 +1,12 @@
+//Le profil de l'utilisateur,si il a un nom on affiche le composent de ce dernier et la meme chose pour le numero de telephone.
 import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Keyboard,
+  Platform,
   Pressable,
+  SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -39,16 +43,16 @@ const ProfileScreen = () => {
 
   //When we change the email for the first time because of google null email
   useEffect(() => {
-    if (user.email != auth().currentUser.email) {
+    if (user?.email != auth().currentUser?.email) {
       console.log("not same");
-      dispatch(setUser({ ...user, email: auth().currentUser.email }));
+      dispatch(setUser({ ...user, email: auth().currentUser?.email }));
     }
   }, []);
 
   const updateName = async () => {
     try {
       setIsLoading(true);
-      await auth().currentUser.updateProfile({
+      await auth().currentUser?.updateProfile({
         displayName: name,
       });
       dispatch(setUser({ ...user, displayName: name }));
@@ -62,11 +66,12 @@ const ProfileScreen = () => {
   };
   return (
     <KeyboardAvoidingView behavior="position">
-      <View
+      <SafeAreaView
         style={{
           height,
           alignItems: "center",
           backgroundColor: "white",
+          paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         }}
       >
         {showBlack && (
@@ -100,7 +105,7 @@ const ProfileScreen = () => {
             marginBottom: 20,
           }}
         >
-          {user.email}
+          {user?.email}
         </Text>
         <View style={{ backgroundColor: "gray", width: "90%", height: 0.3 }} />
         <View
@@ -136,7 +141,7 @@ const ProfileScreen = () => {
                   flex: 1,
                 }}
               >
-                {user.displayName}
+                {user?.displayName}
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -147,7 +152,7 @@ const ProfileScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
-          {user.phoneNumber && (
+          {user?.phoneNumber && (
             <View
               style={{
                 alignSelf: "flex-start",
@@ -172,7 +177,7 @@ const ProfileScreen = () => {
                     flex: 1,
                   }}
                 >
-                  {user.phoneNumber}
+                  {user?.phoneNumber}
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
@@ -186,9 +191,9 @@ const ProfileScreen = () => {
           )}
         </View>
         <View style={{ width: "100%", padding: 20 }}>
-          {!user.phoneNumber && (
+          {!user?.phoneNumber && (
             <TouchableOpacity
-              //////////////////  onPress={() => navigation.navigate("PhoneScreen")}
+              onPress={() => navigation.navigate("PhoneScreen")}
               style={{
                 height: 50,
                 justifyContent: "space-between",
@@ -228,9 +233,7 @@ const ProfileScreen = () => {
               color="black"
               style={{ marginRight: 20 }}
             />
-            <Text style={{ fontSize: 18, fontWeight: "900", flex: 1 }}>
-              Ajouter une addresse
-            </Text>
+            <Text style={{ fontSize: 18, flex: 1 }}>Ajouter une addresse</Text>
             <AntDesign name="exclamationcircle" size={16} color="red" />
             <MaterialIcons
               name="keyboard-arrow-right"
@@ -254,18 +257,16 @@ const ProfileScreen = () => {
               color="black"
               style={{ marginRight: 20 }}
             />
-            <Text style={{ fontSize: 18, fontWeight: "900", flex: 1 }}>
-              Modifier mon nom
-            </Text>
+            <Text style={{ fontSize: 18, flex: 1 }}>Modifier mon nom</Text>
             <MaterialIcons
               name="keyboard-arrow-right"
               size={20}
               color="black"
             />
           </TouchableOpacity>
-          {user.phoneNumber && (
+          {user?.phoneNumber && (
             <TouchableOpacity
-              ////////////////////   onPress={() => navigation.navigate("PhoneScreen")}
+              onPress={() => navigation.navigate("PhoneScreen")}
               style={{
                 height: 50,
                 justifyContent: "space-between",
@@ -360,7 +361,7 @@ const ProfileScreen = () => {
             </View>
           )}
         />
-      </View>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 };

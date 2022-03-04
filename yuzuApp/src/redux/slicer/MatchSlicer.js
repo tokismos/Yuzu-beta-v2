@@ -1,3 +1,4 @@
+//Quand on swipe a droite c'Est dans ce state qu'on enregistre toutes les recettes likées.
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

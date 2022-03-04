@@ -1,18 +1,24 @@
+//L'ecran qui gere toutes les commandes passées,CommandeItem c'est chaque component de notre liste
+
 import { format } from "date-fns";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {
   Dimensions,
+  Platform,
   Pressable,
+  SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   View,
 } from "react-native";
 import { getCommandes } from "../helpers/db";
 import { MaterialIcons } from "@expo/vector-icons";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-
+import { useNavigation } from "@react-navigation/native";
+import { setListNotification } from "../redux/slicer/notificationSlicer";
+import { useDispatch } from "react-redux";
 const { width, height } = Dimensions.get("screen");
 const CommandeItem = ({ item }) => {
   const navigation = useNavigation();
@@ -56,21 +62,27 @@ const CommandeItem = ({ item }) => {
 
 const CommandesScreen = () => {
   const [commandes, setCommandes] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(setListNotification(null));
     getCommandes(setCommandes);
   }, []);
 
   return (
-    <ScrollView>
-      {commandes.map((item, i) => {
-        return <CommandeItem item={item} key={i} />;
-      })}
-    </ScrollView>
+    <SafeAreaView style={styles.safeAreaView}>
+      <ScrollView>
+        {commandes.map((item, i) => {
+          return <CommandeItem item={item} key={i} />;
+        })}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default CommandesScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  safeAreaView: {
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+});

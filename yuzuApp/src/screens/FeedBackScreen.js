@@ -1,3 +1,6 @@
+//Le screen qui permets d'envoyer un email de feedBack lorsqu'on clique sur le bouton Feedback
+// il fait appel à notre API pour pouvoir envoyer l'email
+
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -14,10 +17,8 @@ import { TextInput } from "react-native-paper";
 import TextInputColored from "../components/TextInputColored";
 import { COLORS } from "../consts/colors";
 import { AntDesign } from "@expo/vector-icons";
-import { NavigationContainer } from "@react-navigation/native";
 import CustomButton from "../components/CustomButton";
 import { api } from "../axios";
-import { clockRunning } from "react-native-reanimated";
 import { auth } from "../helpers/db";
 const { height, width } = Dimensions.get("screen");
 
@@ -41,7 +42,6 @@ const FeedBackScreen = () => {
     }
     setIsLoading(false);
   };
-  console.log("aaauu0", auth().currentUser);
   return (
     <KeyboardAvoidingView
       behavior="position"

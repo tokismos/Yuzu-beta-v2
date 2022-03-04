@@ -1,3 +1,6 @@
+// c'Est la ou on enregistre tout les recettes comme state general,et puis la meme chose pour les filtres
+// enregistrés
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

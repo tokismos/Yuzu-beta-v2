@@ -1,3 +1,5 @@
+//On a un user comme state General et c'est la où s'enregistre les differentes informations
+// a propos de l'utilisateur
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {

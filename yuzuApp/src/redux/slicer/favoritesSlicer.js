@@ -1,5 +1,7 @@
+//Notre redux slicer qui s'occupe d'ajouter,d'afficher,et de supprimer les favoris,
+// ils s'enregistrent comme state global
+
 import { createSlice } from "@reduxjs/toolkit";
-import { getFavoris } from "../../helpers/db";
 
 const initialState = {
   favorites: [],

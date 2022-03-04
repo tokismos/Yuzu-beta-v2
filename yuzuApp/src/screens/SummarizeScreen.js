@@ -1,3 +1,5 @@
+//Ancien ecran ou il y'avait le resume de l'ecran,C'Est ecran doit etre supprimé
+
 import React, { useEffect, useState } from "react";
 import {
   Image,
