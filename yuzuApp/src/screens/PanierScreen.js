@@ -3,7 +3,7 @@
 // et à la fin lorsqu'on clique sur creer la liste de recette,on parcours tous les ingredients avec ichecked true pour qu'on filtre ceux qui
 // ne sont pas checkés, et on ne garde que ceux checkés
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Platform,
   SafeAreaView,
@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import CartComponent from "../components/CartComponent";
 import CustomButton from "../components/CustomButton";
 import { COLORS } from "../consts/colors";
+import Toast from "react-native-simple-toast";
 
 const PanierScreen = ({ navigation }) => {
   const { matches } = useSelector((state) => state.matchStore);
@@ -39,6 +40,9 @@ const PanierScreen = ({ navigation }) => {
       });
       item.ingredients = newQuantity;
     });
+    if (checkedCart.length == 0) {
+      return Toast.show("Veuillez choisir au moins une recette .", Toast.LONG);
+    }
     navigation.navigate("IngredientsCartScreen", { cart: checkedCart });
   };
   //when click on recipe we check if it exist to remove it or if not to add id
@@ -50,6 +54,10 @@ const PanierScreen = ({ navigation }) => {
       return [...tmp];
     });
   };
+
+  useEffect(() => {
+    console.log("This is final", finalCart.length);
+  }, [finalCart]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -83,6 +91,7 @@ const PanierScreen = ({ navigation }) => {
           textStyle={{ fontWeight: "800", fontSize: 18, color: "black" }}
         />
         <CustomButton
+          disabled={finalCart.length == ""}
           onPress={validate}
           title="Valider les recettes"
           style={{

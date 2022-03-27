@@ -28,6 +28,7 @@ import {
 } from "react-native/Libraries/NewAppScreen";
 import { useDispatch, useSelector } from "react-redux";
 import { setCuisineNotification } from "../redux/slicer/notificationSlicer";
+import { COLORS } from "../consts/colors";
 
 const Skeleton = ({ title }) => {
   return (
@@ -184,6 +185,8 @@ const MyRecipesScreen = ({ route }) => {
   };
   return (
     <>
+      <StatusBar backgroundColor={COLORS.primary} />
+
       {isLoading ? (
         <View style={{}}>
           <Skeleton title={true} />

@@ -1,9 +1,10 @@
 // Le screen qui nous montre le tutorial et les informations a propos de l'applicatio,
 // Ce screen n'est pas actif pour le moment
 
-import React, { useEffect } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import {
   Button,
+  Dimensions,
   Image,
   StyleSheet,
   Text,
@@ -11,178 +12,319 @@ import {
   View,
 } from "react-native";
 import LottieView from "lottie-react-native";
+// import YouTube from "react-native-youtube";
+import YoutubePlayer from "react-native-youtube-iframe";
+import PaginationDot from "react-native-animated-pagination-dot";
 
-import Onboarding from "react-native-onboarding-swiper";
+import AsyncStorage from "@react-native-community/async-storage";
 
-import { MaterialIcons } from "@expo/vector-icons";
-import { NavigationContainer } from "@react-navigation/native";
+import { MaterialIcons, FontAwesome, Feather } from "@expo/vector-icons";
+import { COLORS } from "../consts/colors";
+import PagerView from "react-native-pager-view";
+import AnimatedIntroCard from "../components/AnimatedIntroCard";
+import { intervalToDuration } from "date-fns";
+import CustomButton from "../components/CustomButton";
 
-const Square = ({ isLight, selected }) => {
-  let backgroundColor;
-  if (isLight) {
-    backgroundColor = selected ? "white" : "rgba(0, 0, 0, 0.3)";
-  } else {
-    backgroundColor = selected ? "#fff" : "rgba(255, 255, 255, 0.5)";
-  }
+const { width, height } = Dimensions.get("screen");
+
+const Row = ({ title, num }) => {
   return (
     <View
       style={{
-        width: 6,
-        height: 6,
-        marginHorizontal: 3,
-        backgroundColor,
-      }}
-    />
-  );
-};
-
-const Next = ({ isLight, ...props }) => {
-  return (
-    <TouchableOpacity {...props}>
-      <Text
-        style={{
-          color: "white",
-          fontSize: 20,
-          marginRight: 15,
-          alignSelf: "center",
-        }}
-      >
-        Suivant
-      </Text>
-    </TouchableOpacity>
-  );
-};
-
-const Skip = ({ isLight, ...props }) => {
-  return (
-    <TouchableOpacity {...props}>
-      <Text style={{ color: "white", fontSize: 20, marginLeft: 15 }}>
-        Passer
-      </Text>
-    </TouchableOpacity>
-  );
-};
-const Done = ({ isLight, ...props }) => {
-  return (
-    <TouchableOpacity
-      {...props}
-      style={{
-        height: 45,
-        width: 45,
-        borderRadius: 25,
-        backgroundColor: "white",
-        alignItems: "center",
-        justifyContent: "center",
-        marginRight: 15,
+        flexDirection: "row",
+        marginBottom: 20,
+        width: "90%",
       }}
     >
-      <MaterialIcons name="done" size={40} color="#ffc700" />
-    </TouchableOpacity>
+      <View
+        style={{
+          backgroundColor: COLORS.primary,
+          borderRadius: 15,
+          height: 30,
+          width: 30,
+          justifyContent: "center",
+          alignItems: "center",
+          marginRight: 10,
+        }}
+      >
+        <Text style={{ fontWeight: "bold", color: "white" }}>{num}</Text>
+      </View>
+      <Text style={{ fontSize: 24 }}>{title}</Text>
+    </View>
   );
 };
-const ref = React.createRef();
 const OnBoardingScreen = ({ navigation }) => {
+  const [index, setIndex] = useState(0);
+  const ref = createRef();
+
   return (
-    <Onboarding
-      onSkip={() => {
-        navigation.replace("LoginScreen");
-      }}
-      onDone={() => {
-        navigation.replace("LoginScreen");
-      }}
-      DotComponent={Square}
-      NextButtonComponent={Next}
-      SkipButtonComponent={Skip}
-      DoneButtonComponent={Done}
-      bottomBarColor="#ffc700"
-      pages={[
-        {
-          backgroundColor: "white",
-          image: (
-            <LottieView
-              autoPlay
-              resizeMode="cover"
-              speed={0.5}
-              style={{
-                width: 300,
-                height: 300,
+    <View style={{ backgroundColor: "white", flex: 1 }}>
+      <PagerView
+        scrollEnabled={false}
+        style={{ height: "95%" }}
+        initialPage={0}
+        ref={ref}
+      >
+        <View
+          key="1"
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              width: "90%",
+              height: "70%",
+              alignItems: "center",
+              justifyContent: "space-between",
+              backgroundColor: "white",
+            }}
+          >
+            <AnimatedIntroCard
+              swiped={() => {
+                console.log("SWIPED");
+                setTimeout(() => {
+                  ref.current.setPage(index + 1);
+                  setIndex(index + 1);
+                }, 300);
               }}
-              source={require("../assets/imgOnboard1.json")}
             />
-          ),
-          title: "Découvrez tous les jours de délicieuses recettes",
-          titleStyles: {
-            fontWeight: "bold",
-          },
-          subtitle: "",
-        },
-        {
-          backgroundColor: "white",
-          image: (
-            <LottieView
-              autoPlay
-              resizeMode="cover"
-              speed={0.5}
+            <Text
               style={{
-                width: 300,
-                height: 300,
+                fontSize: 20,
+                width: "90%",
+                textAlign: "center",
+                fontWeight: "bold",
               }}
-              source={require("../assets/imgOnboard2.json")}
+            >
+              Swipes à gauche si tu n'aimes pas la recette
+            </Text>
+          </View>
+        </View>
+        <View
+          key="2"
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              width: "90%",
+              height: "70%",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <AnimatedIntroCard
+              swiped={() => {
+                console.log("SWIPED");
+                setTimeout(() => {
+                  ref.current.setPage(index + 1);
+                  setIndex(index + 1);
+                }, 300);
+              }}
+              right
             />
-          ),
-          title: "Choisissez votre repas pour la semaine",
-          titleStyles: {
-            fontWeight: "bold",
-          },
-          subtitle: "",
-        },
-        {
-          backgroundColor: "white",
-          image: (
-            <LottieView
-              autoPlay
-              resizeMode="cover"
-              speed={1}
+            <Text
               style={{
-                width: 300,
-                height: 300,
+                fontSize: 20,
+                width: "90%",
+                textAlign: "center",
+                fontWeight: "bold",
               }}
-              source={require("../assets/imgOnboard3.json")}
-            />
-          ),
-          title:
-            "Vous pouvez vous faire livrer tous les ingrédients en un clic",
-          titleStyles: {
-            fontWeight: "bold",
-          },
-          subtitle: "",
-        },
-        {
-          backgroundColor: "white",
-          image: (
-            <LottieView
-              autoPlay
-              resizeMode="cover"
-              speed={0.7}
+            >
+              à droite si tu veux l'ajouter à ton panier
+            </Text>
+          </View>
+        </View>
+        <View
+          key="3"
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "80%",
+              height: "70%",
+            }}
+          >
+            <View
               style={{
-                width: 300,
-                height: 300,
+                backgroundColor: COLORS.primary,
+
+                width: "100%",
+                height: "80%",
+                alignItems: "center",
+                justifyContent: "flex-end",
               }}
-              source={require("../assets/imgOnboard4.json")}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("SWIPED");
+                  setTimeout(() => {
+                    ref.current.setPage(index + 1);
+                    setIndex(index + 1);
+                  }, 300);
+                }}
+                style={{ justifyContent: "center", alignItems: "center" }}
+              >
+                <Feather name="info" size={60} color="white" />
+                <MaterialIcons
+                  name="keyboard-arrow-down"
+                  size={50}
+                  color="white"
+                />
+              </TouchableOpacity>
+              <LottieView
+                autoPlay
+                loop={true}
+                resizeMode="cover"
+                style={{
+                  height: 160,
+                }}
+                speed={0.8}
+                source={require("../assets/Click.json")}
+              />
+            </View>
+            <Text
+              style={{
+                fontSize: 20,
+                width: "90%",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              Cliques sur le bouton i pour avoir plus d'informations
+            </Text>
+          </View>
+        </View>
+        <View
+          key="4"
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              height: "20%",
+              width: "90%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 26,
+                margin: 20,
+                textAlign: "center",
+              }}
+            >
+              Comment utiliser Yuzu ?
+            </Text>
+          </View>
+          <View style={{ height: "50%", width: "90%" }}>
+            <Row title="Choisissez vos recettes" num="1" />
+            <Row title="Créez automatiquement votre liste de course" num="2" />
+            <Row title="Faites vos courses" num="3" />
+            <Row
+              title="Cuisinez et profitez de petits plats fait maison, plein de goût et
+              d'énergie! 😍"
+              num="4"
             />
-          ),
-          title: "Cuisinez et partagez vos meilleurs repas avec vos proches !",
-          titleStyles: {
-            color: "#000",
-            fontWeight: "bold",
-          },
-          subtitle: "",
-        },
-      ]}
-    />
+          </View>
+          <View style={{ height: "20%", width: "90%" }}>
+            <CustomButton
+              title="Suivant"
+              style={{
+                width: "70%",
+              }}
+              textStyle={{ fontSize: 20 }}
+              onPress={() => {
+                ref.current.setPage(index + 1);
+                setIndex(index + 1);
+              }}
+            />
+          </View>
+        </View>
+        <View
+          key="5"
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              height: "60%",
+              width: "80%",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 30,
+                fontWeight: "bold",
+                textAlign: "center",
+                marginBottom: 50,
+              }}
+            >
+              Un petit mot par ❤️
+            </Text>
+            <YoutubePlayer
+              height={"100%"}
+              width={width * 0.95}
+              videoId={"K-UNzBNSznU"}
+              // onChangeState={onStateChange}
+            />
+          </View>
+          <CustomButton
+            title="Start !"
+            style={{
+              width: "70%",
+            }}
+            textStyle={{ fontSize: 20 }}
+            onPress={async () => {
+              await AsyncStorage.setItem("isFirstTime", "false");
+
+              navigation.navigate("TinderScreen");
+            }}
+          />
+        </View>
+      </PagerView>
+      <View
+        style={{
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <PaginationDot
+          activeDotColor={COLORS.primary}
+          curPage={index}
+          maxPage={5}
+        />
+      </View>
+    </View>
   );
 };
 
 export default OnBoardingScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: COLORS.primary,
+    height: "60%",
+    width: "90%",
+    justifyContent: "space-between",
+    alignSelf: "center",
+    ...COLORS.shadow,
+  },
+});

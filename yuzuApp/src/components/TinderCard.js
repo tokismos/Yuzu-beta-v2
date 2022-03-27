@@ -13,7 +13,6 @@ import { useNavigation } from "@react-navigation/native";
 import FastImage from "react-native-fast-image";
 import { Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Avatar } from "react-native-paper";
-import { Swipeable } from "react-native-gesture-handler";
 
 const ImageFast = ({ uri }) => {
   return (
@@ -30,7 +29,7 @@ const HeadComponent = ({ name, like }) => {
     <View style={styles.headComponent}>
       <View style={styles.leftHeaderComponent}>
         <Avatar.Image
-          size={50}
+          size={40}
           source={require("../assets/avatar.png")}
           theme={{ colors: { backgroundColor: COLORS.primary } }}
         />
@@ -50,7 +49,7 @@ const HeadComponent = ({ name, like }) => {
         </View>
         <View style={{ alignItems: "center" }}>
           <FontAwesome name="star" size={25} color={COLORS.primary} />
-          <Text style={styles.nbrHeader}>3,5</Text>
+          <Text style={styles.nbrHeader}>NEW</Text>
         </View>
       </View>
     </View>
@@ -62,7 +61,7 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
 
   return (
     <>
-      <Pressable
+      <View
         style={{
           height: "100%",
           width: "100%",
@@ -137,7 +136,7 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </Pressable>
+      </View>
     </>
   );
 };
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
   },
 
   headComponent: {
-    backgroundColor: COLORS.darkGray,
+    backgroundColor: "black",
     height: "11%",
     flexDirection: "row",
     alignItems: "center",
@@ -192,14 +191,14 @@ const styles = StyleSheet.create({
     width: "100%",
     fontSize: 15,
   },
-  nbrHeader: { color: "white", fontWeight: "bold" },
+  nbrHeader: { color: "white", fontWeight: "bold", fontSize: 12 },
   rightHeaderComponent: {
     flexDirection: "row",
     width: "20%",
     justifyContent: "space-around",
   },
   descriptionContainer: {
-    backgroundColor: "black",
+    backgroundColor: COLORS.darkGray,
     height: "40%",
     width: "90%",
     alignSelf: "center",
@@ -208,7 +207,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomContainer: {
-    backgroundColor: COLORS.darkGray,
+    backgroundColor: "black",
     height: "22%",
     justifyContent: "center",
     marginTop: -3,

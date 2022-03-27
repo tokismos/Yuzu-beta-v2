@@ -5,6 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: null,
   accessTokenFb: null,
+  isFirstTime: null,
 };
 
 export const userSlice = createSlice({
@@ -18,10 +19,13 @@ export const userSlice = createSlice({
     setAccessToken: (state, action) => {
       state.accessTokenFb = action.payload;
     },
+    setIsFirstTime: (state, action) => {
+      state.isFirstTime = true;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, setAccessToken } = userSlice.actions;
+export const { setUser, setAccessToken, setIsFirstTime } = userSlice.actions;
 
 export default userSlice.reducer;

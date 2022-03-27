@@ -1,4 +1,6 @@
-//Ici on trouve toutes les fonctions qui sont en relation avec la Database de Firebase,
+import { Alert } from "react-native";
+
+import database from "@react-native-firebase/database";
 
 import firebase from "@react-native-firebase/app";
 import auth from "@react-native-firebase/auth";
@@ -33,7 +35,7 @@ const setAdditionalInfo = async (info) => {
   }
 };
 
-//get Additional infos  from realtime DB
+//get num from realtime DB
 const getAdditionalInfo = async () => {
   const snapshot = await firebase
     .app()
@@ -76,6 +78,19 @@ const deleteFav = async (id) => {
   }
 };
 
+// const getFavoris = async () => {
+//   let favoritesArray = [""];
+//   firebase
+//     .app()
+//     .database(firebaseDbURL)
+//     .ref(`/users/${auth().currentUser?.uid}/favoris`)
+//     .on("value", (snapshot) => {
+//       if (snapshot.exists()) {
+//         snapshot.forEach((item) => favoritesArray.push(item.key));
+//       }
+//     });
+//     return favoritesArray;
+// };
 const getFavoris = async (tmp) => {
   let favoritesArray = [];
   firebase
@@ -83,7 +98,6 @@ const getFavoris = async (tmp) => {
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/favoris`)
     .once("value", (snapshot) => {
-      console.log("User data: ", snapshot.val());
       if (snapshot.exists()) {
         snapshot.forEach((item) => favoritesArray.push(item.key));
         tmp(favoritesArray);
@@ -150,6 +164,60 @@ const getCommandes = async (setCommandes) => {
       setCommandes(arr);
     });
 };
+
+// const LoginWithFb = async () => {
+//   // Attempt login with permissions
+//   const result = await LoginManager.logInWithPermissions([
+//     "public_profile",
+//     "email",
+//   ]);
+//   if (result.isCancelled) {
+//     throw "User cancelled the login process";
+//   }
+//   // Once signed in, get the users AccesToken
+//   const data = await AccessToken.getCurrentAccessToken();
+
+//   if (!data) {
+//     throw "Something went wrong obtaining access token";
+//   }
+//   // Create a Firebase credential with the AccessToken
+//   const facebookCredential = auth.FacebookAuthProvider.credential(
+//     data.accessToken
+//   );
+//   // Sign-in the user with the credential
+//   return auth().signInWithCredential(facebookCredential);
+// };
+
+const logInWithFb = async () => {
+  try {
+    await Facebook.initializeAsync({
+      appId: "593620908653647",
+    });
+    const { type, token, expirationDate, permissions, declinedPermissions } =
+      await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile"],
+      });
+    if (type === "success") {
+      // Get the user's name using Facebook's Graph API
+      const response = await fetch(
+        `https://graph.facebook.com/me?access_token=${token}`
+      );
+      Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+    } else {
+      // type === 'cancel'
+    }
+  } catch ({ message }) {
+    alert(`Facebook Login Error: ${message}`);
+  }
+};
+// const getData = async (loadMood) => {
+//   await db
+//     .ref(`users/`)
+//     .on("value", (snapshot) => {
+//       const data = snapshot.val();
+//       loadMood(data);
+//     });
+// };
 
 export {
   setAdditionalInfo,

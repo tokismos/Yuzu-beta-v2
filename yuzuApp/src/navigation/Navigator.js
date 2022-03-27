@@ -1,13 +1,15 @@
 // Tout simplement c'est ici ou on gere tous les screens de la navigation
 
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Animated,
   SafeAreaView,
   StyleSheet,
   Text,
   StatusBar,
+  ActivityIndicator,
+  View,
 } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -17,6 +19,7 @@ import {
 } from "@expo/vector-icons";
 import auth from "@react-native-firebase/auth";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import AsyncStorage from "@react-native-community/async-storage";
 
 import { COLORS } from "../consts/colors";
 import IngredientScreen from "../screens/IngredientScreen";
@@ -44,6 +47,10 @@ import CommandesScreen from "../screens/CommandesScreen";
 import InfoCommandeScreen from "../screens/InfoCommandeScreen";
 import FilterScreen from "../screens/FilterScreen";
 import RateScreen from "../screens/RateScreen";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
+import OnBoardingScreen from "../screens/OnBoardingScreen";
+import AbonnementScreen from "../screens/AbonnementScreen";
+import AbonnementSecondScreen from "../screens/AbonnementSecondScreen";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -100,12 +107,13 @@ const TopTabScreen = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <TopTab.Navigator
         screenOptions={{
-          headerShown: false,
+          headerShown: true,
           tabBarStyle: {
-            backgroundColor: "white",
+            backgroundColor: COLORS.primary,
             marginTop: StatusBar.currentHeight,
           },
-          tabBarIndicatorStyle: { backgroundColor: COLORS.primary },
+          tabBarPressOpacity: 0.1,
+          tabBarIndicatorStyle: { backgroundColor: "white" },
           tabBarLabelStyle: { fontWeight: "bold", fontSize: 14 },
         }}
       >
@@ -157,6 +165,16 @@ const BottomTabScreen = () => {
             top: 0,
             transform: [{ scale: 0.5 }],
           },
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontSize: 20,
+            fontWeight: "bold",
+          },
+          title: "Mes listes de courses ❤️",
           tabBarIcon: ({ focused }) => (
             <Entypo
               name="list"
@@ -171,7 +189,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              Courses
+              Liste
             </Text>
           ),
         }}
@@ -290,6 +308,28 @@ const LoggedStackScreen = () => {
           options={{
             headerShown: false,
           }}
+          name="AbonnementSecondScreen"
+          component={AbonnementSecondScreen}
+        />
+
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="OnBoardingScreen"
+          component={OnBoardingScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="AbonnementScreen"
+          component={AbonnementScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
           name="RateScreen"
           component={RateScreen}
         />
@@ -343,15 +383,18 @@ const LoggedStackScreen = () => {
           name="CommandesScreen"
           component={CommandesScreen}
         />
-
         <Stack.Screen
-          options={{}}
+          options={{ headerShown: false }}
           name="PanierScreen"
           component={PanierScreen}
         />
         <Stack.Screen
           options={{
             ...horizontalAnimation,
+            title: "Les Ingredients",
+            headerTitleAlign: "center",
+            headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
+            headerBackTitle: "Back",
           }}
           name="IngredientsCartScreen"
           component={IngredientCartScreen}
@@ -377,7 +420,6 @@ const LoggedStackScreen = () => {
           name="IngredientScreen"
           component={IngredientScreen}
         />
-
         <Stack.Screen
           options={{
             headerShown: false,
@@ -392,7 +434,6 @@ const LoggedStackScreen = () => {
           name="FilterScreen"
           component={FilterScreen}
         />
-
         <Stack.Screen
           options={{
             headerShown: true,
@@ -432,7 +473,7 @@ const LoggedStackScreen = () => {
   );
 };
 
-const LoginStackScreen = () => {
+const LoginStackScreen = ({ isNotFirstTime }) => {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -449,8 +490,41 @@ const LoginStackScreen = () => {
           options={{
             headerShown: false,
           }}
+          name="AbonnementSecondScreen"
+          component={AbonnementSecondScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="OnBoardingScreen"
+          component={OnBoardingScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
           name="RateScreen"
           component={RateScreen}
+        />
+        <Stack.Screen
+          options={{
+            ...horizontalAnimation,
+            headerShown: true,
+            headerTitleAlign: "center",
+            title: "Reinitialiser mot de passe",
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTintColor: "white",
+            headerBackTitle: null,
+            headerTitleStyle: {
+              fontSize: 18,
+              color: "white",
+            },
+          }}
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
         />
         <Stack.Screen
           options={{
@@ -519,7 +593,18 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             ...horizontalAnimation,
-            headerShown: false,
+            headerShown: true,
+            headerTitleAlign: "center",
+            title: "Se connecter",
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTintColor: "white",
+            headerBackTitle: null,
+            headerTitleStyle: {
+              fontSize: 22,
+              color: "white",
+            },
           }}
           name="SignInScreen"
           component={SignInScreen}
@@ -580,9 +665,21 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             ...horizontalAnimation,
+            title: "Les Ingredients",
+            headerTitleAlign: "center",
+            headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
+            headerBackTitle: "Back",
+            headerShown: true,
           }}
           name="IngredientsCartScreen"
           component={IngredientCartScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="AbonnementScreen"
+          component={AbonnementScreen}
         />
         <Stack.Screen
           options={{
@@ -620,8 +717,35 @@ const LoginStackScreen = () => {
   );
 };
 
+const OnBoardScreen = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, tabBarStyle: { height: 120 } }}
+      >
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="OnBoardingScreen"
+          component={OnBoardingScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="LoginStackScreen"
+          component={LoginStackScreen}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const RootNavigation = () => {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isNotFirstTime, setIsNotFirstTime] = useState(false);
 
   const { user } = useSelector((state) => state.userStore);
 
@@ -635,6 +759,17 @@ const RootNavigation = () => {
   };
 
   useEffect(() => {
+    (async () => {
+      const isNotFirstTime = await AsyncStorage.getItem("isNotFirstTime");
+      if (!isNotFirstTime) {
+        setIsNotFirstTime(false);
+      } else {
+        setIsNotFirstTime(true);
+      }
+      setIsLoading(false);
+      console.log("THIS IS IS FIRSTLOADING", isNotFirstTime);
+    })();
+
     GoogleSignin.configure(config);
 
     const sub = auth().onAuthStateChanged(async (userInfo) => {
@@ -657,7 +792,21 @@ const RootNavigation = () => {
     return sub;
   }, []);
 
-  return <>{user ? <LoggedStackScreen /> : <LoginStackScreen />}</>;
+  return (
+    <>
+      {isLoading ? (
+        <>
+          <View style={{ flex: 1, justifyContent: "center" }}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          </View>
+        </>
+      ) : user ? (
+        <LoggedStackScreen />
+      ) : (
+        <LoginStackScreen />
+      )}
+    </>
+  );
 };
 export default RootNavigation;
 const styles = StyleSheet.create({});

@@ -17,17 +17,45 @@ export const recipeSlice = createSlice({
       console.log("item", action.payload.item);
       state.activeFilters = action.payload;
     },
-    removeFilters: (state) => {
+    removeFilter: (state, action) => {
+      state.activeFilters = state.activeFilters.filter(
+        (i) => Object.values(i) != action.payload
+      );
+    },
+    resetFilters: (state, action) => {
       state.activeFilters = [];
     },
-    setRecipes: (state, action) => {
-      state.recipes = action.payload;
+    changeTime: (state, action) => {
+      const filteredState = state.activeFilters.filter(
+        (i) => Object.keys(i) != "tempsCuisson"
+      );
+      if (action.payload == 0) {
+        state.activeFilters = [...filteredState];
+        return;
+      }
+      state.activeFilters = [
+        ...filteredState,
+        { tempsCuisson: action.payload },
+      ];
+    },
+    addFilter: (state, action) => {
+      state.activeFilters = [
+        ...state.activeFilters,
+        { [action.payload.type]: action.payload.name },
+      ];
       console.log("setted");
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setFilters, removeFilters, setRecipes } = recipeSlice.actions;
+export const {
+  setFilters,
+  removeFilter,
+  setRecipes,
+  addFilter,
+  changeTime,
+  resetFilters,
+} = recipeSlice.actions;
 
 export default recipeSlice.reducer;

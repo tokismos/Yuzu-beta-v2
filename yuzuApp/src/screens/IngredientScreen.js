@@ -241,7 +241,7 @@ const IngredientScreen = ({ route, navigation }) => {
                     <Text
                       style={{ fontSize: 18, color: "white", marginRight: 5 }}
                     >
-                      620
+                      {recipe.stats?.nbrRight}
                     </Text>
                     <AntDesign name="heart" size={14} color={COLORS.primary} />
                   </View>

@@ -4,7 +4,7 @@
 // comme ca on a une impression de plusieurs cartes alors ce n'est que 2.
 
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, useWindowDimensions } from "react-native";
+import { View, StyleSheet, useWindowDimensions, Text } from "react-native";
 
 import Animated, {
   useSharedValue,
@@ -18,6 +18,10 @@ import Animated, {
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Like from "../assets/LIKE.png";
 import Nope from "../assets/nope.png";
+import LottieView from "lottie-react-native";
+import CustomButton from "./CustomButton";
+import { resetFilters } from "../redux/slicer/recipeSlicer";
+import { useDispatch } from "react-redux";
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -28,7 +32,7 @@ const AnimatedStack = (props) => {
   const [swiped, setSwipe] = useState();
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
   const [show, setShow] = useState(false);
-
+  const dispatch = useDispatch();
   const currentProfile = data[currentIndex];
   const nextProfile = data[nextIndex];
 
@@ -114,7 +118,6 @@ const AnimatedStack = (props) => {
   });
 
   useEffect(() => {
-    console.log("set to 0");
     setCurrentIndex(0);
   }, [data]);
 
@@ -146,7 +149,33 @@ const AnimatedStack = (props) => {
     }
   }, [data, currentIndex]);
 
-  return (
+  return data.length < nextIndex ? (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <LottieView
+        source={require("../assets/oops.json")}
+        autoPlay
+        loop={false}
+      />
+      <Text
+        style={{
+          fontSize: 20,
+          textAlign: "center",
+          width: "90%",
+          marginTop: 150,
+        }}
+      >
+        Les filtres réduisent le choix des recettes que vous pouvez swiper .
+      </Text>
+      <CustomButton
+        title={"Réinitialiser tous les filtres"}
+        textStyle={{ textAlign: "center" }}
+        style={{ padding: 5, marginTop: 10 }}
+        onPress={() => {
+          dispatch(resetFilters());
+        }}
+      />
+    </View>
+  ) : (
     <View style={styles.root}>
       {nextProfile && (
         <View style={styles.nextCardContainer}>

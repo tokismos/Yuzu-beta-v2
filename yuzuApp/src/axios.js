@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  // baseURL: "http://e85e-50-100-167-5.ngrok.io",
+  // baseURL: "http://9a9b-50-100-167-5.ngrok.io",
   baseURL: "https://backend-yuzi.herokuapp.com/",
 });
 
@@ -13,13 +13,19 @@ const getAllRecipes = async (item) => {
       [array[i], array[j]] = [array[j], array[i]];
     }
   };
-  // let url = "?";
-  // item.map((item) => {
-  //   url = url + `${item.categorie}=${item.value}&`;
+  let url = "?";
+
+  item.map((i) => {
+    // console.log("ITEM", ...Object.values(i));
+    url = url + `${Object.keys(i)}=${Object.values(i)}&`;
+  });
+  // Object.keys(item).map((key) => {
+  //   console.log(`${key}=${item[key]}&`);
   // });
-  // let data;
+  console.log("url", url);
+  let data;
   try {
-    const res = await api.get(`/recipes`);
+    const res = await api.get(`/recipes${url}`);
     data = res.data.filter((item) => item.imgURL != null);
   } catch (e) {
     console.log("ERROR", e);
