@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":expo-application:unitTest" external.linked.project.path="$MODULE_DIR$/../../../../node_modules/expo-application/android" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="4" platform="JVM 1.6" allPlatforms="JVM [1.6]" useProjectSettings="false">
+        <compilerSettings>
+          <option name="additionalArguments" value="-Xallow-no-source-files" />
+        </compilerSettings>
+        <compilerArguments>
+          <option name="destination" value="$MODULE_DIR$/../../../../node_modules/expo-application/android/build/tmp/kotlin-classes/debugUnitTest" />
+          <option name="classpath" value="$MODULE_DIR$/../../../../node_modules/expo-application/android/build/intermediates/compile_library_classes_jar/debug/classes.jar:/home/edjubert/.gradle/caches/transforms-3/7564499c98f26a6885924a7dc4ac17fc/transformed/jetified-robolectric-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/ee4a781230de07b6ebfedd035f8aeb36/transformed/jetified-shadows-framework-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/623fc95507d6b441245a5f1cdffe388c/transformed/monitor-1.3.0-rc03-api.jar:/home/edjubert/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.2.0/57136ff68ee784c6e19db34ed4a175338fadfde1/annotation-1.2.0.jar:/home/edjubert/.gradle/caches/transforms-3/d7a56ada34586881b352415078df48d4/transformed/jetified-junit-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/ca294d4e306094b21ddefdfc94317567/transformed/jetified-resources-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/24bfb60248f148f28cb4d877e65b407f/transformed/jetified-sandbox-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/875c099c98d15e8078404f6b9cae17c2/transformed/jetified-utils-reflector-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/afed720036099a2b8e78a56f32c8a290/transformed/jetified-plugins-maven-dependency-resolver-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/b1edfc7a9e14d7396e39e89b8059a655/transformed/jetified-utils-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/2474689bd945a83a710c98069cdd7b80/transformed/jetified-pluginapi-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/1aaf2853c50ae046e10f904323a99efe/transformed/jetified-shadowapi-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/036936c69d8d6cba9786a5de1f6cc255/transformed/jetified-annotations-4.5.1.jar:/home/edjubert/.gradle/caches/transforms-3/555217bb71193de88c2f5ad7912ed275/transformed/jetified-guava-27.0.1-jre.jar:/home/edjubert/.gradle/caches/transforms-3/f8aa1282b59c75b4213da542bb1d196b/transformed/jetified-failureaccess-1.0.1.jar:/home/edjubert/.gradle/caches/transforms-3/8b294e870876412ddb83154cb1560a1f/transformed/jetified-listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/edjubert/.gradle/caches/transforms-3/53b2d841b5502f514bb120e86070a03e/transformed/jetified-jsr305-3.0.2.jar:/home/edjubert/.gradle/caches/transforms-3/6587af20f26d6653f0127ef340f8b772/transformed/jetified-checker-qual-2.5.2.jar:/home/edjubert/.gradle/caches/transforms-3/311d3ed7f6dfc943df1f8e018989b5cb/transformed/jetified-error_prone_annotations-2.2.0.jar:/home/edjubert/.gradle/caches/transforms-3/1c6c7405536d58218cf21eae8a9f07b4/transformed/jetified-j2objc-annotations-1.1.jar:/home/edjubert/.gradle/caches/transforms-3/b25e061b81200e275eb6a7bc99f8310a/transformed/jetified-animal-sniffer-annotations-1.17.jar:/home/edjubert/.gradle/caches/transforms-3/87a8c0159f910735cc8c705afe3b80e9/transformed/jetified-javax.inject-1.jar:/home/edjubert/.gradle/caches/transforms-3/18621bb6a87f8108acb6ec348a319ebb/transformed/jetified-javax.annotation-api-1.3.2.jar:/home/edjubert/.gradle/caches/transforms-3/ca68e2b4676bcf8521e939b913c78366/transformed/jetified-asm-commons-9.0.jar:/home/edjubert/.gradle/caches/transforms-3/88e5c28d65b424f2006d1f40029f3808/transformed/jetified-asm-util-9.0.jar:/home/edjubert/.gradle/caches/transforms-3/ec0907a4f2ff62dfd82d7e5832f9d03e/transformed/jetified-asm-analysis-9.0.jar:/home/edjubert/.gradle/caches/transforms-3/22492cef8d90d78bc1c38d407ebcf39f/transformed/jetified-asm-tree-9.0.jar:/home/edjubert/.gradle/caches/transforms-3/d870eccd514dd3be9d1c31f1c77138e3/transformed/jetified-asm-9.0.jar:/home/edjubert/.gradle/caches/transforms-3/ff14d43ba2259dc14819340a74f1582d/transformed/jetified-sqlite4java-1.0.392.jar:/home/edjubert/.gradle/caches/transforms-3/b6259b377b6717d0121f37b970abb8ec/transformed/jetified-icu4j-53.1.jar:/home/edjubert/.gradle/caches/transforms-3/0645ad1688cb8533048c3debf8f9bccc/transformed/jetified-auto-value-annotations-1.6.2.jar:/home/edjubert/.gradle/caches/transforms-3/8b40fbca1afc6ba3bb603b163beef8e6/transformed/jetified-bcprov-jdk15on-1.65.jar:/home/edjubert/.gradle/caches/transforms-3/16f967902f88bb26cc3d6f3a3a351b51/transformed/jetified-junit-4.12.jar:/home/edjubert/.gradle/caches/transforms-3/0f95bb3149ec0b5774ff9c2e7377f1cc/transformed/jetified-hamcrest-core-1.3.jar:/home/edjubert/.gradle/caches/transforms-3/12c9b0df0eab853ec1d7216fad2470fc/transformed/jetified-kotlin-stdlib-jdk7-1.4.21.jar:/home/edjubert/.gradle/caches/transforms-3/1e5d02677bb4b0563a7c251afb587705/transformed/jetified-kotlin-stdlib-1.4.21.jar:/home/edjubert/.gradle/caches/transforms-3/130cfae6769fe0f6b3cbddedf8144ef9/transformed/jetified-kotlin-stdlib-common-1.4.21.jar:/home/edjubert/.gradle/caches/transforms-3/fed1c6aa3b9fb570b96f216bb8941b74/transformed/jetified-annotations-13.0.jar:/home/edjubert/.gradle/caches/transforms-3/1ecded1b03c37bc724730c2ef2a020c3/transformed/jetified-installreferrer-1.0-api.jar:/home/edjubert/Workspace/Yuzu/app/yuzuApp/node_modules/expo-modules-core/android/build/intermediates/compile_library_classes_jar/debug/classes.jar:/home/edjubert/Android/Sdk/platforms/android-30/android.jar:/home/edjubert/Android/Sdk/build-tools/29.0.2/core-lambda-stubs.jar" />
+          <option name="noStdlib" value="true" />
+          <option name="noReflect" value="true" />
+          <option name="moduleName" value="expo-application_debug" />
+          <option name="jvmTarget" value="1.6" />
+          <option name="friendPaths">
+            <array>
+              <option value="$MODULE_DIR$/../../../../node_modules/expo-application/android/build/tmp/kotlin-classes/debug" />
+              <option value="$MODULE_DIR$/../../../../node_modules/expo-application/android/build/intermediates/javac/debug/classes" />
+              <option value="$MODULE_DIR$/../../../../node_modules/expo-application/android/build/intermediates/compile_library_classes_jar/debug/classes.jar" />
+            </array>
+          </option>
+          <option name="languageVersion" value="1.4" />
+          <option name="apiVersion" value="1.4" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="errors">
+            <ArgumentParseErrors />
+          </option>
+        </compilerArguments>
+      </configuration>
+    </facet>
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
+        <afterSyncTasks>
+          <task>generateDebugSources</task>
+        </afterSyncTasks>
+        <option name="ALLOW_USER_CONFIGURATION" value="false" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../../node_modules/expo-application/android/src/main/res;file://$MODULE_DIR$/../../../../node_modules/expo-application/android/src/debug/res;file://$MODULE_DIR$/../../../../node_modules/expo-application/android/build/generated/res/rs/debug;file://$MODULE_DIR$/../../../../node_modules/expo-application/android/build/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../../node_modules/expo-application/android/src/androidTest/res;file://$MODULE_DIR$/../../../../node_modules/expo-application/android/src/androidTestDebug/res;file://$MODULE_DIR$/../../../../node_modules/expo-application/android/build/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../../node_modules/expo-application/android/build/generated/res/resValues/androidTest/debug" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
+        <option name="PROJECT_TYPE" value="1" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../../node_modules/expo-application/android/build/generated/ap_generated_sources/debugUnitTest/out" />
+    <content url="file://$MODULE_DIR$/../../../../node_modules/expo-application/android/src/test" />
+    <content url="file://$MODULE_DIR$/../../../../node_modules/expo-application/android/src/testDebug" />
+    <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Yuzu.expo-application.main" scope="TEST" />
+    <orderEntry type="module" module-name="Yuzu.expo-modules-core.main" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:robolectric:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:shadows-framework:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation:1.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:junit:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:resources:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:sandbox:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:utils-reflector:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:plugins-maven-dependency-resolver:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:utils:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:pluginapi:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:shadowapi:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.robolectric:annotations:4.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:guava:27.0.1-jre" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:failureaccess:1.0.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.checkerframework:checker-qual:2.5.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.errorprone:error_prone_annotations:2.2.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.17" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: javax.annotation:javax.annotation-api:1.3.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-commons:9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-util:9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-analysis:9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm-tree:9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.ow2.asm:asm:9.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.almworks.sqlite4java:sqlite4java:1.0.392" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.ibm.icu:icu4j:53.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.google.auto.value:auto-value-annotations:1.6.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.bouncycastle:bcprov-jdk15on:1.65" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.21" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.4.21" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.21" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:monitor:1.3.0-rc03@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.android.installreferrer:installreferrer:1.0@aar" level="project" />
+  </component>
+  <component name="TestModuleProperties" production-module="Yuzu.expo-application.main" />
+</module>

@@ -1,0 +1,15 @@
+com/yuzu/itten/MainActivity.java
+ com.yuzu.itten.MainActivity
+ com.yuzu.itten.MainActivity$1
+com/yuzu/itten/BuildConfig.java
+ com.yuzu.itten.BuildConfig
+com/yuzu/itten/MainApplication.java
+ com.yuzu.itten.MainApplication
+ com.yuzu.itten.MainApplication$1
+com/yuzu/itten/ReactNativeFlipper.java
+ com.yuzu.itten.ReactNativeFlipper
+ com.yuzu.itten.ReactNativeFlipper$1
+ com.yuzu.itten.ReactNativeFlipper$2
+ com.yuzu.itten.ReactNativeFlipper$2$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList

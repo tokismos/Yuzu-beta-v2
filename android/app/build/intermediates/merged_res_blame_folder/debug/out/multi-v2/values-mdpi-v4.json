@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/edjubert/Workspace/Yuzu/app/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-mdpi-v4/values-mdpi-v4.xml",
+            "map": [
+                {
+                    "source": "/home/edjubert/.gradle/caches/transforms-3/d640222bf6a814cfd8446095ffa4f813/transformed/jetified-payments-core-17.1.0/res/values-mdpi-v4/values-mdpi-v4.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "56",
+                        "endOffsets": "107"
+                    }
+                }
+            ]
+        }
+    ]
+}
