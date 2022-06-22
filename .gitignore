@@ -1,0 +1,9 @@
+.idea
+app/build/
+*.jks
+ios/Yuzu.xcodeproj/xcshareddata/xcshemes
+
+android/.gradle
+android/app/build
+android/local.properties
+node_modules
