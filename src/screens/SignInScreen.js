@@ -16,7 +16,7 @@ import useAuth from "../hooks/useAuth";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import GoogleIcon from "../assets/GoogleIcon.svg";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -78,7 +78,7 @@ const SignInScreen = ({ route }) => {
                 textDecorationLine: "underline",
               }}
             >
-                {t('signinScreen_forgotPassword')}
+              {t('signinScreen_forgotPassword')}
             </Text>
           </Pressable>
         </View>
@@ -109,7 +109,7 @@ const SignInScreen = ({ route }) => {
                 fontWeight: "bold",
               }}
             >
-                {t('signinScree_or')}
+              {t('signinScree_or')}
             </Text>
             <View
               style={{ flexGrow: 1, height: 0.4, backgroundColor: "gray" }}
@@ -131,7 +131,7 @@ const SignInScreen = ({ route }) => {
               <GoogleIcon width={"40"} height={"40"} />
               <View style={{ width: "85%" }}>
                 <Text style={{ ...styles.socialText, color: "#757575" }}>
-                    {t('signinScreen_googleConnect')}
+                  {t('signinScreen_googleConnect')}
                 </Text>
               </View>
             </View>
@@ -149,7 +149,7 @@ const SignInScreen = ({ route }) => {
                   textAlign: "center",
                 }}
               >
-                  {t('signinScreen_noAccount')}
+                {t('signinScreen_noAccount')}
               </Text>
             )}
           </Pressable>

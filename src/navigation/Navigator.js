@@ -57,7 +57,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export const MyRecipesTabScreen = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Tab.Navigator
@@ -107,7 +107,7 @@ export const MyRecipesTabScreen = () => {
 };
 
 const TopTabScreen = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <TopTab.Navigator
@@ -130,146 +130,7 @@ const TopTabScreen = () => {
 };
 
 const SearchTabbedScreen = ({ route }) => {
-    const { t } = useTranslation();
-    const { listNotification, cuisineNotification } = useSelector(
-        (state) => state.notificationStore
-    );
-
-    return (
-        <Tab.Navigator
-            screenOptions={{
-                headerShown: false,
-                tabBarStyle: {
-                    position: 'absolute',
-                    flexDirection: "row",
-                    justifyContent: "flex-end"
-                },
-            }}
-        >
-            <Tab.Screen
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <Recipe
-                            width={"100%"}
-                            height={"100%"}
-                            fill={focused ? COLORS.primary : "gray"}
-                        />
-                    ),
-                    tabBarLabel: ({ focused }) => (
-                        <Text
-                            style={{
-                                color: focused ? COLORS.primary : "gray",
-                                fontWeight: focused ? "bold" : null,
-                            }}
-                        >
-                            {t('navigator_recipes')}
-                        </Text>
-                    ),
-                }}
-                name="SearchRecipesScreen"
-                initialParams={route?.params}
-                component={SearchRecipesScreen}
-            />
-            <Tab.Screen
-                options={{
-                    tabBarBadge: listNotification,
-                    tabBarBadgeStyle: {
-                        backgroundColor: COLORS.red,
-                        top: 0,
-                        transform: [{ scale: 0.5 }],
-                    },
-                    headerShown: true,
-                    headerStyle: {
-                        backgroundColor: COLORS.primary,
-                    },
-                    headerTitleAlign: "center",
-                    headerTitleStyle: {
-                        fontSize: 20,
-                        fontWeight: "bold",
-                    },
-                    title: t('navigator_myShoppingList'),
-                    tabBarIcon: ({ focused }) => (
-                        <Entypo
-                            name="list"
-                            size={30}
-                            color={focused ? COLORS.primary : "gray"}
-                        />
-                    ),
-                    tabBarLabel: ({ focused, color, size }) => (
-                        <Text
-                            style={{
-                                color: focused ? COLORS.primary : "gray",
-                                fontWeight: focused ? "bold" : null,
-                            }}
-                        >
-                            {t('navigator_list')}
-                        </Text>
-                    ),
-                }}
-                name="Liste de courses"
-                component={CommandesScreen}
-            />
-
-            <Tab.Screen
-                options={{
-                    tabBarBadge: cuisineNotification,
-                    tabBarBadgeStyle: {
-                        backgroundColor: COLORS.red,
-                        top: 0,
-                        transform: [{ scale: 0.5 }],
-                    },
-                    tabBarIcon: ({ focused }) => (
-                        <MyRecipes
-                            width={"90%"}
-                            height={"90%"}
-                            fill={focused ? COLORS.primary : "gray"}
-                        />
-                    ),
-                    tabBarLabel: ({ focused, color, size }) => (
-                        <Text
-                            style={{
-                                color: focused ? COLORS.primary : "gray",
-                                fontWeight: focused ? "bold" : null,
-                            }}
-                        >
-                            {t('navigator_toKitchen')}
-                        </Text>
-                    ),
-                }}
-                name="En cuisine"
-                component={TopTabScreen}
-            />
-            {auth().currentUser && (
-                <Tab.Screen
-                    options={{
-                        tabBarIcon: ({ focused }) => (
-                            <ProfileIcon
-                                width={"90%"}
-                                height={"90%"}
-                                fill={focused ? COLORS.primary : "gray"}
-                            />
-                        ),
-                        tabBarLabel: ({ focused, color, size }) => (
-                            <Text
-                                style={{
-                                    color: focused ? COLORS.primary : "gray",
-                                    fontWeight: focused ? "bold" : null,
-                                }}
-                            >
-                                {t('navigator_myProfile')}
-                            </Text>
-                        ),
-                    }}
-                    name="Profile"
-                    component={ProfileScreen}
-                />
-            )}
-        </Tab.Navigator>
-    );
-};
-
-const BottomTabScreen = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const { listNotification, cuisineNotification } = useSelector(
     (state) => state.notificationStore
   );
@@ -279,7 +140,9 @@ const BottomTabScreen = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-            position: 'absolute',
+          position: 'absolute',
+          flexDirection: "row",
+          justifyContent: "flex-end"
         },
       }}
     >
@@ -299,7 +162,144 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-                {t('navigator_recipes')}
+              {t('navigator_recipes')}
+            </Text>
+          ),
+        }}
+        name="SearchRecipesScreen"
+        initialParams={route?.params}
+        component={SearchRecipesScreen}
+      />
+      <Tab.Screen
+        options={{
+          tabBarBadge: listNotification,
+          tabBarBadgeStyle: {
+            backgroundColor: COLORS.red,
+            top: 0,
+            transform: [{ scale: 0.5 }],
+          },
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: COLORS.primary,
+          },
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontSize: 20,
+            fontWeight: "bold",
+          },
+          title: t('navigator_myShoppingList'),
+          tabBarIcon: ({ focused }) => (
+            <Entypo
+              name="list"
+              size={30}
+              color={focused ? COLORS.primary : "gray"}
+            />
+          ),
+          tabBarLabel: ({ focused, color, size }) => (
+            <Text
+              style={{
+                color: focused ? COLORS.primary : "gray",
+                fontWeight: focused ? "bold" : null,
+              }}
+            >
+              {t('navigator_list')}
+            </Text>
+          ),
+        }}
+        name="Liste de courses"
+        component={CommandesScreen}
+      />
+
+      <Tab.Screen
+        options={{
+          tabBarBadge: cuisineNotification,
+          tabBarBadgeStyle: {
+            backgroundColor: COLORS.red,
+            top: 0,
+            transform: [{ scale: 0.5 }],
+          },
+          tabBarIcon: ({ focused }) => (
+            <MyRecipes
+              width={"90%"}
+              height={"90%"}
+              fill={focused ? COLORS.primary : "gray"}
+            />
+          ),
+          tabBarLabel: ({ focused, color, size }) => (
+            <Text
+              style={{
+                color: focused ? COLORS.primary : "gray",
+                fontWeight: focused ? "bold" : null,
+              }}
+            >
+              {t('navigator_toKitchen')}
+            </Text>
+          ),
+        }}
+        name="En cuisine"
+        component={TopTabScreen}
+      />
+      {auth().currentUser && (
+        <Tab.Screen
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <ProfileIcon
+                width={"90%"}
+                height={"90%"}
+                fill={focused ? COLORS.primary : "gray"}
+              />
+            ),
+            tabBarLabel: ({ focused, color, size }) => (
+              <Text
+                style={{
+                  color: focused ? COLORS.primary : "gray",
+                  fontWeight: focused ? "bold" : null,
+                }}
+              >
+                {t('navigator_myProfile')}
+              </Text>
+            ),
+          }}
+          name="Profile"
+          component={ProfileScreen}
+        />
+      )}
+    </Tab.Navigator>
+  );
+};
+
+const BottomTabScreen = () => {
+  const { t } = useTranslation();
+  const { listNotification, cuisineNotification } = useSelector(
+    (state) => state.notificationStore
+  );
+
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          position: 'absolute',
+        },
+      }}
+    >
+      <Tab.Screen
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Recipe
+              width={"100%"}
+              height={"100%"}
+              fill={focused ? COLORS.primary : "gray"}
+            />
+          ),
+          tabBarLabel: ({ focused }) => (
+            <Text
+              style={{
+                color: focused ? COLORS.primary : "gray",
+                fontWeight: focused ? "bold" : null,
+              }}
+            >
+              {t('navigator_recipes')}
             </Text>
           ),
         }}
@@ -338,7 +338,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-                {t('navigator_list')}
+              {t('navigator_list')}
             </Text>
           ),
         }}
@@ -368,7 +368,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-                {t('navigator_toKitchen')}
+              {t('navigator_toKitchen')}
             </Text>
           ),
         }}
@@ -392,7 +392,7 @@ const BottomTabScreen = () => {
                   fontWeight: focused ? "bold" : null,
                 }}
               >
-                  {t('navigator_myProfile')}
+                {t('navigator_myProfile')}
               </Text>
             ),
           }}
@@ -414,10 +414,10 @@ const horizontalAnimation = {
       }),
       next
         ? next.progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 1],
-            extrapolate: "clamp",
-          })
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: "clamp",
+        })
         : 0
     );
     return {
@@ -444,7 +444,7 @@ const horizontalAnimation = {
 };
 
 const LoggedStackScreen = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: true }}>
@@ -620,20 +620,20 @@ const LoggedStackScreen = () => {
           component={ProfileScreen}
         />
         <Stack.Screen
-            name="SearchTabbedScreen"
-            options={{
-                headerShown: true,
-                headerTitle: t('searchRecipeScreen_title'),
-                headerTitleAlign: "center",
-                headerTintColor: "white",
-                headerStyle: {
-                    backgroundColor: COLORS.primary,
-                },
-                headerTitleStyle: {
-                    fontSize: 22,
-                },
-            }}
-            component={SearchTabbedScreen}
+          name="SearchTabbedScreen"
+          options={{
+            headerShown: true,
+            headerTitle: t('searchRecipeScreen_title'),
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          component={SearchTabbedScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -641,7 +641,7 @@ const LoggedStackScreen = () => {
 };
 
 const LoginStackScreen = ({ isNotFirstTime }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -802,23 +802,23 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
           component={SignUpScreen}
         />
         <Stack.Screen
-            name="SearchTabbedScreen"
-            options={{
-                headerShown: true,
-                headerTitle: t('searchRecipeScreen_title'),
-                headerTitleAlign: "center",
-                headerTintColor: "white",
-                headerStyle: {
-                    backgroundColor: COLORS.primary,
-                },
-                headerTitleStyle: {
-                    fontSize: 22,
-                },
-            }}
-            component={SearchTabbedScreen}
+          name="SearchTabbedScreen"
+          options={{
+            headerShown: true,
+            headerTitle: t('searchRecipeScreen_title'),
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          component={SearchTabbedScreen}
         />
 
-          <Stack.Screen
+        <Stack.Screen
           options={{
             ...horizontalAnimation,
             headerShown: false,
