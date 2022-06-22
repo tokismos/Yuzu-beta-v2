@@ -71,14 +71,17 @@ const RecipeModal = forwardRef((props, ref) => {
                   )
                 )}
               </View>
-              <View style={styles.row}>
+              <View style={{ ...styles.row, ...styles.ingredientsWrapper }}>
                 {
                   item?.
                     ingredients?.map(
-                      (ingredient, i) =>
-                        <Text key={i} style={styles.ingredients}>
-                          {`${ingredient.name}${i === item?.ingredients?.length - 1 ? '' : ' - '}`}
-                        </Text>
+                      (ingredient, i) => {
+                        return (
+                          <Text key={`${ingredient.name}_${i}`} style={styles.ingredients}>
+                            {`${ingredient.name}${i === item?.ingredients?.length - 1 ? '' : ' - '}`}
+                          </Text>
+                        )
+                      }
                     )
                 }
               </View>
