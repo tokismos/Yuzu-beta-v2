@@ -14,8 +14,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import TinderCard from "../components/TinderCard";
-import { AntDesign } from "@expo/vector-icons";
-import ProfileIcon from "../assets/profile.svg";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+
 import AnimatedStack from "../components/AnimatedStack";
 import { useDispatch, useSelector } from "react-redux";
 import { addMatch, resetMatches } from "../redux/slicer/MatchSlicer";
@@ -27,7 +27,8 @@ import { setUser } from "../redux/slicer/userSlicer";
 import { getAdditionalInfo, getFavoris } from "../helpers/db";
 import CustomButton from "../components/CustomButton";
 import { Alert } from "react-native";
-import { Ionicons } from '@expo/vector-icons'
+import ProfileIcon from "../assets/profile.svg";
+import FilterIcon from "../assets/filter.svg";
 
 import { setFavorites } from "../redux/slicer/favoritesSlicer";
 import { storeRecipes } from "../redux/slicer/recipeSlicer";
@@ -83,7 +84,7 @@ const Header = ({ bottomSheetRef, navigation }) => {
             margin: 10
           }}
         >
-          <Ionicons name='filter-sharp' size={27} color='white' />
+          <FilterIcon height={24} width={24} fill="white" />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -193,7 +194,7 @@ const TinderScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.pageContainer}>
-      <StatusBar translucent backgroundColor={COLORS.primary} />
+      <StatusBar translucent backgroundColor='transparent' />
 
       <Header
         bottomSheetRef={bottomSheetRef}

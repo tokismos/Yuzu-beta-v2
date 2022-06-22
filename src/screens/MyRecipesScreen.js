@@ -22,7 +22,7 @@ import { fr } from 'date-fns/locale';
 import { useDispatch, useSelector } from "react-redux";
 import { setCuisineNotification } from "../redux/slicer/notificationSlicer";
 import { COLORS } from "../consts/colors";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("screen");
 
@@ -163,7 +163,7 @@ const MyRecipesScreen = ({ route }) => {
               color: "gray",
             }}
           >
-            { formatRelative(time, new Date(), { locale: fr }) }
+            {formatRelative(time, new Date(), { locale: fr })}
           </Text>
         )}
         {item.map((elmt, i) => {
@@ -174,7 +174,7 @@ const MyRecipesScreen = ({ route }) => {
   };
   return (
     <>
-      <StatusBar backgroundColor={COLORS.primary} />
+      <StatusBar backgroundColor='transparent' />
 
       {isLoading ? (
         <View style={{}}>
