@@ -189,14 +189,19 @@ const RegimeComponent = ({ activeFilters }) => {
       >
         {regime.map((item, i) => {
           const [selected, setSelected] = useState(
-            activeFilters.some((i) => Object.values(i)?.[0] === item)
+            activeFilters.some((i) => {
+              const filter = item?.normalize?.('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+              const toCheck = Object.values(i)?.[0]?.normalize?.('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+              return toCheck === filter;
+            })
           );
 
           return (
             <Pressable
               key={i}
               onPress={() => {
-                const filter = item.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const filter = item?.normalize?.('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
                 if (selected) dispatch(removeFilter(filter))
                 else dispatch(addFilter({ type: 'category', name: filter }))
@@ -400,9 +405,12 @@ const DifficultyComponent = ({ activeFilters }) => {
 };
 
 const TempsComponent = ({ setTempsHeader }) => {
-  const [temps, setTemps] = useState(0);
+  const stateTemps = useSelector(state => state.recipeStore.activeFilters[0]?.tempsCuisson);
+
+  const [temps, setTemps] = useState(stateTemps || 0);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
   return (
     <View
       style={{
@@ -441,7 +449,7 @@ const TempsComponent = ({ setTempsHeader }) => {
       <Slider
         step={10}
         size={2}
-        value={40}
+        value={temps || 40}
         onSlidingComplete={(i) => {
           setTemps(i);
           setTempsHeader(i);
@@ -450,6 +458,8 @@ const TempsComponent = ({ setTempsHeader }) => {
         thumbTintColor={COLORS.primary}
         onValueChange={(i) => {
           setTemps(i);
+          setTempsHeader(i);
+          dispatch(changeTime(i));
         }}
         style={{
           width: "90%",
