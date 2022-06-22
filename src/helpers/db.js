@@ -112,7 +112,7 @@ const setCommandes = (cart) => {
       _id: item._id,
       name: item.name,
       imgURL: item.imgURL,
-      ingredients: item.ingredients,
+      ingredients: item.ingredients.map(i => ({ ...i, newQuantity: i.newQuantity || 0 })),
       nbrPersonne: item.nbrPersonne,
     });
   });
@@ -145,10 +145,10 @@ const getCommandes = async (setCommandes) => {
 const setRating = async (rate, recipeId) => {
   try {
     await firebase
-        .app()
-        .database(firebaseDbURL)
-        .ref(`/rate/${recipeId}/${auth().currentUser?.uid}`)
-        .set({ rate, createdAt: firebase.database.ServerValue.TIMESTAMP })
+      .app()
+      .database(firebaseDbURL)
+      .ref(`/rate/${recipeId}/${auth().currentUser?.uid}`)
+      .set({ rate, createdAt: firebase.database.ServerValue.TIMESTAMP })
     return true;
   } catch (e) {
     console.error(e);
@@ -188,5 +188,5 @@ export {
   deleteFav,
   getFavoris,
   getAllFavoris,
-    setRating,
+  setRating,
 };
