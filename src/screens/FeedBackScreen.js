@@ -12,6 +12,7 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
+import { useTranslation } from "react-i18next";
 
 import { TextInput } from "react-native-paper";
 import TextInputColored from "../components/TextInputColored";
@@ -20,6 +21,7 @@ import { AntDesign } from "@expo/vector-icons";
 import CustomButton from "../components/CustomButton";
 import { api } from "../axios";
 import { auth } from "../helpers/db";
+
 const { height, width } = Dimensions.get("screen");
 
 const FeedBackScreen = () => {
@@ -28,17 +30,18 @@ const FeedBackScreen = () => {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const sendEmail = async (fullName, title, message) => {
     setIsLoading(true);
     try {
       await api.post("/email", { fullName, title, message });
-      Alert.alert("Message envoyé avec succès");
+      Alert.alert(t('feedbackScreen_messageSent'));
 
       setTitle("");
       setMessage("");
     } catch (e) {
-      Alert.alert("Erreur, message non envoyé !");
+      Alert.alert(t('feedbackScreen_messageError'));
     }
     setIsLoading(false);
   };
@@ -55,24 +58,24 @@ const FeedBackScreen = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.container}>
-          <Text style={styles.titleText}>Ton FeedBack</Text>
+          <Text style={styles.titleText}>{t('feedbackScreen_yourFeedback')}</Text>
           <View style={styles.insideContainer}>
             {!auth().currentUser && (
               <TextInputColored
                 value={fullName}
-                label="Nom et Prénom"
+                label={t('feedbackScreen_nameAndSurname')}
                 setChangeText={setFullName}
               />
             )}
             <TextInputColored
               value={title}
-              label="Titre du message"
+              label={t('feedbackScreen_messageTitle')}
               setChangeText={setTitle}
             />
 
             <TextInput
               style={{ height: 200 }}
-              placeholder="Un bug, une suggestion d’amélioration, une remarque, un petit message d’encouragement..."
+              placeholder={t('feedbackScreen_messageDescription')}
               theme={{ colors: { primary: COLORS.primary } }}
               multiline
               mode="outlined"
@@ -86,7 +89,7 @@ const FeedBackScreen = () => {
               <Text
                 style={{ color: "gray", textAlign: "center", marginTop: 10 }}
               >
-                {30 - message.length} caractères manquants
+                {t('feedbackScreen_minimumLength', { min: 30 - message.length })}
               </Text>
             )}
 
@@ -94,7 +97,7 @@ const FeedBackScreen = () => {
               style={{ marginTop: 15 }}
               disabled={message.length < 30}
               isLoading={isLoading}
-              title="Envoyer"
+              title={t('send')}
               onPress={() => sendEmail(fullName, title, message)}
             />
           </View>
@@ -113,7 +116,6 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     borderRadius: 10,
-    alignSelf: "center",
     marginTop: 50,
     alignSelf: "flex-end",
   },

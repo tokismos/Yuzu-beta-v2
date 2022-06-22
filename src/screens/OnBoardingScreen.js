@@ -1,20 +1,18 @@
 // Le screen qui nous montre le tutorial et les informations a propos de l'applicatio,
 // Ce screen n'est pas actif pour le moment
 
-import React, { createRef, useEffect, useState } from "react";
+import React, { createRef, useState } from "react";
 import {
-  Button,
   Dimensions,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import LottieView from "lottie-react-native";
-// import YouTube from "react-native-youtube";
 import YoutubePlayer from "react-native-youtube-iframe";
 import PaginationDot from "react-native-animated-pagination-dot";
+import { useTranslation } from 'react-i18next';
 
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -22,10 +20,9 @@ import { MaterialIcons, FontAwesome, Feather } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
 import PagerView from "react-native-pager-view";
 import AnimatedIntroCard from "../components/AnimatedIntroCard";
-import { intervalToDuration } from "date-fns";
 import CustomButton from "../components/CustomButton";
 
-const { width, height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 
 const Row = ({ title, num }) => {
   return (
@@ -55,6 +52,7 @@ const Row = ({ title, num }) => {
 };
 const OnBoardingScreen = ({ navigation }) => {
   const [index, setIndex] = useState(0);
+  const { t } = useTranslation();
   const ref = createRef();
 
   return (
@@ -83,7 +81,6 @@ const OnBoardingScreen = ({ navigation }) => {
           >
             <AnimatedIntroCard
               swiped={() => {
-                console.log("SWIPED");
                 setTimeout(() => {
                   ref.current.setPage(index + 1);
                   setIndex(index + 1);
@@ -98,7 +95,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-              Swipes à gauche si tu n'aimes pas la recette
+                {t('onboardingScreen_swipeLeft')}
             </Text>
           </View>
         </View>
@@ -119,7 +116,6 @@ const OnBoardingScreen = ({ navigation }) => {
           >
             <AnimatedIntroCard
               swiped={() => {
-                console.log("SWIPED");
                 setTimeout(() => {
                   ref.current.setPage(index + 1);
                   setIndex(index + 1);
@@ -135,7 +131,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-              à droite si tu veux l'ajouter à ton panier
+                {t('onboardingScreen_swipeRight')}
             </Text>
           </View>
         </View>
@@ -166,7 +162,6 @@ const OnBoardingScreen = ({ navigation }) => {
             >
               <TouchableOpacity
                 onPress={() => {
-                  console.log("SWIPED");
                   setTimeout(() => {
                     ref.current.setPage(index + 1);
                     setIndex(index + 1);
@@ -200,7 +195,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-              Cliques sur le bouton i pour avoir plus d'informations
+                {t('onboardingScreen_clickInfo')}
             </Text>
           </View>
         </View>
@@ -227,22 +222,21 @@ const OnBoardingScreen = ({ navigation }) => {
                 textAlign: "center",
               }}
             >
-              Comment utiliser Yuzu ?
+                {t('onboardingScreen_howTo')}
             </Text>
           </View>
           <View style={{ height: "50%", width: "90%" }}>
-            <Row title="Choisissez vos recettes" num="1" />
-            <Row title="Créez automatiquement votre liste de course" num="2" />
-            <Row title="Faites vos courses" num="3" />
+            <Row title={t('onboardingScreen_howTo1')} num="1" />
+            <Row title={t('onboardingScreen_howTo2')} num="2" />
+            <Row title={t('onboardingScreen_howTo3')} num="3" />
             <Row
-              title="Cuisinez et profitez de petits plats fait maison, plein de goût et
-              d'énergie! 😍"
+              title={t('onboardingScreen_howTo4')}
               num="4"
             />
           </View>
           <View style={{ height: "20%", width: "90%" }}>
             <CustomButton
-              title="Suivant"
+              title={t('next')}
               style={{
                 width: "70%",
               }}
@@ -276,17 +270,16 @@ const OnBoardingScreen = ({ navigation }) => {
                 marginBottom: 50,
               }}
             >
-              Un petit mot par ❤️
+                {t('onboardingScreen_justAWord')}
             </Text>
             <YoutubePlayer
               height={"100%"}
               width={width * 0.95}
               videoId={"K-UNzBNSznU"}
-              // onChangeState={onStateChange}
             />
           </View>
           <CustomButton
-            title="Start !"
+            title={t('onboardingScreen_start')}
             style={{
               width: "70%",
             }}
@@ -318,13 +311,3 @@ const OnBoardingScreen = ({ navigation }) => {
 
 export default OnBoardingScreen;
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: COLORS.primary,
-    height: "60%",
-    width: "90%",
-    justifyContent: "space-between",
-    alignSelf: "center",
-    ...COLORS.shadow,
-  },
-});

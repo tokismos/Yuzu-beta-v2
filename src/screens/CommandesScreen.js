@@ -1,6 +1,7 @@
 //L'ecran qui gere toutes les commandes passées,CommandeItem c'est chaque component de notre liste
 
-import { format } from "date-fns";
+import { formatRelative } from "date-fns";
+import { fr } from 'date-fns/locale';
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {
@@ -19,10 +20,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { setListNotification } from "../redux/slicer/notificationSlicer";
 import { useDispatch } from "react-redux";
-const { width, height } = Dimensions.get("screen");
+import { useTranslation } from "react-i18next";
+
+const { width } = Dimensions.get("screen");
 const CommandeItem = ({ item }) => {
   const navigation = useNavigation();
-  let time = new Date(item.dateTime);
+  const time = new Date(item.dateTime);
+  const { t } = useTranslation();
 
   return (
     <Pressable
@@ -43,7 +47,7 @@ const CommandeItem = ({ item }) => {
     >
       <View style={{ width: "90%" }}>
         <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-          Liste du {format(time, "dd/MM/yyyy")}
+          {formatRelative(time, new Date(), { locale: fr })}
         </Text>
         {item.recipes.map((elmt, i) => {
           return (

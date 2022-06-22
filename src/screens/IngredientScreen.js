@@ -32,11 +32,13 @@ import { addToFav, deleteFav } from "../helpers/db";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, deleteFavorite } from "../redux/slicer/favoritesSlicer";
 import IngredientComponent from "../components/IngredientComponent";
+import { useTranslation } from "react-i18next";
 
 const { height, width } = Dimensions.get("screen");
 
 const StepComponent = ({ step, index }) => {
   const [toggle, setToggle] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <View
@@ -52,7 +54,7 @@ const StepComponent = ({ step, index }) => {
       <TouchableOpacity style={{}} onPress={() => setToggle((p) => !p)}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={{ fontSize: 20, color: "gray", fontWeight: "bold" }}>
-            Etape {index + 1}.
+              {t('ingredientScreen_step', { step: index + 1})}
           </Text>
           <CheckBox
             style={[
@@ -81,6 +83,7 @@ const StepComponent = ({ step, index }) => {
     </View>
   );
 };
+
 const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
   return (
     <View
@@ -131,9 +134,9 @@ const IngredientScreen = ({ route, navigation }) => {
   const [showVote, setShowVote] = useState(false);
   const { favorites } = useSelector((state) => state.favoritesStore);
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("THOSE ARE FAVORIS ", route);
+  const { t } = useTranslation();
 
+  useEffect(() => {
     if (route.params.recipe) {
       setRecipe(route.params.recipe);
       setIsLoading(false);
@@ -274,7 +277,7 @@ const IngredientScreen = ({ route, navigation }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    La recette
+                      {t('ingredientScreen_recipe')}
                   </Text>
                 </View>
                 <View
@@ -293,7 +296,7 @@ const IngredientScreen = ({ route, navigation }) => {
                       textAlign: "center",
                     }}
                   >
-                    Difficulté {"\n"} {recipe?.difficulty}
+                      {t('ingredientScreen_difficultyLevel', { difficulty: recipe?.difficulty })}
                   </Text>
                   <Text
                     style={{
@@ -303,7 +306,7 @@ const IngredientScreen = ({ route, navigation }) => {
                       textAlign: "center",
                     }}
                   >
-                    Préparation {"\n"} {recipe?.tempsPreparation} min
+                    {t('ingredientScreen_preparationDuration', { duration: recipe?.tempsPreparation})}
                   </Text>
                   <Text
                     style={{
@@ -313,7 +316,7 @@ const IngredientScreen = ({ route, navigation }) => {
                       textAlign: "center",
                     }}
                   >
-                    Cuisson {"\n"} {recipe?.tempsCuisson} min
+                      {t('ingredientScreen_cookingDuration', { duration: recipe?.tempsCuisson})}
                   </Text>
                 </View>
               </View>
@@ -374,8 +377,8 @@ const IngredientScreen = ({ route, navigation }) => {
                     <IngredientComponent
                       ingredient={item}
                       key={index}
-                      nbrPersonne={nbr}
-                      defaultNbrPersonne={recipe?.nbrPersonne}
+                      nbrPersonne={nbr || 0}
+                      defaultNbrPersonne={recipe?.nbrPersonne || 0}
                     />
                   );
                 })}
@@ -389,7 +392,7 @@ const IngredientScreen = ({ route, navigation }) => {
                   }}
                 />
                 <Text style={{ fontSize: 20, margin: 20, fontWeight: "bold" }}>
-                  Etapes de la recette
+                    {t('ingredientScreen_recipeSteps')}
                 </Text>
                 <View
                   style={{
@@ -414,7 +417,7 @@ const IngredientScreen = ({ route, navigation }) => {
                     backgroundColor: COLORS.red,
                   }}
                   textStyle={{ fontSize: 18 }}
-                  title="Supprimer des favoris"
+                  title={t('ingredientScreen_deleteToFavorites')}
                   onPress={() => {
                     deleteFav(recipe._id);
                     dispatch(deleteFavorite(recipe._id));
@@ -424,7 +427,7 @@ const IngredientScreen = ({ route, navigation }) => {
                 <CustomButton
                   style={{ width: "60%", marginBottom: 5, marginTop: 10 }}
                   textStyle={{ fontSize: 18 }}
-                  title="Ajouter aux favoris"
+                  title={t('ingredientScreen_addToFavorites')}
                   onPress={() => {
                     addToFav(
                       recipe._id,
@@ -460,7 +463,7 @@ const IngredientScreen = ({ route, navigation }) => {
                           textAlign: "center",
                         }}
                       >
-                        Est-ce que vous avez aimé cette recette ?
+                          {t('ingredientScreen_didYouLiked')}
                       </Text>
                       <View
                         style={{
@@ -483,7 +486,7 @@ const IngredientScreen = ({ route, navigation }) => {
                 <CustomButton
                   style={{ width: "60%", marginBottom: 20 }}
                   textStyle={{ fontSize: 18 }}
-                  title="J'ai cuisiné cette recette"
+                  title={t('ingredientScreen_haveCooked')}
                   onPress={() =>
                     navigation.navigate("RateScreen", {
                       imgURL: recipe?.imgURL,
@@ -502,5 +505,3 @@ const IngredientScreen = ({ route, navigation }) => {
 };
 
 export default IngredientScreen;
-
-const styles = StyleSheet.create({});

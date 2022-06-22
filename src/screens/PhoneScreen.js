@@ -12,6 +12,7 @@ import PhoneInputComponent from "../components/PhoneInputComponent";
 import { setAdditionalInfo } from "../helpers/db";
 import useAuth from "../hooks/useAuth";
 import { setUser } from "../redux/slicer/userSlicer";
+import {useTranslation} from "react-i18next";
 
 const PhoneScreen = ({ navigation }) => {
   const { user } = useSelector((state) => state.userStore);
@@ -24,12 +25,12 @@ const PhoneScreen = ({ navigation }) => {
   const ref = useRef();
   const dispatch = useDispatch();
   const { sendPhoneVerification, verifyCode } = useAuth();
+  const { t } = useTranslation();
+
   useEffect(() => {
     setFullNumber(`+${countryCode}${phoneNumber}`);
   }, [phoneNumber, countryCode]);
-  useEffect(() => {
-    console.log(fullNumber);
-  }, [fullNumber]);
+
   return (
     <PagerView
       ref={ref}
@@ -45,13 +46,12 @@ const PhoneScreen = ({ navigation }) => {
           setPhoneNumber={setPhoneNumber}
         />
         <CustomButton
-          title="Suivant"
+          title={t('next')}
           isLoading={isLoading}
           onPress={async () => {
             setIsLoading(true);
             const status = await sendPhoneVerification(fullNumber);
-            if (status == 200) {
-              console.log("yeaah 200");
+            if (status === 200) {
               ref.current.setPage(1);
               setIsLoading(false);
             } else {
@@ -67,20 +67,20 @@ const PhoneScreen = ({ navigation }) => {
           goBack={() => ref.current.setPage(0)}
         />
         <CustomButton
-          title="Suivant"
+          title={t('next')}
           isLoading={isLoading}
           onPress={async () => {
             setIsLoading(true);
 
             const status = await verifyCode(fullNumber, code);
-            if (status == 200) {
+            if (status === 200) {
               await setAdditionalInfo({
                 phoneNumber: fullNumber,
               });
               dispatch(setUser({ ...user, phoneNumber: fullNumber }));
               navigation.pop();
               ToastAndroid.show(
-                "Votre numéro de téléphone a été changé !",
+                t('phoneScreen_phoneChanged'),
                 ToastAndroid.SHORT
               );
               setIsLoading(false);
@@ -95,5 +95,3 @@ const PhoneScreen = ({ navigation }) => {
 };
 
 export default PhoneScreen;
-
-const styles = StyleSheet.create({});

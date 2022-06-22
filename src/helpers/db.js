@@ -78,19 +78,6 @@ const deleteFav = async (id) => {
   }
 };
 
-// const getFavoris = async () => {
-//   let favoritesArray = [""];
-//   firebase
-//     .app()
-//     .database(firebaseDbURL)
-//     .ref(`/users/${auth().currentUser?.uid}/favoris`)
-//     .on("value", (snapshot) => {
-//       if (snapshot.exists()) {
-//         snapshot.forEach((item) => favoritesArray.push(item.key));
-//       }
-//     });
-//     return favoritesArray;
-// };
 const getFavoris = async (tmp) => {
   let favoritesArray = [];
   firebase
@@ -102,11 +89,10 @@ const getFavoris = async (tmp) => {
         snapshot.forEach((item) => favoritesArray.push(item.key));
         tmp(favoritesArray);
       }
-    });
+    }).catch(console.error);
 };
 
 const getAllFavoris = async (setCommandes) => {
-  let arr = [];
   firebase
     .app()
     .database(firebaseDbURL)
@@ -114,15 +100,12 @@ const getAllFavoris = async (setCommandes) => {
     .orderByChild("dateTime")
     .on("value", (snapshot) => {
       if (snapshot.exists()) {
-        console.log("it exists SNAPSHOT", snapshot);
-        arr = Object?.values(snapshot.val());
-        console.log("WBOOOOOOOOOOOO", arr);
-        setCommandes(arr);
+        setCommandes(Object?.values(snapshot.val()));
       }
     });
 };
 const setCommandes = (cart) => {
-  let obj = [];
+  const obj = [];
 
   cart.forEach((item) => {
     obj.push({
@@ -144,49 +127,33 @@ const setCommandes = (cart) => {
       })
       .then((i) => console.log("cartadded", i));
   } catch (e) {
-    console.log("Additional informations not added !");
+    console.error(e);
   }
 };
 
 const getCommandes = async (setCommandes) => {
-  let arr = [];
   firebase
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/commandes`)
     .orderByChild("dateTime")
     .on("value", (snapshot) => {
-      if (snapshot.exists()) {
-        console.log("it exists COOOMMA", snapshot);
-        arr = Object?.values(snapshot.val());
-        console.log("WBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", arr);
-      }
-      setCommandes(arr);
+      setCommandes(snapshot.exists() ? Object?.values(snapshot.val()) : []);
     });
 };
 
-// const LoginWithFb = async () => {
-//   // Attempt login with permissions
-//   const result = await LoginManager.logInWithPermissions([
-//     "public_profile",
-//     "email",
-//   ]);
-//   if (result.isCancelled) {
-//     throw "User cancelled the login process";
-//   }
-//   // Once signed in, get the users AccesToken
-//   const data = await AccessToken.getCurrentAccessToken();
-
-//   if (!data) {
-//     throw "Something went wrong obtaining access token";
-//   }
-//   // Create a Firebase credential with the AccessToken
-//   const facebookCredential = auth.FacebookAuthProvider.credential(
-//     data.accessToken
-//   );
-//   // Sign-in the user with the credential
-//   return auth().signInWithCredential(facebookCredential);
-// };
+const setRating = async (rate, recipeId) => {
+  try {
+    await firebase
+        .app()
+        .database(firebaseDbURL)
+        .ref(`/rate/${recipeId}/${auth().currentUser?.uid}`)
+        .set({ rate, createdAt: firebase.database.ServerValue.TIMESTAMP })
+    return true;
+  } catch (e) {
+    console.error(e);
+  }
+}
 
 const logInWithFb = async () => {
   try {
@@ -210,14 +177,6 @@ const logInWithFb = async () => {
     alert(`Facebook Login Error: ${message}`);
   }
 };
-// const getData = async (loadMood) => {
-//   await db
-//     .ref(`users/`)
-//     .on("value", (snapshot) => {
-//       const data = snapshot.val();
-//       loadMood(data);
-//     });
-// };
 
 export {
   setAdditionalInfo,
@@ -229,4 +188,5 @@ export {
   deleteFav,
   getFavoris,
   getAllFavoris,
+    setRating,
 };

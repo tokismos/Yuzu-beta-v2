@@ -6,23 +6,22 @@ import { COLORS } from "../consts/colors";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import CustomButton from "../components/CustomButton";
-import { setIsFirstTime } from "../redux/slicer/userSlicer";
-import { useDispatch } from "react-redux";
+
+import { useTranslation } from 'react-i18next';
 
 const IntroScreen = ({ navigation }) => {
   const [isFirstTime, setIsFirstTime] = useState(true);
-  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   useEffect(() => {
     (async () => {
       const isFirstTimeStorage = await AsyncStorage.getItem("isFirstTime");
-      console.log("THIIIIISI IS FIRSTIME", isFirstTime);
       if (isFirstTimeStorage == "false") {
         setIsFirstTime(false);
       }
-      console.log("HAAAHWA HNA");
-      // dispatch(setIsFirstTime());
     })();
   }, []);
+
   return (
     <View style={{ width: "100%", height: "100%" }}>
       <Image
@@ -34,7 +33,7 @@ const IntroScreen = ({ navigation }) => {
           source={require("../assets/logo.png")}
           style={styles.logoContainer}
         />
-        <Text style={styles.descriptionText}>Bien manger, simplement.</Text>
+        <Text style={styles.descriptionText}>{t('introScreen_title')}</Text>
       </View>
       <View style={styles.middleBottomScreen}>
         <View style={styles.bottomContainer}>
@@ -43,7 +42,7 @@ const IntroScreen = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("SignInScreen");
             }}
-            title="Se connecter"
+            title={t('introScreen_login')}
             style={{ ...styles.button, width: "80%" }}
             textStyle={{ fontSize: 20 }}
           />
@@ -52,7 +51,7 @@ const IntroScreen = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("SignUpScreen");
             }}
-            title=" Je suis nouveau"
+            title={t('introScreen_noob')}
             style={{
               ...styles.button,
               width: "80%",
@@ -63,7 +62,6 @@ const IntroScreen = ({ navigation }) => {
           {/* Sign In from Google */}
           <TouchableOpacity
             onPress={() => {
-              // dispatch(setIsFirstTime());
               navigation.navigate(
                 isFirstTime ? "OnBoardingScreen" : "TinderScreen"
               );
@@ -78,7 +76,7 @@ const IntroScreen = ({ navigation }) => {
                 marginTop: "10%",
               }}
             >
-              M'inscrire plus tard !
+              {t('introScreen_later')}
             </Text>
           </TouchableOpacity>
         </View>

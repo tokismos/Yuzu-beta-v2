@@ -9,8 +9,8 @@ import {
   Alert,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import CommunitySVG from "../assets/Community.svg";
 import { Entypo } from "@expo/vector-icons";
+import { useTranslation} from "react-i18next";
 
 import CustomButton from "../components/CustomButton";
 import { useStripe } from "@stripe/stripe-react-native";
@@ -18,8 +18,8 @@ import { useNavigation } from "@react-navigation/native";
 import AvantPremiereSVG from "../assets/avantPremiere.svg";
 import PeopleSVG from "../assets/people.svg";
 import ManOnPlanet from "../assets/manOnPlanet.svg";
-import SaladSVG from "../assets/salad.svg";
-const { height, width } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
+
 const ItemList = ({ title, description, children }) => {
   return (
     <View
@@ -53,6 +53,7 @@ const AbonnementScreen = () => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const fetchPaymentSheetParams = async () => {
     const response = await fetch(`https://backend-yuzi.herokuapp.com/pay`, {
       method: "POST",
@@ -82,15 +83,6 @@ const AbonnementScreen = () => {
     });
     if (!error) {
       setLoading(true);
-    }
-  };
-  const openPaymentSheet = async () => {
-    const { error } = await presentPaymentSheet();
-
-    if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message);
-    } else {
-      Alert.alert("Success", "Your order is confirmed!");
     }
   };
 
@@ -124,24 +116,23 @@ const AbonnementScreen = () => {
               width: width * 0.9,
             }}
           >
-            Participe à l'effort de guerre et soutien notre projet en devenant
-            un super-yuzer 💪
+            {t('abonnementScreen_participateDescription')}
           </Text>
           <ItemList
-            title="Accès illimité"
-            description="Swipe et prépare autant de recettes que tu veux."
+            title={t('abonnementScreen_1_title')}
+            description={t('abonnementScreen_1_description')}
           >
             <Entypo name="infinity" size={50} color="black" />
           </ItemList>
           <ItemList
-            title="Avant-premières"
-            description="Découvre avant tout le monde nos nouvelles recettes en exclusivité"
+            title={t('abonnementScreen_2_title')}
+            description={t('abonnementScreen_2_description')}
           >
             <AvantPremiereSVG height="50" width="50" fill="black" />
           </ItemList>
           <ItemList
-            title="Pas de publicités"
-            description="Fini les publicités ininteressante."
+            title={t('abonnementScreen_3_title')}
+            description={t('abonnementScreen_3_description')}
           >
             <Image
               style={{ height: 50, width: 50 }}
@@ -149,9 +140,8 @@ const AbonnementScreen = () => {
             />
           </ItemList>
           <ItemList
-            title="Rejoint notre communauté"
-            description="Rejoins notre groupe de 
-        super-yuzers et donne ton avis pour notre avenir."
+            title={t('abonnementScreen_4_title')}
+            description={t('abonnementScreen_4_description')}
           >
             <PeopleSVG height="50" width="50" fill="black" />
           </ItemList>
@@ -175,18 +165,16 @@ const AbonnementScreen = () => {
               marginVertical: 20,
             }}
           >
-            Soutiens notre misson
+            {t('abonnementScreen_support')}
           </Text>
           <Text style={{ textAlign: "center", width: width * 0.9 }}>
-            Grâce à toi, des centaines de personnes vont pouvoir améliorer leur
-            santé gratuitement et réduire leurs impacts grâce à leur
-            alimentation
+            {t('abonnementScreen_support_description')}
           </Text>
         </View>
       </View>
 
       <CustomButton
-        title="2 semaines offertes !"
+        title={t('abonnementScreen_buttom')}
         onPress={() => navigation.navigate("AbonnementSecondScreen")}
         style={{
           width: width * 0.7,
@@ -206,5 +194,3 @@ const AbonnementScreen = () => {
 };
 
 export default AbonnementScreen;
-
-const styles = StyleSheet.create({});

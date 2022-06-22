@@ -13,31 +13,31 @@ import PagerView from "react-native-pager-view";
 
 import LoginHeaderScreen from "../../components/LoginHeaderScreen";
 import TextInputColored from "../../components/TextInputColored";
-import auth from "@react-native-firebase/auth";
 import useAuth from "../../hooks/useAuth";
 import PhoneInputComponent from "../../components/PhoneInputComponent";
 import CodeVerificationComponent from "../../components/CodeVerificationComponent";
 import CustomButton from "../../components/CustomButton";
 import { setAdditionalInfo } from "../../helpers/db";
-import { useNavigation } from "@react-navigation/core";
 import { setIsFirstTime } from "../../redux/slicer/userSlicer";
 import { useDispatch } from "react-redux";
+import { useTranslation } from 'react-i18next';
 
 const { height, width } = Dimensions.get("screen");
 const EmailComponent = ({ setEmail, refe, email }) => {
+    const { t } = useTranslation();
   return (
     <View style={{ width, height }}>
       <View style={{ padding: 20 }}>
         <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-          Saisissez votre adresse e-mail
+            {t('signupScreen_enterEmail')}
         </Text>
-        <TextInputColored label="E-mail" setChangeText={setEmail} />
+        <TextInputColored label={t('email')} setChangeText={setEmail} />
         <Text style={styles.description}>
-          Vous devez confirmer cette adresse e-mail par la suite
+            {t('signupScreen_confirmEmail')}
         </Text>
       </View>
       <NextButton
-        disabled={email == ""}
+        disabled={email === ""}
         onPress={() => {
           refe.current.setPage(1);
         }}
@@ -46,20 +46,21 @@ const EmailComponent = ({ setEmail, refe, email }) => {
   );
 };
 const PasswordComponent = ({ setPassword, refe, password }) => {
+    const { t } = useTranslation();
   return (
     <View style={{ width }}>
       <View style={{ padding: 20 }}>
         <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-          Créer un mot de passe.
+            {t('signupScreen_createPassword')}
         </Text>
         <TextInputColored
-          label="Mot de passe"
+          label={t('signupScreen_password')}
           setChangeText={setPassword}
           secured
         />
         {password.length < 8 && (
           <Text style={styles.description}>
-            Votre mot de passe doit contenir au moins 8 caractères.
+              {t('signupScreen_passwordMinimumLength')}
           </Text>
         )}
       </View>
@@ -81,6 +82,8 @@ const PhoneComponent = ({
 }) => {
   const { sendPhoneVerification } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
+
   return (
     <View style={{ width }}>
       <PhoneInputComponent
@@ -89,7 +92,7 @@ const PhoneComponent = ({
       />
       <CustomButton
         isLoading={isLoading}
-        title="Suivant"
+        title={t('signupScreen_next')}
         onPress={async () => {
           setIsLoading(true);
           const status = await sendPhoneVerification(fullNumber);
@@ -110,8 +113,8 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
   const { verifyCode, signUp } = useAuth();
   const [verificationCode, setCode] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   return (
     <KeyboardAvoidingView
@@ -129,12 +132,12 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
           />
 
           <CustomButton
-            title="Suivant"
+            title={t('next')}
             isLoading={isLoading}
             onPress={async () => {
               setIsLoading(true);
               const status = await verifyCode(fullNumber, verificationCode);
-              if (status == 200) {
+              if (status === 200) {
                 dispatch(setIsFirstTime());
                 await signUp(email, password);
                 await setAdditionalInfo({
@@ -153,10 +156,11 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
   );
 };
 const NextButton = ({ onPress, disabled }) => {
+    const { t } = useTranslation();
   return (
     <CustomButton
       onPress={onPress}
-      title="Suivant"
+      title={t('next')}
       disabled={disabled}
       style={{
         ...styles.nextButton,

@@ -7,15 +7,16 @@ import {
   Alert,
 } from "react-native";
 import React, { createRef, useEffect, useState } from "react";
-import LottieView from "lottie-react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import CustomButton from "../components/CustomButton";
 import { COLORS } from "../consts/colors";
-const { width, height } = Dimensions.get("screen");
 import PagerView from "react-native-pager-view";
 import { AntDesign } from "@expo/vector-icons";
 import { useStripe } from "@stripe/stripe-react-native";
 import { useNavigation } from "@react-navigation/core";
+import { useTranslation } from "react-i18next";
+
+const { width } = Dimensions.get("screen");
 
 const Row = ({ title, first, last }) => {
   return (
@@ -40,41 +41,42 @@ const Row = ({ title, first, last }) => {
 };
 const AvantagesScreen = ({ refe }) => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   return (
     <>
       <View style={styles.avantagesContainer}>
         <Text style={styles.titleAvantage}>
-          Libère encore plus de temps en devenant un super yuzer
+          {t('abonnementSecondScreen_avantage_title')}
         </Text>
         <View style={{ width: width * 0.9 }}>
           <View style={{ width: "100%", flexDirection: "row" }}>
             <View style={{ width: "50%" }}></View>
-            <Text style={styles.titleColumn}>Yuzer Gratuit</Text>
+            <Text style={styles.titleColumn}>{t('abonnementSecondScreen_freeYuzer')}</Text>
             <View style={styles.coloredBackgroundColor}>
               <Text style={{ ...styles.titleColumn, width: "100%" }}>
-                Super Yuzer
+                {t('abonnementSecondScreen_superYuzer')}
               </Text>
             </View>
           </View>
-          <Row title="Recettes et listes" first />
-          <Row title="Accès illimité" />
-          <Row title="Avant-premières" />
-          <Row title="Pas de publicités" />
-          <Row title="Rejoins notre communauté" />
-          <Row title="Soutenir notre mission" last />
+          <Row title={t('abonnementSecondScreen_avantage1')} first />
+          <Row title={t('abonnementSecondScreen_avantage2')} />
+          <Row title={t('abonnementSecondScreen_avantage3')} />
+          <Row title={t('abonnementSecondScreen_avantage4')} />
+          <Row title={t('abonnementSecondScreen_avantage5')} />
+          <Row title={t('abonnementSecondScreen_avantage6')} last />
         </View>
       </View>
       <View style={styles.bottomContainer}>
         <CustomButton
-          title="2 semaines offertes !"
+          title={t('abonnementScreen_button')}
           onPress={() => refe.current.setPage(1)}
           style={styles.button}
           textStyle={{ fontSize: 20 }}
         />
         <Pressable onPress={() => navigation.pop(2)}>
           <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 70 }}>
-            Non,merci
+            {t('no_thanks')}
           </Text>
         </Pressable>
       </View>
@@ -112,24 +114,26 @@ const AbonnementList = ({
 };
 
 const OffreAbonnement = ({ onPress }) => {
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState('');
   const navigation = useNavigation();
+  const { t } = useTranslation();
+
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
       <View style={styles.firstContainer}>
-        <Text style={styles.titleText}>Offre de lancement</Text>
+        <Text style={styles.titleText}>{t('abonnementSecondScreen_startOffer_title')}</Text>
         <View style={styles.listView}>
           <AbonnementList
-            title="Mensuel"
-            secondLine="CHF 3 par mois"
-            thirdLine="au lieu de 4.90 par mois"
+            title={t('abonnementSecondScreen_startOffer_period1')}
+            secondLine={t('abonnementSecondScreen_startOffer_price1')}
+            thirdLine={t('abonnementSecondScreen_startOffer_initialPrice1')}
             selected={selected}
             onPress={() => setSelected("Mensuel")}
           />
           <AbonnementList
-            title="6 Mois"
-            secondLine="CHF 15 soit 2,50 par mois"
-            thirdLine="au lieu de CHF 29.40"
+            title={t('abonnementSecondScreen_startOffer_period2')}
+            secondLine={t('abonnementSecondScreen_startOffer_price2')}
+            thirdLine={t('abonnementSecondScreen_startOffer_initialPrice2')}
             selected={selected}
             onPress={() => setSelected("6 Mois")}
           />
@@ -137,16 +141,16 @@ const OffreAbonnement = ({ onPress }) => {
       </View>
 
       <View style={styles.bottomView}>
-        <Text>Tu peux annuler ton abonnement à tout moment !</Text>
+        <Text>{t('abonnementSecondScreen_startOffer_cancel')}</Text>
 
         <CustomButton
-          title="Commencer mon essai gratuit !"
+          title={t('abonnementSecondScreen_startOffer_startTrial')}
           onPress={onPress}
           style={styles.button}
           textStyle={{ fontSize: 18, textAlign: "center" }}
         />
         <Pressable onPress={() => navigation.pop(2)}>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>Non,merci</Text>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>{t('no_thanks')}</Text>
         </Pressable>
       </View>
     </View>
@@ -172,7 +176,7 @@ const AbonnementSecondScreen = () => {
     };
   };
   const initializePaymentSheet = async () => {
-    const { paymentIntent, ephemeralKey, customer, publishableKey } =
+    const { paymentIntent, ephemeralKey, customer } =
       await fetchPaymentSheetParams();
 
     const { error } = await initPaymentSheet({
@@ -207,7 +211,6 @@ const AbonnementSecondScreen = () => {
         style={{ height: "100%" }}
         initialPage={0}
         ref={ref}
-        // onPageScroll={(ev) => setIndex(ev.nativeEvent.position)}
       >
         <View key="1">
           <AvantagesScreen refe={ref} />

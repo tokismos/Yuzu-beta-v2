@@ -25,25 +25,25 @@ import CustomButton from "../components/CustomButton";
 import { KeyboardAvoidingView } from "react-native";
 import { setUser } from "../redux/slicer/userSlicer";
 import { ToastAndroid } from "react-native";
+import {useTranslation} from "react-i18next";
+import useAuth from '../hooks/useAuth';
 
 const { width, height } = Dimensions.get("screen");
 const ProfileScreen = () => {
-  console.log("cuurent user", auth().currentUser);
   const { user } = useSelector((state) => state.userStore);
   const sheetRef = React.useRef(null);
   const inputRef = useRef();
   const [showBlack, setShowBlack] = useState(false);
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { signOut, getAdditionalInfo } = useAuth();
+  const { signOut } = useAuth();
   const navigation = useNavigation();
-  console.log("AM THE USER", auth().currentUser);
-  console.log("EERFF", user);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   //When we change the email for the first time because of google null email
   useEffect(() => {
-    if (user?.email != auth().currentUser?.email) {
+    if (user?.email !== auth().currentUser?.email) {
       console.log("not same");
       dispatch(setUser({ ...user, email: auth().currentUser?.email }));
     }
@@ -59,9 +59,9 @@ const ProfileScreen = () => {
       setIsLoading(false);
       sheetRef.current.snapTo(1);
       setName("");
-      ToastAndroid.show("Votre nom a été changé !", ToastAndroid.SHORT);
+      ToastAndroid.show(t('profileScreen_nameChanged'), ToastAndroid.SHORT);
     } catch (e) {
-      console.log("A// ERROR,", e);
+      console.error(e)
     }
   };
   return (
@@ -110,7 +110,6 @@ const ProfileScreen = () => {
         <View style={{ backgroundColor: "gray", width: "90%", height: 0.3 }} />
         <View
           style={{
-            backgroundColor: "red",
             width: "95%",
             backgroundColor: COLORS.secondary,
             borderRadius: 10,
@@ -132,7 +131,7 @@ const ProfileScreen = () => {
                 marginHorizontal: "3%",
               }}
             >
-              <Text>Nom et Prenom:</Text>
+              <Text>{t('profileScreen_nameAndLastName')}</Text>
               <Text
                 style={{
                   textAlign: "center",
@@ -148,7 +147,6 @@ const ProfileScreen = () => {
                   sheetRef.current.snapTo(0);
                 }}
               >
-                {/* <AntDesign name="edit" size={20} color="gray" /> */}
               </TouchableOpacity>
             </View>
           </View>
@@ -168,7 +166,7 @@ const ProfileScreen = () => {
                   marginHorizontal: "3%",
                 }}
               >
-                <Text style={{}}>Numero Téléphone :</Text>
+                <Text style={{}}>{t('profileScreen_phoneNumber')}</Text>
                 <Text
                   style={{
                     textAlign: "center",
@@ -184,7 +182,6 @@ const ProfileScreen = () => {
                     sheetRef.current.snapTo(0);
                   }}
                 >
-                  {/* <AntDesign name="edit" size={20} color="gray" /> */}
                 </TouchableOpacity>
               </View>
             </View>
@@ -208,7 +205,7 @@ const ProfileScreen = () => {
                 color="black"
                 style={{ marginRight: 20 }}
               />
-              <Text style={{ fontSize: 18, flex: 1 }}>Ajouter mon numéro</Text>
+              <Text style={{ fontSize: 18, flex: 1 }}>{t('profileScreen_addNumber')}</Text>
 
               <AntDesign name="exclamationcircle" size={16} color="red" />
               <MaterialIcons
@@ -233,7 +230,7 @@ const ProfileScreen = () => {
               color="black"
               style={{ marginRight: 20 }}
             />
-            <Text style={{ fontSize: 18, flex: 1 }}>Ajouter une addresse</Text>
+            <Text style={{ fontSize: 18, flex: 1 }}>{t('profileScreen_addAddress')}</Text>
             <AntDesign name="exclamationcircle" size={16} color="red" />
             <MaterialIcons
               name="keyboard-arrow-right"
@@ -257,7 +254,7 @@ const ProfileScreen = () => {
               color="black"
               style={{ marginRight: 20 }}
             />
-            <Text style={{ fontSize: 18, flex: 1 }}>Modifier mon nom</Text>
+            <Text style={{ fontSize: 18, flex: 1 }}>{t('profileScreen_modifyName')}</Text>
             <MaterialIcons
               name="keyboard-arrow-right"
               size={20}
@@ -281,7 +278,7 @@ const ProfileScreen = () => {
                 color="black"
                 style={{ marginRight: 20 }}
               />
-              <Text style={{ fontSize: 18, flex: 1 }}>Modifier mon numéro</Text>
+              <Text style={{ fontSize: 18, flex: 1 }}>{t('profileScreen_modifyNumber')}</Text>
               <MaterialIcons
                 name="keyboard-arrow-right"
                 size={20}
@@ -306,7 +303,7 @@ const ProfileScreen = () => {
               style={{ marginRight: 20 }}
             />
             <Text style={{ fontSize: 18, flex: 1, color: "red" }}>
-              Se deconnecter
+                {t('disconnect')}
             </Text>
             <MaterialIcons name="keyboard-arrow-right" size={20} color="red" />
           </TouchableOpacity>
@@ -367,5 +364,3 @@ const ProfileScreen = () => {
 };
 
 export default ProfileScreen;
-
-const styles = StyleSheet.create({});

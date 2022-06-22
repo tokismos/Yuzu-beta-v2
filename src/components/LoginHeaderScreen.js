@@ -15,11 +15,14 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
 import { useNavigation } from "@react-navigation/core";
 import FastImage from "react-native-fast-image";
+import {useTranslation} from "react-i18next";
 
 const { height, width } = Dimensions.get("screen");
 
 const LoginHeaderScreen = ({ index, innerRef }) => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
+
   return (
     <View
       style={{
@@ -51,7 +54,7 @@ const LoginHeaderScreen = ({ index, innerRef }) => {
             color: "black",
           }}
         >
-          Créer un compte
+            {t('loginHeaderScreen_create')}
         </Text>
       </View>
     </View>
@@ -59,5 +62,3 @@ const LoginHeaderScreen = ({ index, innerRef }) => {
 };
 
 export default LoginHeaderScreen;
-
-const styles = StyleSheet.create({});

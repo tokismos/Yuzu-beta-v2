@@ -10,12 +10,15 @@ import {
   Pressable,
   StatusBar,
   SafeAreaView,
-  Button,
+  Image,
   ActivityIndicator,
 } from "react-native";
 import TinderCard from "../components/TinderCard";
 import { AntDesign } from "@expo/vector-icons";
 import Oven from "../assets/oven.svg";
+import Filter from '../assets/filter.svg';
+import Search from '../assets/search.svg';
+import ProfileIcon from "../assets/profile.svg";
 import Time from "../assets/time.svg";
 import Livre from "../assets/livre.svg";
 import AnimatedStack from "../components/AnimatedStack";
@@ -25,7 +28,6 @@ import { COLORS } from "../consts/colors";
 
 import { getAllRecipes, incrementLeft, incrementRight } from "../axios";
 
-const { height, width } = Dimensions.get("screen");
 import { setUser } from "../redux/slicer/userSlicer";
 import { getAdditionalInfo, getFavoris } from "../helpers/db";
 import CustomButton from "../components/CustomButton";
@@ -34,153 +36,122 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { setFavorites } from "../redux/slicer/favoritesSlicer";
 import Animated, { FadeInDown } from "react-native-reanimated";
-import { useMemo } from "react";
 import { useRef } from "react";
-import { useCallback } from "react";
 import FilterScreen from "./FilterScreen";
-import AsyncStorage from "@react-native-community/async-storage";
+import {useTranslation} from "react-i18next";
+import FastImage from "react-native-fast-image";
 
-const Header = ({ bottomSheetRef, count, setPressedFilter, temps }) => {
+const { height, width } = Dimensions.get("screen");
+
+const Header = ({ bottomSheetRef, navigation, recipes, count, setPressedFilter, temps }) => {
+  const logo = Image.resolveAssetSource(require('../assets/icon.png')).uri
   return (
-    <View
-      style={{
-        backgroundColor: COLORS.primary,
-        width,
-        height: height * 0.12,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-around",
-      }}
-    >
-      <Pressable
-        onPress={() => {
-          setPressedFilter("types");
-          bottomSheetRef.current.open();
-        }}
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          height: "200%",
-        }}
+      <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between"
+          }}
       >
-        <Livre height={40} width={40} fill="white" />
-        <Text style={styles.categorieTitle}>
-          Types de plats{"\n"}
-          {count?.category != undefined && `(${count?.category})`}
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setPressedFilter("temps");
+        <View style={{
+          height: height * 0.06,
+        }}>
+          <FastImage
+              style={{
+                width: 50,
+                height: 50
+              }}
+              source={{ uri: logo, priority: FastImage.priority.high }}
+              resizeMode={FastImage.resizeMode.contain}
+          />
+        </View>
+        <View
+            style={{
+              backgroundColor: COLORS.primary,
+              // width,
+              height: height * 0.06,
+              marginLeft: -50,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+        >
+          <Pressable
+              onPress={() => navigation.navigate('SearchTabbedScreen', { recipes })}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '200%',
+                margin: 10
+              }}
+          >
 
-          bottomSheetRef.current.open();
-        }}
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-
-          height: "200%",
-        }}
-      >
-        <Time height={40} width={40} fill="white" />
-
-        <Text style={styles.categorieTitle}>
-          Temps{"\n"}
-          <Text style={{ fontSize: 12 }}>{temps != 0 && `(${temps} min)`}</Text>
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setPressedFilter("regimes");
-
-          bottomSheetRef.current.open();
-        }}
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-
-          height: "200%",
-        }}
-      >
-        <MaterialCommunityIcons name="fish-off" size={40} color="white" />
-
-        <Text style={styles.categorieTitle}>
-          Régimes{"\n"}
-          {count?.category != undefined && `(${count?.category})`}
-        </Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          setPressedFilter("materiel");
-
-          bottomSheetRef.current.open();
-        }}
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-
-          height: "200%",
-        }}
-      >
-        <Oven height={40} width={40} fill="white" />
-        <Text style={styles.categorieTitle}>
-          Materiel{"\n"}
-          {count?.material != undefined && `(${count?.material})`}{" "}
-        </Text>
-      </Pressable>
-    </View>
+            <Search height={20} width={20} fill="white" />
+          </Pressable>
+          <Pressable
+              onPress={() => {
+                bottomSheetRef.current.open();
+              }}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200%",
+                margin: 10
+              }}
+          >
+            <Filter height={20} width={20} fill="white" />
+          </Pressable>
+          <Pressable
+              onPress={() => {
+                navigation.navigate('ProfileScreen')
+              }}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "200%",
+                margin: 10,
+              }}
+          >
+            <ProfileIcon height={22} width={22} fill="white" />
+          </Pressable>
+        </View>
+      </View>
   );
 };
+
 const TinderScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { user } = useSelector((state) => state.userStore);
 
   const [pressedFilter, setPressedFilter] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [showButton, setShowButton] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [temps, setTemps] = useState(true);
+  const [temps, setTemps] = useState(0);
 
   const { matches } = useSelector((state) => state.matchStore);
   const { activeFilters } = useSelector((state) => state.recipeStore);
   const { isFirstTime } = useSelector((state) => state.userStore);
 
-  const bottomSheetRef = useRef();
-  const routes = navigation.getState()?.routes;
-  const prevRoute = routes[routes.length - 2];
-  const [count, setCount] = useState();
-  // const { openIntro } = route?.params;
-  // variables
+  console.log('TinderScreen', { activeFilters, matches })
 
-  const [isNotFirstTime, setIsNotFirstTime] = useState(false);
-  console.log("ROUUUUUUUUUUIITEEEEEEEEEEEEEEEEEEEEEE", routes);
-  // useEffect(() => {
-  //   console.log("ROUUUUUUUUUUUUUUUUUUUtes", routes);
-  //   (async () => {
-  //     const isNotFirstTime = await AsyncStorage.getItem("isNotFirstTime");
-  //     if (!isNotFirstTime) {
-  //       navigation.navigate("OnBoardingScreen");
-  //     } else {
-  //       setIsNotFirstTime(true);
-  //     }
-  //   })();
-  // }, []);
+  const bottomSheetRef = useRef();
+  const [count, setCount] = useState();
+
 
   useEffect(() => {
     if (isFirstTime) {
-      console.log("WAAAAAAAAAA#", isFirstTime);
       navigation.navigate("OnBoardingScreen");
     }
   }, []);
-  // useEffect(() => {
-  //   console.log("HELOO FILTERS", activeFilters);
-  //   activeFilters.forEach((v) => console.log("KOKOKKOKOK", ...Object.keys(v)));
-  // }, [activeFilters]);
+
   useEffect(() => {
     navigation.setOptions({
-      tabBarStyle: { display: showButton ? "none" : "flex" },
+      // tabBarStyle: { display: showButton ? "none" : "flex" },
+      tabBarStyle: { display: "flex" },
     });
   }, [showButton]);
+
   const loadData = async (item) => {
     setIsLoading(true);
     getAllRecipes(item)
@@ -188,25 +159,22 @@ const TinderScreen = ({ navigation, route }) => {
         setRecipes(result);
         setIsLoading(false);
       })
-      .catch((e) => console.log("HOOHOHOHOHOHHOHO", e));
   };
 
   const getAndSetFavorites = async () => {
     await getFavoris((fav) => dispatch(setFavorites(fav)));
   };
+
   //To add the additional information to the store , we get them from firebase DB
   useEffect(() => {
-    if (user != null) {
+    if (user !== null) {
       getAdditionalInfo().then((e) => {
-        console.log("W", e);
-        // if (!e.phoneNumber) {
-        //   return navigation.navigate("PhoneScreen");
-        // }
         dispatch(setUser({ ...user, phoneNumber: e.phoneNumber }));
       });
     } else {
     }
   }, []);
+
   useEffect(() => {
     loadData(activeFilters);
   }, [activeFilters]);
@@ -214,24 +182,23 @@ const TinderScreen = ({ navigation, route }) => {
   useEffect(() => {
     getAndSetFavorites();
   }, []);
+
   useEffect(() => {
     if (matches.length > 0) {
       setShowButton(true);
     }
   }, [matches]);
+
   const onSwipeLeft = async (item) => {
-    // console.warn("swipe left", user.name);
-    console.log("swiped left", item);
     await incrementLeft(item._id);
   };
+
   const onSwipeRight = async (item) => {
     setShowButton(true);
     item.defaultNbrPersonne = item.nbrPersonne;
     item.isChecked = true;
     dispatch(addMatch(item));
-    console.log("hahaaaaawaawa", item._id);
     await incrementRight(item._id);
-    console.log("daz INCREMENT");
   };
 
   return (
@@ -244,7 +211,9 @@ const TinderScreen = ({ navigation, route }) => {
         setPressedFilter={setPressedFilter}
         temps={temps}
         activeFilters={activeFilters}
+        navigation={navigation}
         count={count}
+        recipes={recipes}
       />
 
       <>
@@ -257,12 +226,7 @@ const TinderScreen = ({ navigation, route }) => {
             borderTopLeftRadius: 15,
           }}
         >
-          <View style={{ position: "absolute", height: 100, zIndex: 100 }}>
-            <Button
-              title="CLIIIICK HERE TO SUBSCRIBE"
-              onPress={() => navigation.navigate("AbonnementScreen")}
-            />
-          </View>
+          <View style={{ position: "absolute", height: 100, zIndex: 100 }} />
           <View
             style={{
               height: "90%",
@@ -289,7 +253,7 @@ const TinderScreen = ({ navigation, route }) => {
                 onSwipeRight={onSwipeRight}
               />
             ) : (
-              <Text>Nothing to show</Text>
+              <Text>{t('tinderScreen_nothingToShow')}</Text>
             )}
           </View>
         </View>
@@ -306,11 +270,11 @@ const TinderScreen = ({ navigation, route }) => {
             <Pressable
               onPress={() => {
                 Alert.alert(
-                  "Alerte",
-                  `Voulez-vous conserver les ${matches.length} recettes que vous venez de swiper?`,
+                  t('tinderScreen_preserveAlert_title'),
+                  t('tinderScreen_preserveAlert_description', { matches: matches.length }),
                   [
                     {
-                      text: "Supprimer",
+                      text: t('tinderScreen_preserveAlert_confirm'),
                       onPress: () => {
                         setShowButton(false);
                         dispatch(resetMatches());
@@ -318,7 +282,7 @@ const TinderScreen = ({ navigation, route }) => {
                       style: "cancel",
                     },
                     {
-                      text: "Conserver",
+                      text: t('tinderScreen_preserveAlert_delete'),
                       onPress: () => setShowButton(false),
                     },
                   ]
@@ -347,7 +311,7 @@ const TinderScreen = ({ navigation, route }) => {
               onPress={() => {
                 navigation.navigate("PanierScreen");
               }}
-              title={`Générer ma liste de course (${matches.length})`}
+              title={t('tinderScreen_generateList_button', { matches: matches?.length || 0 })}
               style={{ width: "90%", height: "90%" }}
               textStyle={{ fontSize: 20, textAlign: "center" }}
             />

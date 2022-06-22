@@ -62,5 +62,3 @@ const TextInputColored = forwardRef(
 );
 
 export default TextInputColored;
-
-const styles = StyleSheet.create({});

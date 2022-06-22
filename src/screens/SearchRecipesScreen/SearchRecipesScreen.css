@@ -1,0 +1,17 @@
+.item {
+    margin: 30px;
+    border-bottom-width: 2px;
+    border-bottom-color: lightgray;
+}
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-style: italic;
+}
+.details {}
+.list__container {
+    margin: 10px;
+    height: 85%;
+    width: 100%;
+}

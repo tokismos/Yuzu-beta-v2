@@ -13,37 +13,65 @@ import Slider from "@react-native-community/slider";
 import { ScrollView } from "react-native";
 import Modal from "react-native-modalbox";
 import {
-  addFilter,
-  changeTime,
-  removeFilter,
-  resetFilters,
+    addFilter,
+    changeTime,
+    removeFilter,
 } from "../redux/slicer/recipeSlicer";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-const { width, height } = Dimensions.get("screen");
+const { height } = Dimensions.get("screen");
 
-const typesPlatArray = [
-  "Entrée",
-  "Plat",
-  "Sauce",
-  "Dessert",
-  "Petit dejeuner",
-  "Sucré",
-  "Salé",
-];
-const regimesArray = ["Viande", "Vegan", "Poisson", "Végétarien"];
-const materielsArray = [
-  "Four",
-  "Four à micro-ondes",
-  "Mixeur",
-  "Robot Cuiseur",
-  "Poisson",
-  "Batteur ou fouet",
-];
-const difficultyArray = ["Facile", "Moyenne", "Difficile"];
+const useCategories = () => {
+    const { t } = useTranslation();
+
+    const mealTypes = [
+        'starter',
+        'main',
+        'sauce',
+        'dessert',
+        'breakfast',
+        'sweet',
+        'salty'
+    ];
+
+    const regime = [
+        'meat',
+        'vegan',
+        'vegetarian',
+        'fish'
+    ];
+
+    const equipment = [
+        'oven',
+        'microWave',
+        'blender',
+        'kitchenAid',
+        'fish',
+        'beater'
+    ];
+
+    const difficulty = [
+        'easy',
+        'medium',
+        'hard'
+    ];
+
+    const getTranslation = arr => arr.map(type => t(`filterScreen_${type}`));
+
+    return {
+        mealTypes: getTranslation(mealTypes),
+        regime: getTranslation(regime),
+        equipment: getTranslation(equipment),
+        difficulty: getTranslation(difficulty)
+    }
+}
 
 const TypePlatsComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { mealTypes } = useCategories();
+  const { t } = useTranslation();
+
   return (
     <View
       style={{
@@ -65,7 +93,9 @@ const TypePlatsComponent = ({ activeFilters }) => {
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}> Types plats </Text>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+            {t('filterScreen_mealType')}
+        </Text>
         <Livre height={40} width={40} fill="black" />
       </View>
       <View
@@ -75,7 +105,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {typesPlatArray.map((item, i) => {
+        {mealTypes.map((item, i) => {
           return (
             <Pressable
               key={i}
@@ -122,6 +152,8 @@ const TypePlatsComponent = ({ activeFilters }) => {
 };
 const RegimeComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { regime } = useCategories();
 
   return (
     <View
@@ -143,7 +175,7 @@ const RegimeComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          Régime particulier{" "}
+            {t('filterScreen_regime')}
         </Text>
         <MaterialCommunityIcons name="fish-off" size={40} color="black" />
       </View>
@@ -154,7 +186,7 @@ const RegimeComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {regimesArray.map((item, i) => {
+        {regime.map((item, i) => {
           const [selected, setSelected] = useState(
             activeFilters.some((i) => Object.values(i) == item)
           );
@@ -203,7 +235,6 @@ const RegimeComponent = ({ activeFilters }) => {
                       break;
                   }
                   setSelected(true);
-                  console.log("CKLIKED");
                 }
               }}
               style={{
@@ -234,8 +265,11 @@ const RegimeComponent = ({ activeFilters }) => {
     </View>
   );
 };
+
 const MaterielsComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { equipment } = useCategories();
 
   return (
     <View
@@ -256,7 +290,9 @@ const MaterielsComponent = ({ activeFilters }) => {
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>Materiels</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+            {t('filterScreen_equipment')}
+        </Text>
         <Oven height={40} width={40} fill="black" />
       </View>
       <View
@@ -266,7 +302,7 @@ const MaterielsComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {materielsArray.map((item, i) => {
+        {equipment.map((item, i) => {
           return (
             <Pressable
               key={i}
@@ -312,8 +348,11 @@ const MaterielsComponent = ({ activeFilters }) => {
     </View>
   );
 };
+
 const DifficultyComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { difficulty } = useCategories();
 
   return (
     <View
@@ -334,7 +373,9 @@ const DifficultyComponent = ({ activeFilters }) => {
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>Difficulté</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+            {t('filterScreen_difficulty')}
+        </Text>
         <Feather name="bar-chart" size={35} color="black" />
       </View>
       <View
@@ -344,7 +385,7 @@ const DifficultyComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {difficultyArray.map((item, i) => {
+        {difficulty.map((item, i) => {
           return (
             <Pressable
               key={i}
@@ -390,9 +431,11 @@ const DifficultyComponent = ({ activeFilters }) => {
     </View>
   );
 };
+
 const TempsComponent = ({ setTempsHeader }) => {
   const [temps, setTemps] = useState(0);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   return (
     <View
       style={{
@@ -412,7 +455,9 @@ const TempsComponent = ({ setTempsHeader }) => {
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>Temps max </Text>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+            {t('filterScreen_maxDuration')}
+        </Text>
         {temps !== 0 && (
           <Text
             style={{
@@ -421,7 +466,7 @@ const TempsComponent = ({ setTempsHeader }) => {
               color: COLORS.primary,
             }}
           >
-            {parseInt(temps)} min
+              {t('filterScreen_minDuration', { duration: temps })}
           </Text>
         )}
         <Time height={40} width={40} fill="black" />
@@ -453,10 +498,10 @@ const TempsComponent = ({ setTempsHeader }) => {
     </View>
   );
 };
+
 const FilterScreen = forwardRef(
   ({ pressedFilter, setTemps, setCount }, ref) => {
     const { activeFilters } = useSelector((state) => state.recipeStore);
-    const dispatch = useDispatch();
     const [array, setArray] = useState([
       <TypePlatsComponent key={1} activeFilters={activeFilters} />,
       <RegimeComponent key={2} activeFilters={activeFilters} />,
@@ -464,24 +509,6 @@ const FilterScreen = forwardRef(
       <MaterielsComponent key={3} activeFilters={activeFilters} />,
     ]);
 
-    // useEffect(() => {
-    //   console.log("THOS ASE ACTIVE", activeFilters.tempsCuisson);
-    //   let arr = [];
-
-    //   setCount((p) => p);
-    //   activeFilters.forEach((i) => {
-    //     const counts = {};
-
-    //     console.log("THIS IS FOREACH I", Object.keys(i));
-    //     arr.push(...Object.keys(i));
-    //     arr.forEach((x) => {
-    //       counts[x] = (counts[x] || 0) + 1;
-    //     });
-    //     console.log("AAAAAAAAAARTRRR", arr);
-    //     setCount(counts);
-    //     console.log("counts", counts);
-    //   });
-    // }, [activeFilters]);
 
     useEffect(() => {
       if (pressedFilter === "types") {
@@ -570,5 +597,3 @@ const FilterScreen = forwardRef(
 );
 
 export default FilterScreen;
-
-const styles = StyleSheet.create({});

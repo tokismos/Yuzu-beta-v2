@@ -6,25 +6,46 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Pressable,
+    Image
 } from "react-native";
 import { COLORS } from "../consts/colors";
 import { useNavigation } from "@react-navigation/native";
 import FastImage from "react-native-fast-image";
 import { Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Avatar } from "react-native-paper";
+import {useTranslation} from "react-i18next";
 
-const ImageFast = ({ uri }) => {
+const ImageFast = ({ uri, thumb }) => {
+  const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
+
   return (
-    <FastImage
-      style={{ ...styles.image }}
-      source={{ uri, priority: FastImage.priority.high }}
-      resizeMode={FastImage.resizeMode.cover}
-    />
+      <>
+        <FastImage
+            style={styles.image}
+            source={{ uri: defaultImage, priority: FastImage.priority.high }}
+            resizeMode={FastImage.resizeMode.cover}
+        />
+
+        <FastImage
+            style={styles.image}
+            source={{ uri: thumb, priority: FastImage.priority.normal }}
+            resizeMode={FastImage.resizeMode.cover}
+            fallback
+          />
+
+        <FastImage
+            style={styles.image}
+            source={{ uri, priority: FastImage.priority.normal }}
+            fallback
+            resizeMode={FastImage.resizeMode.cover}
+        />
+      </>
   );
 };
 
 const HeadComponent = ({ name, like }) => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.headComponent}>
       <View style={styles.leftHeaderComponent}>
@@ -38,7 +59,7 @@ const HeadComponent = ({ name, like }) => {
             {name}
           </Text>
           <Text style={{ color: "gray", marginLeft: 5, fontSize: 12 }}>
-            Créé par Yuzu
+            {t('tinderScreen_createdByYuzu')}
           </Text>
         </View>
       </View>
@@ -49,7 +70,7 @@ const HeadComponent = ({ name, like }) => {
         </View>
         <View style={{ alignItems: "center" }}>
           <FontAwesome name="star" size={25} color={COLORS.primary} />
-          <Text style={styles.nbrHeader}>NEW</Text>
+          <Text style={styles.nbrHeader}>{t('tinderScreen_new')}</Text>
         </View>
       </View>
     </View>
@@ -58,6 +79,7 @@ const HeadComponent = ({ name, like }) => {
 
 const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -69,17 +91,17 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
       >
         <HeadComponent name={recipe.name} like={recipe.stats?.nbrRight} />
 
-        <ImageFast uri={recipe?.imgURL} />
+        <ImageFast uri={recipe?.imgURL} thumb={recipe?.thumbURL} />
         <View style={styles.bottomContainer}>
           <View style={styles.descriptionContainer}>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text style={{ color: "white" }}>
-                Temps Préparation :{" "}
+                {t('tinderScreen_preparationDuration')}
                 <Text style={{ fontWeight: "bold" }}>
                   {" "}
-                  {recipe.tempsPreparation} min{" "}
+                  {t('tinderScreen_minutes', { duration: recipe.tempsPreparation })}
                 </Text>
               </Text>
               <Text style={{ color: "white", fontWeight: "bold" }}>
@@ -90,10 +112,10 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text style={{ color: "white" }}>
-                Temps total :
+                {t('tinderScreen_totalDuration')}
                 <Text style={{ fontWeight: "bold" }}>
                   {" "}
-                  {recipe.tempsPreparation + recipe.tempsCuisson} min
+                  {t('tinderScreen_minutes', { duration: recipe.tempsPreparation + recipe.tempsCuisson })}
                 </Text>
               </Text>
               <Text style={{ color: "white" }}>
@@ -146,6 +168,16 @@ export default TinderCard;
 const styles = StyleSheet.create({
   image: {
     aspectRatio: 1,
+    opacity: 1,
+    position: 'absolute',
+    top: 60,
+    left: 0,
+    height: '50%',
+    width: "100%"
+
+  },
+  hideImage: {
+    opacity: 0,
   },
 
   buttonContainer: {
@@ -208,6 +240,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     backgroundColor: "black",
+    top: 288,
     height: "22%",
     justifyContent: "center",
     marginTop: -3,

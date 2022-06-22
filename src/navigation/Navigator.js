@@ -20,6 +20,7 @@ import {
 import auth from "@react-native-firebase/auth";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import AsyncStorage from "@react-native-community/async-storage";
+import { useTranslation } from 'react-i18next';
 
 import { COLORS } from "../consts/colors";
 import IngredientScreen from "../screens/IngredientScreen";
@@ -28,11 +29,10 @@ import PanierScreen from "../screens/PanierScreen";
 import IngredientCartScreen from "../screens/IngredientCartScreen";
 import SummarizeScreen from "../screens/SummarizeScreen";
 import IntroScreen from "../screens/IntroScreen";
-const Stack = createStackNavigator();
+import SearchRecipesScreen from "../screens/SearchRecipesScreen/SearchRecipesScreen"
 import Recipe from "../assets/recipe.svg";
 import ProfileIcon from "../assets/profile.svg";
 import MyRecipes from "../assets/MyRecipes.svg";
-const Tab = createBottomTabNavigator();
 import { setUser } from "../redux/slicer/userSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import SignUpScreen from "../screens/createAccountScreens/SignUpScreen";
@@ -53,8 +53,12 @@ import AbonnementScreen from "../screens/AbonnementScreen";
 import AbonnementSecondScreen from "../screens/AbonnementSecondScreen";
 
 const TopTab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export const MyRecipesTabScreen = () => {
+    const { t } = useTranslation();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -66,7 +70,6 @@ export const MyRecipesTabScreen = () => {
           backgroundColor: COLORS.primary,
         },
         tabBarLabelStyle: {
-          // color: "black",
           fontSize: 12,
           fontWeight: "bold",
         },
@@ -82,7 +85,7 @@ export const MyRecipesTabScreen = () => {
             />
           ),
         }}
-        name="Recettes ajoutées"
+        name={t('myReceipesTabScreen_receipeAdded')}
         component={MyRecipesScreen}
       />
 
@@ -96,13 +99,15 @@ export const MyRecipesTabScreen = () => {
             />
           ),
         }}
-        name="Recettes favories"
+        name={t('myReceipesTabScreen_favourites')}
         component={MyRecipesScreen}
       />
     </Tab.Navigator>
   );
 };
+
 const TopTabScreen = () => {
+    const { t } = useTranslation();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <TopTab.Navigator
@@ -117,21 +122,165 @@ const TopTabScreen = () => {
           tabBarLabelStyle: { fontWeight: "bold", fontSize: 14 },
         }}
       >
-        <TopTab.Screen name="Mes recettes" component={MyRecipesScreen} />
-        <TopTab.Screen name="Recettes favories" component={MyRecipesScreen} />
+        <TopTab.Screen name={t('navigator_myRecipes')} component={MyRecipesScreen} />
+        <TopTab.Screen name={t('navigator_favourites')} component={MyRecipesScreen} />
       </TopTab.Navigator>
     </SafeAreaView>
   );
 };
+
+const SearchTabbedScreen = ({ route }) => {
+    const { t } = useTranslation();
+    const { listNotification, cuisineNotification } = useSelector(
+        (state) => state.notificationStore
+    );
+
+    return (
+        <Tab.Navigator
+            screenOptions={{
+                headerShown: false,
+                tabBarStyle: {
+                    position: 'absolute',
+                    flexDirection: "row",
+                    justifyContent: "flex-end"
+                },
+            }}
+        >
+            <Tab.Screen
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <Recipe
+                            width={"100%"}
+                            height={"100%"}
+                            fill={focused ? COLORS.primary : "gray"}
+                        />
+                    ),
+                    tabBarLabel: ({ focused }) => (
+                        <Text
+                            style={{
+                                color: focused ? COLORS.primary : "gray",
+                                fontWeight: focused ? "bold" : null,
+                            }}
+                        >
+                            {t('navigator_recipes')}
+                        </Text>
+                    ),
+                }}
+                name="SearchRecipesScreen"
+                initialParams={route?.params}
+                component={SearchRecipesScreen}
+            />
+            <Tab.Screen
+                options={{
+                    tabBarBadge: listNotification,
+                    tabBarBadgeStyle: {
+                        backgroundColor: COLORS.red,
+                        top: 0,
+                        transform: [{ scale: 0.5 }],
+                    },
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: COLORS.primary,
+                    },
+                    headerTitleAlign: "center",
+                    headerTitleStyle: {
+                        fontSize: 20,
+                        fontWeight: "bold",
+                    },
+                    title: t('navigator_myShoppingList'),
+                    tabBarIcon: ({ focused }) => (
+                        <Entypo
+                            name="list"
+                            size={30}
+                            color={focused ? COLORS.primary : "gray"}
+                        />
+                    ),
+                    tabBarLabel: ({ focused, color, size }) => (
+                        <Text
+                            style={{
+                                color: focused ? COLORS.primary : "gray",
+                                fontWeight: focused ? "bold" : null,
+                            }}
+                        >
+                            {t('navigator_list')}
+                        </Text>
+                    ),
+                }}
+                name="Liste de courses"
+                component={CommandesScreen}
+            />
+
+            <Tab.Screen
+                options={{
+                    tabBarBadge: cuisineNotification,
+                    tabBarBadgeStyle: {
+                        backgroundColor: COLORS.red,
+                        top: 0,
+                        transform: [{ scale: 0.5 }],
+                    },
+                    tabBarIcon: ({ focused }) => (
+                        <MyRecipes
+                            width={"90%"}
+                            height={"90%"}
+                            fill={focused ? COLORS.primary : "gray"}
+                        />
+                    ),
+                    tabBarLabel: ({ focused, color, size }) => (
+                        <Text
+                            style={{
+                                color: focused ? COLORS.primary : "gray",
+                                fontWeight: focused ? "bold" : null,
+                            }}
+                        >
+                            {t('navigator_toKitchen')}
+                        </Text>
+                    ),
+                }}
+                name="En cuisine"
+                component={TopTabScreen}
+            />
+            {auth().currentUser && (
+                <Tab.Screen
+                    options={{
+                        tabBarIcon: ({ focused }) => (
+                            <ProfileIcon
+                                width={"90%"}
+                                height={"90%"}
+                                fill={focused ? COLORS.primary : "gray"}
+                            />
+                        ),
+                        tabBarLabel: ({ focused, color, size }) => (
+                            <Text
+                                style={{
+                                    color: focused ? COLORS.primary : "gray",
+                                    fontWeight: focused ? "bold" : null,
+                                }}
+                            >
+                                {t('navigator_myProfile')}
+                            </Text>
+                        ),
+                    }}
+                    name="Profile"
+                    component={ProfileScreen}
+                />
+            )}
+        </Tab.Navigator>
+    );
+};
+
 const BottomTabScreen = () => {
+    const { t } = useTranslation();
   const { listNotification, cuisineNotification } = useSelector(
     (state) => state.notificationStore
   );
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {},
+        tabBarStyle: {
+            position: 'absolute',
+        },
       }}
     >
       <Tab.Screen
@@ -150,7 +299,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              Recettes
+                {t('navigator_recipes')}
             </Text>
           ),
         }}
@@ -174,7 +323,7 @@ const BottomTabScreen = () => {
             fontSize: 20,
             fontWeight: "bold",
           },
-          title: "Mes listes de courses ❤️",
+          title: t('navigator_myShoppingList'),
           tabBarIcon: ({ focused }) => (
             <Entypo
               name="list"
@@ -189,7 +338,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              Liste
+                {t('navigator_list')}
             </Text>
           ),
         }}
@@ -219,7 +368,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              En cuisine
+                {t('navigator_toKitchen')}
             </Text>
           ),
         }}
@@ -243,7 +392,7 @@ const BottomTabScreen = () => {
                   fontWeight: focused ? "bold" : null,
                 }}
               >
-                Mon profil
+                  {t('navigator_myProfile')}
               </Text>
             ),
           }}
@@ -254,6 +403,7 @@ const BottomTabScreen = () => {
     </Tab.Navigator>
   );
 };
+
 const horizontalAnimation = {
   cardStyleInterpolator: ({ current, layouts: { screen }, next, inverted }) => {
     const progress = Animated.add(
@@ -294,6 +444,7 @@ const horizontalAnimation = {
 };
 
 const LoggedStackScreen = () => {
+    const { t } = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: true }}>
@@ -454,7 +605,7 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Mon profile",
+            headerTitle: t("profileScreen_title"),
             headerTitleAlign: "center",
             headerTintColor: "white",
 
@@ -465,8 +616,24 @@ const LoggedStackScreen = () => {
               fontSize: 22,
             },
           }}
-          name="Mon profile"
+          name="ProfileScreen"
           component={ProfileScreen}
+        />
+        <Stack.Screen
+            name="SearchTabbedScreen"
+            options={{
+                headerShown: true,
+                headerTitle: t('searchRecipeScreen_title'),
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                    backgroundColor: COLORS.primary,
+                },
+                headerTitleStyle: {
+                    fontSize: 22,
+                },
+            }}
+            component={SearchTabbedScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -474,6 +641,7 @@ const LoggedStackScreen = () => {
 };
 
 const LoginStackScreen = ({ isNotFirstTime }) => {
+    const { t } = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -539,7 +707,6 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
             headerTitle: "Modifier mon numéro",
             headerTitleAlign: "center",
             headerTintColor: "white",
-
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -562,7 +729,6 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
             headerShown: true,
             headerTitleAlign: "center",
             headerTintColor: "white",
-
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -579,7 +745,6 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
             headerTitle: "Mes recettes",
             headerTitleAlign: "center",
             headerTintColor: "white",
-
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -595,7 +760,7 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
             ...horizontalAnimation,
             headerShown: true,
             headerTitleAlign: "center",
-            title: "Se connecter",
+            title: t('introScreen_login'),
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -613,7 +778,7 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Mon profile",
+            headerTitle: t('profileScreen_title'),
             headerTitleAlign: "center",
             headerTintColor: "white",
 
@@ -624,7 +789,7 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
               fontSize: 22,
             },
           }}
-          name="Mon profile"
+          name="ProfileScreen"
           component={ProfileScreen}
         />
 
@@ -636,8 +801,24 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
           name="SignUpScreen"
           component={SignUpScreen}
         />
-
         <Stack.Screen
+            name="SearchTabbedScreen"
+            options={{
+                headerShown: true,
+                headerTitle: t('searchRecipeScreen_title'),
+                headerTitleAlign: "center",
+                headerTintColor: "white",
+                headerStyle: {
+                    backgroundColor: COLORS.primary,
+                },
+                headerTitleStyle: {
+                    fontSize: 22,
+                },
+            }}
+            component={SearchTabbedScreen}
+        />
+
+          <Stack.Screen
           options={{
             ...horizontalAnimation,
             headerShown: false,
@@ -767,7 +948,6 @@ const RootNavigation = () => {
         setIsNotFirstTime(true);
       }
       setIsLoading(false);
-      console.log("THIS IS IS FIRSTLOADING", isNotFirstTime);
     })();
 
     GoogleSignin.configure(config);
@@ -808,5 +988,6 @@ const RootNavigation = () => {
     </>
   );
 };
+
 export default RootNavigation;
 const styles = StyleSheet.create({});

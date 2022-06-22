@@ -3,12 +3,14 @@
 
 // setSelectedIngredient we find here every selected ing que ca soit produits or from cart
 
-import { format } from "date-fns";
+import {format, formatRelative} from "date-fns";
+import { fr } from 'date-fns/locale';
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
   Platform,
+    Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -25,43 +27,76 @@ import IngredientComponent from "../components/IngredientComponent";
 import CheckBox from "@react-native-community/checkbox";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
+import { useTranslation } from 'react-i18next';
 
 const { height, width } = Dimensions.get("screen");
+
+const LazyLoadImage = ({ thumbURL, imgURL }) => {
+    const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
+    return (
+        <>
+            <FastImage
+                style={styles.recipeImg}
+                source={{
+                    uri: defaultImage,
+                    priority: FastImage.priority.high,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+            />
+
+            <FastImage
+                style={styles.recipeImg}
+                source={{
+                    uri: thumbURL,
+                    priority: FastImage.priority.high,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+            />
+
+            <FastImage
+                style={styles.recipeImg}
+                source={{
+                    uri: imgURL,
+                    priority: FastImage.priority.high,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+            />
+        </>
+)
+}
+
 // Each recipe which contain ingredients
 const CartComponent = ({
-  imgURL,
-  name,
-  ingredients,
+                           imgURL,
+                           thumbURL,
+                           name,
+                           ingredients,
   setSelectedIngredients,
   selectedIngredients,
   index,
 }) => {
+  const { t } = useTranslation();
+  const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
+
   return (
     <>
+        <View>
+            {index === 0 && <Text style={styles.title}>{t('infoCommandeScreen_recipe')}</Text>}
+
+        </View>
       <View style={styles.cartComponent}>
-        {index == 0 && <Text style={styles.title}>Recettes :</Text>}
+          <LazyLoadImage thumbURL={thumbURL} imgURL={imgURL} styles={styles} />
 
         <View style={styles.titleComponent}>
-          <FastImage
-            style={{
-              backgroundColor: COLORS.secondary,
-              height: 70,
-              borderRadius: 10,
-              aspectRatio: 1,
-            }}
-            source={{
-              uri: imgURL,
-              // headers: { Authorization: "someAuthToken" },
-              priority: FastImage.priority.high,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
           <Text
             style={{
               fontSize: 18,
               fontWeight: "bold",
-              textAlign: "center",
-              width: "70%",
+              textAlign: "left",
+              width: "80%",
+                marginBottom: 50,
+                marginLeft: 140,
+                top: 27
             }}
           >
             {name}
@@ -88,17 +123,19 @@ const CartComponent = ({
 // Component where we add a product with button
 const AddProductComponent = ({ setProducts, products }) => {
   const [productText, setProductText] = useState();
+  const { t } = useTranslation();
+
   return (
     <View style={styles.addProductComponent}>
       <TextInputColored
         style={{ width: "50%", height: 40, marginBottom: 10 }}
-        label="Ajouter un article"
+        label={t('infoCommandeScreen_addArticle')}
         setChangeText={setProductText}
         value={productText}
       />
 
       <CustomButton
-        title="Ajouter"
+        title={t('infoCommandeScreen_add')}
         style={{ height: 40 }}
         onPress={() => {
           if (!productText) {
@@ -106,7 +143,7 @@ const AddProductComponent = ({ setProducts, products }) => {
           }
 
           if (products.indexOf(productText) > -1) {
-            return Alert.alert("Vous avez deja ajouté ce produit !");
+            return Alert.alert(t('infoCommandeScreen_alreadyAdded'));
           }
           setProducts((p) => [...p, productText]);
         }}
@@ -128,7 +165,6 @@ const InfoCommandeScreen = ({ navigation, route }) => {
 
     useEffect(() => {
       setToggle(isSaved);
-      console.log("THOSE ARE PRODUCTS", products);
     }, [products]);
 
     return (
@@ -147,7 +183,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
               setSelectedIngredients((p) => [...p, product]);
             } else {
               setSelectedIngredients((p) =>
-                p.filter((item) => item != product)
+                p.filter((item) => item !== product)
               );
             }
 
@@ -168,7 +204,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
           </Text>
           <TouchableOpacity
             onPress={() => {
-              setProducts(products.filter((i) => i != product));
+              setProducts(products.filter((i) => i !== product));
             }}
             style={{
               padding: 5,
@@ -210,7 +246,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
   const AllProductsComponent = () => {
     return (
       <View style={styles.productsComponent}>
-        <Text style={styles.title}>Articles Ajoutés :</Text>
+        <Text style={styles.title}>{t('infoCommandeScreen_alreadyAdded')}</Text>
 
         {products.map((item, i) => {
           return (
@@ -227,10 +263,10 @@ const InfoCommandeScreen = ({ navigation, route }) => {
 
   //Calcul la date et l'affiche dans le header et cela avant que l'ecran ne se render
   useLayoutEffect(() => {
-    let time = new Date(params.historyDetail.dateTime);
+    const time = new Date(params.historyDetail.dateTime);
 
     navigation.setOptions({
-      title: `Liste du ${format(time, "dd/MM/yyyy")}`,
+      title: formatRelative(time, new Date(), { locale: fr })
     });
   }, []);
   const isFocused = useIsFocused();
@@ -276,6 +312,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
             selectedIngredients={selectedIngredients}
             key={i}
             imgURL={item.imgURL}
+            thumbURL={item.thumbURL}
             name={item.name}
             ingredients={item.ingredients}
           />
@@ -288,6 +325,15 @@ const InfoCommandeScreen = ({ navigation, route }) => {
 export default InfoCommandeScreen;
 
 const styles = StyleSheet.create({
+    recipeImg: {
+        backgroundColor: COLORS.secondary,
+        height: 70,
+        borderRadius: 10,
+        aspectRatio: 1,
+        position: "absolute",
+        top: 15,
+        left: 15
+    },
   separator: {
     height: 0.4,
     width: "80%",
@@ -300,12 +346,6 @@ const styles = StyleSheet.create({
     padding: 20,
 
     justifyContent: "space-between",
-  },
-  title: {
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
   },
   bottomComponent: {
     width: "100%",

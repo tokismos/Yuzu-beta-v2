@@ -11,10 +11,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
+import FastImage from "react-native-fast-image";
 import { COLORS } from "../consts/colors";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import {useTranslation} from "react-i18next";
 
-const { width, height } = Dimensions.get("screen");
+const { height } = Dimensions.get("screen");
 const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
   return (
     <View
@@ -36,7 +38,6 @@ const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
             }
             return [...tmp];
           });
-          // setNbrPersonne((p) => p - 1);
         }}
       >
         <AntDesign name="minuscircleo" size={24} color={COLORS.primary} />
@@ -67,7 +68,10 @@ const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
     </View>
   );
 };
+
 const CartComponent = ({ item, onPress, setFinalCart, index }) => {
+    const { t } = useTranslation();
+
   const [toggle, setToggle] = useState(true);
 
   return (
@@ -81,10 +85,23 @@ const CartComponent = ({ item, onPress, setFinalCart, index }) => {
         }}
       >
         <View style={styles.imgContainer}>
-          <Image
-            source={{ uri: item.imgURL }}
-            style={{ height: "90%", width: "90%", borderRadius: 10 }}
-          />
+
+            <FastImage
+                style={styles.imageStyle}
+                source={{ uri: Image.resolveAssetSource(require('../assets/default.jpg')).uri }}
+            />
+
+            <FastImage
+                style={styles.imageStyle}
+                source={{ uri: item.thumbURL }}
+            />
+
+            <FastImage
+                style={styles.imageStyle}
+                source={{ uri: item.imgURL }}
+            />
+
+
         </View>
         <View style={styles.midContainer}>
           <View
@@ -114,10 +131,10 @@ const CartComponent = ({ item, onPress, setFinalCart, index }) => {
               >
                 <View>
                   <Text style={{ color: "gray" }}>
-                    {item.tempsPreparation} min de preparation
+                      {t('cartComponent_preparationMinimumDuration', { duration: item.tempsPreparation })}
                   </Text>
                   <Text style={{ color: "gray", fontSize: 14 }}>
-                    {item.ingredients.length} ingredients
+                      {t('cartComponent_ingredientsLength', { len: item.ingredients.length })}
                   </Text>
                 </View>
 
@@ -157,6 +174,14 @@ const CartComponent = ({ item, onPress, setFinalCart, index }) => {
 export default CartComponent;
 
 const styles = StyleSheet.create({
+    imageStyle: {
+        height: 70,
+        width: 70,
+        top: 5,
+        left: 5,
+        borderRadius: 10,
+        position: "absolute",
+    },
   container: {
     flexDirection: "row",
     height: height * 0.1,
@@ -171,7 +196,6 @@ const styles = StyleSheet.create({
   },
   midContainer: {
     width: "65%",
-    justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
