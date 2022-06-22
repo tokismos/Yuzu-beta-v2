@@ -823,8 +823,6 @@ const RootNavigation = () => {
           })
         );
       } else {
-        console.log("no user");
-
         dispatch(setUser(null));
       }
     });

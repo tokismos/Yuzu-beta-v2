@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
   Platform,
   SafeAreaView,
-    Image,
+  Image,
   StatusBar,
   TouchableOpacity,
 } from "react-native";
@@ -37,7 +37,7 @@ const IngredientItemComponent = ({ ingredient, title, onPress }) => {
         alignItems: "center",
       }}
     >
-      <Text style={{ marginLeft: 20, width: "80%" }}>
+      <Text style={{ marginLeft: 20, width: "80%", color: toggle ? COLORS.grey : 'black' }}>
         <Text style={{ fontWeight: "bold" }}>
           {" "}
           {!ingredient.newQuantity
@@ -77,22 +77,22 @@ const CartItemComponent = ({ item, onPress }) => {
       >
         <View style={{ width: "15%", height: "20%", paddingLeft: 5, position: "relative" }}>
           <FastImage
-              style={styles.imageStyle}
-              source={{
-                  uri: Image.resolveAssetSource(require('../assets/default.jpg')).uri,
-                  priority: FastImage.priority.high,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
+            style={styles.imageStyle}
+            source={{
+              uri: Image.resolveAssetSource(require('../assets/default.jpg')).uri,
+              priority: FastImage.priority.high,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
           />
-            <FastImage
-                style={styles.imageStyle}
-                source={{
-                    uri: item.thumbURL,
-                    priority: FastImage.priority.normal,
-                }}
-                resizeMode={FastImage.resizeMode.cover}
-            />
-            <FastImage
+          <FastImage
+            style={styles.imageStyle}
+            source={{
+              uri: item.thumbURL,
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.cover}
+          />
+          <FastImage
             style={styles.imageStyle}
             source={{
               uri: item.imgURL,
@@ -101,7 +101,7 @@ const CartItemComponent = ({ item, onPress }) => {
             resizeMode={FastImage.resizeMode.cover}
           />
         </View>
-        <View style={{  width: "85%" }}>
+        <View style={{ width: "85%" }}>
           <Text
             style={{
               margin: 10,
@@ -144,7 +144,7 @@ const IngredientCartScreen = ({ route, navigation }) => {
   }, []);
 
   const onPress = (ingredient, title) => {
-    if (finalCart[title].ingredients?.includes(ingredient)) {
+    if (finalCart[title]?.ingredients?.includes(ingredient)) {
       finalCart[title].ingredients = finalCart[title].ingredients.filter(
         (item) => item !== ingredient
       );
@@ -154,6 +154,35 @@ const IngredientCartScreen = ({ route, navigation }) => {
         : [ingredient];
     }
   };
+
+  const handleCreateList = () => {
+    console.log('1', { condition: Object.keys(finalCart), finalCart });
+    if (Object.keys(finalCart).length === 0) return;
+    console.log('2');
+    if (!auth().currentUser) return navigation.navigate("SignInScreen");
+
+    console.log('3');
+    const arr = [];
+    Object.entries(finalCart).forEach(([key, value]) => {
+      arr.push({ ...value, _id: key });
+    });
+    console.log('4', { arr });
+    setCommandes(arr);
+
+    console.log('5');
+    dispatch(setCuisineNotification(true));
+    console.log('6');
+    dispatch(setListNotification(true));
+    console.log('7');
+    dispatch(resetMatches());
+    console.log('8');
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "TinderScreen" }],
+    });
+    console.log('9');
+  }
 
   return (
     <SafeAreaView
@@ -179,26 +208,7 @@ const IngredientCartScreen = ({ route, navigation }) => {
         }}
       >
         <CustomButton
-          onPress={() => {
-            if (Object.keys(finalCart).length == 0) {
-              return console.log("waloooo");
-            }
-            if (!auth().currentUser) {
-              return navigation.navigate("SignInScreen");
-            }
-            let arr = [];
-            Object.entries(finalCart).forEach(([key, value]) => {
-              arr.push({ _id: key, ...value });
-            });
-            setCommandes(arr);
-            dispatch(setCuisineNotification(true));
-            dispatch(setListNotification(true));
-            dispatch(resetMatches());
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "TinderScreen" }],
-            });
-          }}
+          onPress={handleCreateList}
           title={t('ingredientCartScreen_createMyShoppingList')}
           style={{ ...styles.buttonContainer, backgroundColor: COLORS.primary }}
           textStyle={{ fontWeight: "bold", color: "white", fontSize: 18 }}
@@ -211,15 +221,15 @@ const IngredientCartScreen = ({ route, navigation }) => {
 export default IngredientCartScreen;
 
 const styles = StyleSheet.create({
-    imageStyle: {
-        aspectRatio: 1,
-        borderRadius: 10,
-        position: "absolute",
-        top: 0,
-        left: 10,
-        width: 50,
-        height: 50
-    },
+  imageStyle: {
+    aspectRatio: 1,
+    borderRadius: 10,
+    position: "absolute",
+    top: 0,
+    left: 10,
+    width: 50,
+    height: 50
+  },
   buttonContainer: {
     backgroundColor: "#E3E3E3",
 

@@ -22,7 +22,7 @@ import { fr } from 'date-fns/locale';
 import { useDispatch, useSelector } from "react-redux";
 import { setCuisineNotification } from "../redux/slicer/notificationSlicer";
 import { COLORS } from "../consts/colors";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("screen");
 
@@ -70,9 +70,7 @@ const CommandeItem = ({ recipe }) => {
   return (
     <Pressable
       android_ripple={{ color: "#d3d3d3", foreground: true }}
-      onPress={() =>
-        navigation.navigate("IngredientScreen", { _id: recipe._id })
-      }
+      onPress={() => navigation.navigate("IngredientScreen", { _id: recipe._id })}
       style={{
         width: "90%",
         marginVertical: 10,
@@ -118,7 +116,7 @@ const CommandeItem = ({ recipe }) => {
       >
         <MaterialIcons name="keyboard-arrow-right" size={20} color="black" />
       </View>
-    </Pressable>
+    </Pressable >
   );
 };
 
@@ -163,7 +161,7 @@ const MyRecipesScreen = ({ route }) => {
               color: "gray",
             }}
           >
-            { formatRelative(time, new Date(), { locale: fr }) }
+            {formatRelative(time, new Date(), { locale: fr })}
           </Text>
         )}
         {item.map((elmt, i) => {
@@ -174,7 +172,7 @@ const MyRecipesScreen = ({ route }) => {
   };
   return (
     <>
-      <StatusBar backgroundColor={COLORS.primary} />
+      <StatusBar backgroundColor='transparent' />
 
       {isLoading ? (
         <View style={{}}>

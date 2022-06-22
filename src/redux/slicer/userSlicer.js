@@ -13,7 +13,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      console.log("added user to redux");
       state.user = action.payload;
     },
     setAccessToken: (state, action) => {

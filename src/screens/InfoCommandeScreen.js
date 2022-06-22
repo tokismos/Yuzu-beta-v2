@@ -3,14 +3,14 @@
 
 // setSelectedIngredient we find here every selected ing que ca soit produits or from cart
 
-import {format, formatRelative} from "date-fns";
+import { format, formatRelative } from "date-fns";
 import { fr } from 'date-fns/locale';
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   Dimensions,
   Platform,
-    Image,
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -36,10 +36,10 @@ const { height, width } = Dimensions.get("screen");
 
 // Each recipe which contain ingredients
 const CartComponent = ({
-                           imgURL,
-                           thumbURL,
-                           name,
-                           ingredients,
+  imgURL,
+  thumbURL,
+  name,
+  ingredients,
   setSelectedIngredients,
   selectedIngredients,
   index,
@@ -49,12 +49,11 @@ const CartComponent = ({
 
   return (
     <>
-        <View>
-            {index === 0 && <Text style={styles.title}>{t('infoCommandeScreen_recipe')}</Text>}
-
-        </View>
+      <View>
+        {index === 0 && <Text style={styles.title}>{t('infoCommandeScreen_recipe')}</Text>}
+      </View>
       <View style={styles.cartComponent}>
-          <LazyLoadImage thumbURL={thumbURL} imgURL={imgURL} styles={styles.recipeImg} />
+        <LazyLoadImage thumbURL={thumbURL} imgURL={imgURL} styles={styles.recipeImg} />
 
         <View style={styles.titleComponent}>
           <Text
@@ -63,9 +62,9 @@ const CartComponent = ({
               fontWeight: "bold",
               textAlign: "left",
               width: "80%",
-                marginBottom: 50,
-                marginLeft: 140,
-                top: 27
+              marginBottom: 50,
+              marginLeft: 140,
+              top: 27
             }}
           >
             {name}
@@ -165,7 +164,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
               ...styles.productItemText,
               textDecorationLine: toggle ? "line-through" : null,
               textDecorationStyle: "solid",
-
+              color: toggle ? COLORS.grey : 'black',
               width: "65%",
             }}
           >
@@ -213,7 +212,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
     );
   };
   const AllProductsComponent = () => {
-      const { t } = useTranslation();
+    const { t } = useTranslation();
     return (
       <View style={styles.productsComponent}>
         <Text style={styles.title}>{t('infoCommandeScreen_addedArticle')}</Text>
@@ -295,15 +294,15 @@ const InfoCommandeScreen = ({ navigation, route }) => {
 export default InfoCommandeScreen;
 
 const styles = StyleSheet.create({
-    recipeImg: {
-        backgroundColor: COLORS.secondary,
-        height: 70,
-        borderRadius: 10,
-        aspectRatio: 1,
-        position: "absolute",
-        top: 15,
-        left: 15
-    },
+  recipeImg: {
+    backgroundColor: COLORS.secondary,
+    height: 70,
+    borderRadius: 10,
+    aspectRatio: 1,
+    position: "absolute",
+    top: 15,
+    left: 15
+  },
   separator: {
     height: 0.4,
     width: "80%",

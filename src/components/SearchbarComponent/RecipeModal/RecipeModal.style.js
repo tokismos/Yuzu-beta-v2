@@ -43,9 +43,13 @@ export default StyleSheet.create({
     width: 100,
     height: 100
   },
+  ingredientsWrapper: {
+    flexWrap: 'wrap',
+    width: '85%',
+    overflow: 'hidden',
+    maxHeight: '60%'
+  },
   ingredients: {
-    flexWrap: "wrap",
-    width: "85%",
     color: COLORS.grey
   },
   moreInfoContainer: {

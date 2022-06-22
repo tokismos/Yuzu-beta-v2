@@ -21,16 +21,10 @@ export const recipeSlice = createSlice({
       const filteredState = state.activeFilters.filter(i => !Object.keys(i).includes("tempsCuisson"));
 
       if (payload === 0) return { ...state, activeFilters: [...filteredState] };
-      return { ...state, activeFilters: [...filteredState, { tempsCuisson: payload }]}
+      return { ...state, activeFilters: [...filteredState, { tempsCuisson: payload }] }
     },
-    storeRecipes: (state, { payload }) => {
-      console.log({ state, payload })
-      return {
-        ...state,
-        recipes: payload
-      }
-    },
-    addFilter: (state, action) => ({ ...state, activeFilters: [...state.activeFilters, { [action.payload.type]: action.payload.name }]})
+    storeRecipes: (state, { payload }) => ({ ...state, recipes: payload }),
+    addFilter: (state, action) => ({ ...state, activeFilters: [...state.activeFilters, { [action.payload.type]: action.payload.name }] })
   },
 });
 
@@ -38,7 +32,7 @@ export const recipeSlice = createSlice({
 export const {
   removeFilter,
   addFilter,
-    storeRecipes,
+  storeRecipes,
   changeTime,
   resetFilters,
 } = recipeSlice.actions;
