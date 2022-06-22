@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import {
   TextInput,
   View,
+  StatusBar
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +19,7 @@ const SearchbarComponent = ({
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor='transparent' />
       <View style={styles.searchBar__unclicked} onTouchEnd={() => searchInput.current?.focus?.()}>
         <Feather
           name='search'
