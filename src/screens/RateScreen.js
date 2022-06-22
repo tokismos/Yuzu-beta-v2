@@ -3,20 +3,41 @@
 import {
   Dimensions,
   Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
-import { COLORS } from "../consts/colors";
-import { Rating, AirbnbRating } from "react-native-ratings";
-import CustomButton from "../components/CustomButton";
+
+import React, { useState } from "react";
+import { AirbnbRating } from "react-native-ratings";
 import { AntDesign } from "@expo/vector-icons";
+import {useTranslation} from "react-i18next";
+
+import { setRating } from '../helpers/db';
+import { getRecipeByName } from "../axios";
+import CustomButton from "../components/CustomButton";
+
 const { width, height } = Dimensions.get("screen");
 
 const RateScreen = ({ route, navigation }) => {
-  const { imgURL, id, name } = route?.params;
+    const [rate, setRate] = useState(0);
+  const { imgURL, name } = route?.params;
+  const { t } = useTranslation();
+
+  const handleRate = rate => {
+      setRate(rate);
+  };
+
+  const handleSubmit = async () => {
+      const recipe = await getRecipeByName(name);
+      const { _id: id } = recipe;
+
+      if (rate === 0) return;
+      const rated = await setRating(rate, id);
+
+      if (rated) navigation.goBack();
+      else alers.message('Has not rated, error')
+  }
 
   return (
     <View
@@ -75,7 +96,6 @@ const RateScreen = ({ route, navigation }) => {
           <Text
             style={{
               textAlign: "center",
-              fontWeight: "bold",
               width: "70%",
               fontWeight: "bold",
               fontSize: 20,
@@ -96,27 +116,27 @@ const RateScreen = ({ route, navigation }) => {
           }}
         >
           <Text style={{ fontSize: 26, fontWeight: "bold" }}>
-            C'etait comment ?
+              {t('rateScreen_title')}
           </Text>
 
           <AirbnbRating
             count="5"
             reviews={[
-              "1- Dégeu 🤮",
-              "2- Bof 😣",
-              "3- Moyen 😐",
-              "4- Bon 😌",
-              "5- Très bon 😋",
-              "6- Vraiment délicieux 🥰",
-            ]}
+              "rate1",
+                "rate2",
+                "rate3",
+                "rate4",
+                "rate5",
+                "rate6",
+            ].map(review => t(`rateScreen_${review}`))}
             size={40}
             defaultRating={0}
             starContainerStyle={{ marginTop: 10 }}
+            onFinishRating={handleRate}
           />
-          <CustomButton title="Valider" />
+          <CustomButton title="Valider" onPress={handleSubmit} />
           <Text style={{ textAlign: "center" }}>
-            Les notes sont anonymes et nous permettre d'améliorer tes futures
-            suggestions
+              {t('rateScreen_disclaimer')}
           </Text>
         </View>
       </View>
@@ -125,5 +145,3 @@ const RateScreen = ({ route, navigation }) => {
 };
 
 export default RateScreen;
-
-const styles = StyleSheet.create({});

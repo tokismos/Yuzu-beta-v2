@@ -17,11 +17,18 @@ const TextInputColored = forwardRef(
       leftIcon,
       secured,
       style,
+        type,
+        keyboardType
     },
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [visible, setVisible] = useState(true);
+
+    const handleChange = val => {
+        setChangeText(type === 'email' ? val.trim() : val)
+    }
+
     return (
       <TextInput
         multiline={multiline}
@@ -33,8 +40,10 @@ const TextInputColored = forwardRef(
         label={label}
         value={value}
         placeholder={placeholder}
-        onChangeText={setChangeText}
+        onChangeText={handleChange}
         secureTextEntry={secured ? visible : null}
+        textContentType={type || 'none'}
+        keyboardType={keyboardType || 'default'}
         style={{
           marginVertical: 5,
           ...style,
@@ -62,5 +71,3 @@ const TextInputColored = forwardRef(
 );
 
 export default TextInputColored;
-
-const styles = StyleSheet.create({});

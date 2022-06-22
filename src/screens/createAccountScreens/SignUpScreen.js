@@ -18,7 +18,6 @@ import PhoneInputComponent from "../../components/PhoneInputComponent";
 import CodeVerificationComponent from "../../components/CodeVerificationComponent";
 import CustomButton from "../../components/CustomButton";
 import { setAdditionalInfo } from "../../helpers/db";
-import { useNavigation } from "@react-navigation/core";
 import { setIsFirstTime } from "../../redux/slicer/userSlicer";
 import { useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next';
@@ -32,7 +31,7 @@ const EmailComponent = ({ setEmail, refe, email }) => {
         <Text style={{ fontSize: 30, fontWeight: "bold" }}>
             {t('signupScreen_enterEmail')}
         </Text>
-        <TextInputColored label="E-mail" setChangeText={setEmail} />
+        <TextInputColored type='email' keyboardType='email-address' label={t('email')} setChangeText={setEmail} />
         <Text style={styles.description}>
             {t('signupScreen_confirmEmail')}
         </Text>
@@ -55,7 +54,7 @@ const PasswordComponent = ({ setPassword, refe, password }) => {
             {t('signupScreen_createPassword')}
         </Text>
         <TextInputColored
-          label={t('sipnupScreen_password')}
+          label={t('signupScreen_password')}
           setChangeText={setPassword}
           secured
         />
@@ -97,8 +96,7 @@ const PhoneComponent = ({
         onPress={async () => {
           setIsLoading(true);
           const status = await sendPhoneVerification(fullNumber);
-          if (status == 200) {
-            console.log("yeaah 200");
+          if (status === 200) {
             refe.current.setPage(3);
             setIsLoading(false);
           } else {
@@ -177,16 +175,12 @@ const SignUpScreen = ({}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [verificationCode, setCode] = useState("");
   const [countryCode, setCountryCode] = useState("1");
   const [fullNumber, setFullNumber] = useState("");
 
   useEffect(() => {
     setFullNumber(`+${countryCode}${phoneNumber}`);
   }, [phoneNumber, countryCode]);
-  useEffect(() => {
-    console.log("vcode", verificationCode);
-  }, [verificationCode]);
 
   return (
     <View style={{ backgroundColor: "white" }}>

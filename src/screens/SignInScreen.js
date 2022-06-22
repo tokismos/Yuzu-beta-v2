@@ -1,13 +1,13 @@
 //La possibilite de se connecter avec email ou avec google,ici on fait appel aux fonctions crees dans useAuth , pour gerer la connexion
 import React, { useState } from "react";
 import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Pressable,
-  Button,
+    Dimensions,
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    Pressable,
+    Button, Alert,
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 import TextInputColored from "../components/TextInputColored";
@@ -16,6 +16,7 @@ import useAuth from "../hooks/useAuth";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import GoogleIcon from "../assets/GoogleIcon.svg";
+import {useTranslation} from "react-i18next";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -23,16 +24,26 @@ const SignInScreen = ({ route }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const {
     signIn,
     signInWithGoogle,
+      validateEmail
   } = useAuth();
+
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2].name;
-  console.log("ROUTE", prevRoute);
+
+  const handleSignin = async () => {
+      const toCheck = validateEmail(email);
+
+      if (toCheck) await signIn(email, password);
+      else Alert.alert(t('email_badFormat'));
+  }
+
   return (
     <>
-      <View style={{ height }}>
+      <View>
         <View
           style={{
             margin: 10,
@@ -49,20 +60,20 @@ const SignInScreen = ({ route }) => {
             }}
           >
             {prevRoute === "IngredientsCartScreen"
-              ? "Connectez vous pour pouvoir enregistrer vos recettes"
-              : "Connectez vous à votre compte :"}
+              ? t('signinScreen_connectFor')
+              : t('signinScreen_connectTo')}
           </Text>
-          <TextInputColored label="E-mail" setChangeText={setEmail} />
+          <TextInputColored type='email' keyboardType='email-address' label={t('email')} setChangeText={setEmail} />
           <TextInputColored
-            label="Mot de passe"
+            label={t('password')}
             setChangeText={setPassword}
             secured
           />
           <CustomButton
-            onPress={() => signIn(email, password)}
-            title="Se oiaresntaconnecter"
+            onPress={handleSignin}
+            title={t('connect')}
             style={{ alignSelf: "center", marginTop: 20 }}
-            disabled={password.length == 0}
+            disabled={password.length === 0}
           />
 
           <Pressable
@@ -75,7 +86,7 @@ const SignInScreen = ({ route }) => {
                 textDecorationLine: "underline",
               }}
             >
-              Mot de passe oublié ?{"\n"}Cliquez ici !
+                {t('signinScreen_forgotPassword')}
             </Text>
           </Pressable>
         </View>
@@ -106,7 +117,7 @@ const SignInScreen = ({ route }) => {
                 fontWeight: "bold",
               }}
             >
-              Ou bien
+                {t('signinScree_or')}
             </Text>
             <View
               style={{ flexGrow: 1, height: 0.4, backgroundColor: "gray" }}
@@ -128,7 +139,7 @@ const SignInScreen = ({ route }) => {
               <GoogleIcon width={"40"} height={"40"} />
               <View style={{ width: "85%" }}>
                 <Text style={{ ...styles.socialText, color: "#757575" }}>
-                  Se connecter avec Google
+                    {t('signinScreen_googleConnect')}
                 </Text>
               </View>
             </View>
@@ -146,26 +157,10 @@ const SignInScreen = ({ route }) => {
                   textAlign: "center",
                 }}
               >
-                Toujours pas de compte ? {"\n"}
-                Inscrivez-vous !
+                  {t('signinScreen_noAccount')}
               </Text>
             )}
           </Pressable>
-
-          {/* <AppleButton
-            buttonStyle={AppleButton.Style.WHITE}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={{
-              width: 160,
-              height: 60,
-              alignSelf: "center",
-            }}
-            onPress={() =>
-              onAppleButtonPress().then(() =>
-                console.log("Apple sign-in complete!")
-              )
-            }
-          /> */}
         </View>
       </View>
     </>

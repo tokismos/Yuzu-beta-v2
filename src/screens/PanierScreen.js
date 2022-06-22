@@ -19,14 +19,16 @@ import CartComponent from "../components/CartComponent";
 import CustomButton from "../components/CustomButton";
 import { COLORS } from "../consts/colors";
 import Toast from "react-native-simple-toast";
+import { useTranslation } from "react-i18next";
 
 const PanierScreen = ({ navigation }) => {
   const { matches } = useSelector((state) => state.matchStore);
-  const [finalCart, setFinalCart] = useState([...matches]);
+  const [finalCart, setFinalCart] = useState([...matches.map(i => ({ ...i, isChecked: true}))]);
+  const { t } = useTranslation();
 
   const validate = () => {
     //Filter just the items in cart which are checked
-    const checkedCart = finalCart.filter((item) => item.isChecked == true);
+    const checkedCart = finalCart.filter((item) => item.isChecked === true);
     //Change the quantity of every item in the cart
     checkedCart.forEach((item, index) => {
       const newQuantity = item.ingredients.map((elmt, i) => {
@@ -40,8 +42,8 @@ const PanierScreen = ({ navigation }) => {
       });
       item.ingredients = newQuantity;
     });
-    if (checkedCart.length == 0) {
-      return Toast.show("Veuillez choisir au moins une recette .", Toast.LONG);
+    if (checkedCart.length === 0) {
+      return Toast.show(t('panierScreen_atLeastOneRecipe'), Toast.LONG);
     }
     navigation.navigate("IngredientsCartScreen", { cart: checkedCart });
   };
@@ -55,13 +57,9 @@ const PanierScreen = ({ navigation }) => {
     });
   };
 
-  useEffect(() => {
-    console.log("This is final", finalCart.length);
-  }, [finalCart]);
-
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <Text style={styles.title}>Les recettes sélectionnées :</Text>
+      <Text style={styles.title}>{t('panierScreen_selectedRecipes')}</Text>
       <ScrollView>
         <View style={{ width: "100%" }}>
           <View style={{}}>
@@ -82,7 +80,7 @@ const PanierScreen = ({ navigation }) => {
       <View style={styles.bottomContainer}>
         <CustomButton
           onPress={() => navigation.goBack()}
-          title="Ajouter d'autres recettes"
+          title={t('panierScreen_addRecipes')}
           style={{
             ...styles.buttonContainer,
             backgroundColor: "#E3e3e3",
@@ -91,9 +89,9 @@ const PanierScreen = ({ navigation }) => {
           textStyle={{ fontWeight: "800", fontSize: 18, color: "black" }}
         />
         <CustomButton
-          disabled={finalCart.length == ""}
+          disabled={finalCart.length === 0}
           onPress={validate}
-          title="Valider les recettes"
+          title={t('panierScreen_validate')}
           style={{
             ...styles.buttonContainer,
             backgroundColor: COLORS.primary,

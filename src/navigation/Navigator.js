@@ -29,8 +29,9 @@ import PanierScreen from "../screens/PanierScreen";
 import IngredientCartScreen from "../screens/IngredientCartScreen";
 import SummarizeScreen from "../screens/SummarizeScreen";
 import IntroScreen from "../screens/IntroScreen";
+import SearchRecipesScreen from "../screens/SearchRecipesScreen/SearchRecipesScreen"
 import Recipe from "../assets/recipe.svg";
-import ProfileIcon from "../assets/profile.svg";
+import Search from "../assets/search.svg";
 import MyRecipes from "../assets/MyRecipes.svg";
 import { setUser } from "../redux/slicer/userSlicer";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,7 +57,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export const MyRecipesTabScreen = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Tab.Navigator
@@ -106,7 +107,7 @@ export const MyRecipesTabScreen = () => {
 };
 
 const TopTabScreen = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <TopTab.Navigator
@@ -121,22 +122,24 @@ const TopTabScreen = () => {
           tabBarLabelStyle: { fontWeight: "bold", fontSize: 14 },
         }}
       >
-        <TopTab.Screen name="Mes recettes" component={MyRecipesScreen} />
-        <TopTab.Screen name="Recettes favories" component={MyRecipesScreen} />
+        <TopTab.Screen name={t('navigator_myRecipes')} component={MyRecipesScreen} />
+        <TopTab.Screen name={t('navigator_favourites')} component={MyRecipesScreen} />
       </TopTab.Navigator>
     </SafeAreaView>
   );
 };
 
 const BottomTabScreen = () => {
+  const { t } = useTranslation();
   const { listNotification, cuisineNotification } = useSelector(
     (state) => state.notificationStore
   );
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {},
+        tabBarHideOnKeyboard: "true",
       }}
     >
       <Tab.Screen
@@ -155,12 +158,36 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              Recettes
+              {t('navigator_recipes')}
             </Text>
           ),
         }}
         name="Recettes"
         component={TinderScreen}
+      />
+      <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <Search
+              width={"90%"}
+              height={"90%"}
+              fill={focused ? COLORS.primary : "gray"}
+            />
+          ),
+          tabBarLabel: ({ focused }) => (
+            <Text
+              style={{
+                color: focused ? COLORS.primary : "gray",
+                fontWeight: focused ? "bold" : null,
+              }}
+            >
+              {t('navigator_search')}
+            </Text>
+          ),
+        }}
+        name="SearchRecipesScreen"
+        component={SearchRecipesScreen}
       />
       <Tab.Screen
         options={{
@@ -179,7 +206,7 @@ const BottomTabScreen = () => {
             fontSize: 20,
             fontWeight: "bold",
           },
-          title: "Mes listes de courses ❤️",
+          title: t('navigator_myShoppingList'),
           tabBarIcon: ({ focused }) => (
             <Entypo
               name="list"
@@ -194,7 +221,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              Liste
+              {t('navigator_list')}
             </Text>
           ),
         }}
@@ -224,38 +251,13 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              En cuisine
+              {t('navigator_toKitchen')}
             </Text>
           ),
         }}
         name="En cuisine"
         component={TopTabScreen}
       />
-      {auth().currentUser && (
-        <Tab.Screen
-          options={{
-            tabBarIcon: ({ focused }) => (
-              <ProfileIcon
-                width={"90%"}
-                height={"90%"}
-                fill={focused ? COLORS.primary : "gray"}
-              />
-            ),
-            tabBarLabel: ({ focused, color, size }) => (
-              <Text
-                style={{
-                  color: focused ? COLORS.primary : "gray",
-                  fontWeight: focused ? "bold" : null,
-                }}
-              >
-                Mon profil
-              </Text>
-            ),
-          }}
-          name="Profile"
-          component={ProfileScreen}
-        />
-      )}
     </Tab.Navigator>
   );
 };
@@ -270,10 +272,10 @@ const horizontalAnimation = {
       }),
       next
         ? next.progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 1],
-            extrapolate: "clamp",
-          })
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: "clamp",
+        })
         : 0
     );
     return {
@@ -300,6 +302,7 @@ const horizontalAnimation = {
 };
 
 const LoggedStackScreen = () => {
+  const { t } = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: true }}>
@@ -460,7 +463,7 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Mon profile",
+            headerTitle: t("profileScreen_title"),
             headerTitleAlign: "center",
             headerTintColor: "white",
 
@@ -471,8 +474,25 @@ const LoggedStackScreen = () => {
               fontSize: 22,
             },
           }}
-          name="Mon profile"
+          name="ProfileScreen"
           component={ProfileScreen}
+        />
+        <Stack.Screen
+          name="SearchRecipesScreen"
+          // name="SearchRecipesScreen"
+          options={{
+            headerShown: true,
+            headerTitle: t('searchRecipeScreen_title'),
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          component={SearchRecipesScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -480,12 +500,19 @@ const LoggedStackScreen = () => {
 };
 
 const LoginStackScreen = ({ isNotFirstTime }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{ headerShown: false, tabBarStyle: { height: 120 } }}
       >
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="TinderScreen"
+          component={BottomTabScreen}
+        />
         <Stack.Screen
           options={{
             headerShown: false,
@@ -532,13 +559,6 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
           }}
           name="ForgotPasswordScreen"
           component={ForgotPasswordScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="TinderScreen"
-          component={BottomTabScreen}
         />
         <Stack.Screen
           options={{
@@ -617,7 +637,7 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Mon profile",
+            headerTitle: t('profileScreen_title'),
             headerTitleAlign: "center",
             headerTintColor: "white",
 
@@ -628,7 +648,7 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
               fontSize: 22,
             },
           }}
-          name="Mon profile"
+          name="ProfileScreen"
           component={ProfileScreen}
         />
 
@@ -639,6 +659,22 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
           }}
           name="SignUpScreen"
           component={SignUpScreen}
+        />
+        <Stack.Screen
+          name="SearchRecipesScreen"
+          options={{
+            headerShown: true,
+            headerTitle: t('searchRecipeScreen_title'),
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          component={SearchRecipesScreen}
         />
 
         <Stack.Screen
@@ -771,7 +807,6 @@ const RootNavigation = () => {
         setIsNotFirstTime(true);
       }
       setIsLoading(false);
-      console.log("THIS IS IS FIRSTLOADING", isNotFirstTime);
     })();
 
     GoogleSignin.configure(config);

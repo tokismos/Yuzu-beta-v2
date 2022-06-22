@@ -81,7 +81,6 @@ const OnBoardingScreen = ({ navigation }) => {
           >
             <AnimatedIntroCard
               swiped={() => {
-                console.log("SWIPED");
                 setTimeout(() => {
                   ref.current.setPage(index + 1);
                   setIndex(index + 1);
@@ -96,7 +95,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-                {t('onBoardingScreen_swipeLeft')}
+                {t('onboardingScreen_swipeLeft')}
             </Text>
           </View>
         </View>
@@ -117,7 +116,6 @@ const OnBoardingScreen = ({ navigation }) => {
           >
             <AnimatedIntroCard
               swiped={() => {
-                console.log("SWIPED");
                 setTimeout(() => {
                   ref.current.setPage(index + 1);
                   setIndex(index + 1);
@@ -164,7 +162,6 @@ const OnBoardingScreen = ({ navigation }) => {
             >
               <TouchableOpacity
                 onPress={() => {
-                  console.log("SWIPED");
                   setTimeout(() => {
                     ref.current.setPage(index + 1);
                     setIndex(index + 1);
@@ -282,7 +279,7 @@ const OnBoardingScreen = ({ navigation }) => {
             />
           </View>
           <CustomButton
-            title="Start !"
+            title={t('onboardingScreen_start')}
             style={{
               width: "70%",
             }}
@@ -314,13 +311,3 @@ const OnBoardingScreen = ({ navigation }) => {
 
 export default OnBoardingScreen;
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: COLORS.primary,
-    height: "60%",
-    width: "90%",
-    justifyContent: "space-between",
-    alignSelf: "center",
-    ...COLORS.shadow,
-  },
-});

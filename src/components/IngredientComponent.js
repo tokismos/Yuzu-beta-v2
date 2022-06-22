@@ -9,6 +9,11 @@ import React, { useEffect, useState } from "react";
 import CheckBox from "@react-native-community/checkbox";
 import { COLORS } from "../consts/colors";
 
+const safeNumber = num => {
+  if (typeof num === 'string' || num instanceof String)  return parseFloat(num.replace(",", "."))
+  return num;
+}
+
 const IngredientComponent = ({
   ingredient: { name, quantity, unite, newQuantity },
   defaultNbrPersonne,
@@ -19,6 +24,8 @@ const IngredientComponent = ({
   selectedIngredients,
 }) => {
   const [toggle, setToggle] = useState();
+  const safeQuantity = safeNumber(quantity);
+  const safeNewQuantity = safeNumber(newQuantity);
 
   //To check if its saved in th asyncstorage, for whatever reason it didnt work when i put useState(isSaved)
   useEffect(() => {
@@ -35,7 +42,7 @@ const IngredientComponent = ({
               console.log("slct ing", selectedIngredients);
               setSelectedIngredients((p) => [...p, name]);
             } else {
-              setSelectedIngredients((p) => p.filter((item) => item != name));
+              setSelectedIngredients((p) => p.filter((item) => item !== name));
             }
           }
 
@@ -53,8 +60,8 @@ const IngredientComponent = ({
               textDecorationLine: toggle ? "line-through" : null,
             }}
           >
-            {!newQuantity ? quantity : newQuantity}{" "}
-            {unite == "unite" ? "" : unite}{" "}
+            {!newQuantity ? safeQuantity : safeNewQuantity}{" "}
+            {unite === "unite" ? "" : unite}{" "}
           </Text>
         ) : (
           <Text
@@ -62,8 +69,8 @@ const IngredientComponent = ({
               ...styles.textQuantity,
               textDecorationLine: toggle ? "line-through" : null,
             }}
-          >{`${+((quantity * nbrPersonne) / defaultNbrPersonne).toFixed(1)} ${
-            unite == "unite" ? "" : unite
+          >{`${+((safeQuantity * nbrPersonne) / defaultNbrPersonne).toFixed(1)} ${
+            unite === "unite" ? "" : unite
           }`}</Text>
         )}
         <View style={styles.nameContainer}>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
   Platform,
   SafeAreaView,
+    Image,
   StatusBar,
   TouchableOpacity,
 } from "react-native";
@@ -17,6 +18,7 @@ import {
   setCuisineNotification,
   setListNotification,
 } from "../redux/slicer/notificationSlicer";
+import { useTranslation } from "react-i18next";
 
 const IngredientItemComponent = ({ ingredient, title, onPress }) => {
   const [toggle, setToggle] = useState(true);
@@ -73,22 +75,33 @@ const CartItemComponent = ({ item, onPress }) => {
           marginVertical: 10,
         }}
       >
-        <View style={{ width: "15%", height: "20%", paddingLeft: 5 }}>
+        <View style={{ width: "15%", height: "20%", paddingLeft: 5, position: "relative" }}>
           <FastImage
-            style={{ aspectRatio: 1, borderRadius: 10 }}
+              style={styles.imageStyle}
+              source={{
+                  uri: Image.resolveAssetSource(require('../assets/default.jpg')).uri,
+                  priority: FastImage.priority.high,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+          />
+            <FastImage
+                style={styles.imageStyle}
+                source={{
+                    uri: item.thumbURL,
+                    priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+            />
+            <FastImage
+            style={styles.imageStyle}
             source={{
               uri: item.imgURL,
-              headers: { Authorization: "someAuthToken" },
               priority: FastImage.priority.normal,
             }}
-            resizeMode={FastImage.resizeMode.contain}
+            resizeMode={FastImage.resizeMode.cover}
           />
-          {/* <Image
-            source={{ uri: item.imgURL }}
-            style={{ aspectRatio: 1, borderRadius: 10 }}
-          /> */}
         </View>
-        <View style={{ width: "85%" }}>
+        <View style={{  width: "85%" }}>
           <Text
             style={{
               margin: 10,
@@ -116,6 +129,7 @@ const CartItemComponent = ({ item, onPress }) => {
 const IngredientCartScreen = ({ route, navigation }) => {
   const { cart } = route.params;
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   let finalCart = {};
 
   useEffect(() => {
@@ -132,7 +146,7 @@ const IngredientCartScreen = ({ route, navigation }) => {
   const onPress = (ingredient, title) => {
     if (finalCart[title].ingredients?.includes(ingredient)) {
       finalCart[title].ingredients = finalCart[title].ingredients.filter(
-        (item) => item != ingredient
+        (item) => item !== ingredient
       );
     } else {
       finalCart[title].ingredients = finalCart[title]
@@ -185,7 +199,7 @@ const IngredientCartScreen = ({ route, navigation }) => {
               routes: [{ name: "TinderScreen" }],
             });
           }}
-          title="Créer ma liste de courses"
+          title={t('ingredientCartScreen_createMyShoppingList')}
           style={{ ...styles.buttonContainer, backgroundColor: COLORS.primary }}
           textStyle={{ fontWeight: "bold", color: "white", fontSize: 18 }}
         />
@@ -197,6 +211,15 @@ const IngredientCartScreen = ({ route, navigation }) => {
 export default IngredientCartScreen;
 
 const styles = StyleSheet.create({
+    imageStyle: {
+        aspectRatio: 1,
+        borderRadius: 10,
+        position: "absolute",
+        top: 0,
+        left: 10,
+        width: 50,
+        height: 50
+    },
   buttonContainer: {
     backgroundColor: "#E3E3E3",
 

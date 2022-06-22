@@ -5,30 +5,26 @@
 import React, { Component, useEffect, useState } from "react";
 import {
   Dimensions,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   Pressable,
-  SafeAreaView,
   StatusBar,
 } from "react-native";
 import { getAllFavoris, getCommandes } from "../helpers/db";
-const { width, height } = Dimensions.get("screen");
-import { AntDesign, MaterialIcons, Entypo } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import FastImage from "react-native-fast-image";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useNavigation } from "@react-navigation/native";
-import { format } from "date-fns";
-import {
-  Colors,
-  ReloadInstructions,
-} from "react-native/Libraries/NewAppScreen";
+import { formatRelative } from "date-fns";
+import { fr } from 'date-fns/locale';
 import { useDispatch, useSelector } from "react-redux";
 import { setCuisineNotification } from "../redux/slicer/notificationSlicer";
 import { COLORS } from "../consts/colors";
+import {useTranslation} from "react-i18next";
+
+const { width } = Dimensions.get("screen");
 
 const Skeleton = ({ title }) => {
   return (
@@ -68,6 +64,7 @@ const Skeleton = ({ title }) => {
     </SkeletonPlaceholder>
   );
 };
+
 const CommandeItem = ({ recipe }) => {
   const navigation = useNavigation();
   return (
@@ -130,6 +127,8 @@ const MyRecipesScreen = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const { favorites } = useSelector((state) => state.favoritesStore);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const initialize = async () => {
     if (route.name == "Recettes favories") {
       await getAllFavoris(setRecipes);
@@ -143,16 +142,6 @@ const MyRecipesScreen = ({ route }) => {
     dispatch(setCuisineNotification(null));
     initialize();
   }, []);
-
-  //To detect when we set the commandes
-  // useEffect(() => {
-  //   if (favorites.length != 0) {
-  //     setIsLoading(false);
-  //   }
-  //   if (recipes.length != 0) {
-  //     setIsLoading(false);
-  //   }
-  // }, [recipes, favorites]);
 
   const CommandeComponent = ({ item, dateTime }) => {
     let time = new Date(dateTime);
@@ -174,7 +163,7 @@ const MyRecipesScreen = ({ route }) => {
               color: "gray",
             }}
           >
-            {`Recettes du ${format(time, "dd/MM/yyyy")}`}
+            { formatRelative(time, new Date(), { locale: fr }) }
           </Text>
         )}
         {item.map((elmt, i) => {
@@ -199,11 +188,8 @@ const MyRecipesScreen = ({ route }) => {
         <>
           {route.name != "Recettes favories" ? (
             <ScrollView style={{ flex: 1 }}>
-              <View
-                style={{ alignItems: "center", height: "90%", marginTop: 10 }}
-              >
+              <View style={{ alignItems: "center", height: "90%", marginTop: 10 }}>
                 {recipes.map((item, i) => {
-                  console.log("HA ITEN", item);
                   return (
                     <CommandeComponent
                       item={item.recipes}
@@ -232,7 +218,7 @@ const MyRecipesScreen = ({ route }) => {
                 alignItems: "center",
               }}
             >
-              <Text>Aucune recette en favoris !</Text>
+              <Text>{t('myRecipesScreen_noFavorite')}</Text>
             </View>
           )}
         </>
@@ -242,62 +228,3 @@ const MyRecipesScreen = ({ route }) => {
 };
 
 export default MyRecipesScreen;
-
-const styles = StyleSheet.create({
-  pageContainer: {
-    alignItems: "center",
-    flex: 1,
-    width: "100%",
-    backgroundColor: "#f5f4f4",
-    paddingTop: 10,
-  },
-  container: {
-    flex: 1,
-    padding: 24,
-    justifyContent: "center",
-    backgroundColor: "grey",
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-
-  TextInput: {
-    borderWidth: 1,
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 3,
-  },
-  button: {
-    height: "10%",
-    width: "90%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerContainer: {
-    backgroundColor: Colors.primary,
-    height: "10%",
-    width: "100%",
-    alignItems: "flex-end",
-    justifyContent: "center",
-    paddingRight: 20,
-    marginTop: 40,
-  },
-  bottomContainer: {
-    width: "100%",
-    height: "10%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  bottomView: {
-    width: "90%",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    transform: [{ scale: 0.8 }],
-  },
-  safeAreaView: {
-    flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-});

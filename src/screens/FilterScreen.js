@@ -1,7 +1,7 @@
 //C'est un modale qui affiche tous les differents components des filtres, et cela il s'active
 // apres clique sur chaqun des filtres
 
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Pressable, Text, View } from "react-native";
 import React, { forwardRef, useEffect, useState } from "react";
 import { COLORS } from "../consts/colors";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
@@ -16,34 +16,62 @@ import {
   addFilter,
   changeTime,
   removeFilter,
-  resetFilters,
 } from "../redux/slicer/recipeSlicer";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-const { width, height } = Dimensions.get("screen");
+const { height } = Dimensions.get("screen");
 
-const typesPlatArray = [
-  "Entrée",
-  "Plat",
-  "Sauce",
-  "Dessert",
-  "Petit dejeuner",
-  "Sucré",
-  "Salé",
-];
-const regimesArray = ["Viande", "Vegan", "Poisson", "Végétarien"];
-const materielsArray = [
-  "Four",
-  "Four à micro-ondes",
-  "Mixeur",
-  "Robot Cuiseur",
-  "Poisson",
-  "Batteur ou fouet",
-];
-const difficultyArray = ["Facile", "Moyenne", "Difficile"];
+const useCategories = () => {
+  const { t } = useTranslation();
+
+  const mealTypes = [
+    'starter',
+    'main',
+    'sauce',
+    'dessert',
+    'breakfast',
+    'sweet',
+    'salty'
+  ];
+
+  const regime = [
+    'meat',
+    'vegan',
+    'vegetarian',
+    'fish'
+  ];
+
+  const equipment = [
+    'oven',
+    'microWave',
+    'blender',
+    'foodProcessor',
+    'fish',
+    'beater'
+  ];
+
+  const difficulty = [
+    'easy',
+    'medium',
+    'hard'
+  ];
+
+  const getTranslation = arr => arr.map(type => t(`filterScreen_${type}`));
+
+  return {
+    mealTypes: getTranslation(mealTypes),
+    regime: getTranslation(regime),
+    equipment: getTranslation(equipment),
+    difficulty: getTranslation(difficulty)
+  }
+}
 
 const TypePlatsComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { mealTypes } = useCategories();
+  const { t } = useTranslation();
+
   return (
     <View
       style={{
@@ -65,7 +93,9 @@ const TypePlatsComponent = ({ activeFilters }) => {
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}> Types plats </Text>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+          {t('filterScreen_mealType')}
+        </Text>
         <Livre height={40} width={40} fill="black" />
       </View>
       <View
@@ -75,12 +105,13 @@ const TypePlatsComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {typesPlatArray.map((item, i) => {
+        {mealTypes.map((item, i) => {
           return (
             <Pressable
               key={i}
               onPress={() => {
-                if (activeFilters.some((i) => Object.values(i) == item)) {
+                console.log({ activeFilters, item })
+                if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
                   dispatch(addFilter({ type: "typePlat", name: item }));
@@ -88,7 +119,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
               }}
               style={{
                 backgroundColor: activeFilters.some(
-                  (i) => Object.values(i) == item
+                  (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
                   : "white",
@@ -103,7 +134,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i) == item)
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
@@ -122,6 +153,8 @@ const TypePlatsComponent = ({ activeFilters }) => {
 };
 const RegimeComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { regime } = useCategories();
 
   return (
     <View
@@ -143,7 +176,7 @@ const RegimeComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          Régime particulier{" "}
+          {t('filterScreen_regime')}
         </Text>
         <MaterialCommunityIcons name="fish-off" size={40} color="black" />
       </View>
@@ -154,58 +187,23 @@ const RegimeComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {regimesArray.map((item, i) => {
+        {regime.map((item, i) => {
           const [selected, setSelected] = useState(
-            activeFilters.some((i) => Object.values(i) == item)
+            activeFilters.some((i) => Object.values(i)?.[0] === item)
           );
 
           return (
             <Pressable
               key={i}
               onPress={() => {
-                if (selected) {
-                  switch (item) {
-                    case "Viande":
-                      dispatch(removeFilter("viande"));
+                const filter = item.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-                      break;
-                    case "Vegan":
-                      dispatch(removeFilter("vegan"));
+                if (selected) dispatch(removeFilter(filter))
+                else dispatch(addFilter({ type: 'category', name: filter }))
 
-                      break;
-                    case "Poisson":
-                      dispatch(removeFilter("poisson"));
-
-                      break;
-                    case "Végétarien":
-                      dispatch(removeFilter("vegetarien"));
-
-                      break;
-                  }
-                  setSelected(false);
-                } else {
-                  switch (item) {
-                    case "Viande":
-                      dispatch(addFilter({ type: "category", name: "viande" }));
-                      break;
-                    case "Vegan":
-                      dispatch(addFilter({ type: "category", name: "vegan" }));
-                      break;
-                    case "Poisson":
-                      dispatch(
-                        addFilter({ type: "category", name: "poisson" })
-                      );
-                      break;
-                    case "Végétarien":
-                      dispatch(
-                        addFilter({ type: "category", name: "vegetarien" })
-                      );
-                      break;
-                  }
-                  setSelected(true);
-                  console.log("CKLIKED");
-                }
-              }}
+                setSelected(!selected);
+              }
+              }
               style={{
                 backgroundColor: selected ? COLORS.primary : "white",
                 borderWidth: 3,
@@ -234,8 +232,11 @@ const RegimeComponent = ({ activeFilters }) => {
     </View>
   );
 };
+
 const MaterielsComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { equipment } = useCategories();
 
   return (
     <View
@@ -256,7 +257,9 @@ const MaterielsComponent = ({ activeFilters }) => {
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>Materiels</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+          {t('filterScreen_equipment')}
+        </Text>
         <Oven height={40} width={40} fill="black" />
       </View>
       <View
@@ -266,12 +269,12 @@ const MaterielsComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {materielsArray.map((item, i) => {
+        {equipment.map((item, i) => {
           return (
             <Pressable
               key={i}
               onPress={() => {
-                if (activeFilters.some((i) => Object.values(i) == item)) {
+                if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
                   dispatch(addFilter({ type: "material", name: item }));
@@ -279,7 +282,7 @@ const MaterielsComponent = ({ activeFilters }) => {
               }}
               style={{
                 backgroundColor: activeFilters.some(
-                  (i) => Object.values(i) == item
+                  (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
                   : "white",
@@ -295,7 +298,7 @@ const MaterielsComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i) == item)
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
@@ -312,8 +315,11 @@ const MaterielsComponent = ({ activeFilters }) => {
     </View>
   );
 };
+
 const DifficultyComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const { difficulty } = useCategories();
 
   return (
     <View
@@ -334,7 +340,9 @@ const DifficultyComponent = ({ activeFilters }) => {
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>Difficulté</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+          {t('filterScreen_difficulty')}
+        </Text>
         <Feather name="bar-chart" size={35} color="black" />
       </View>
       <View
@@ -344,12 +352,12 @@ const DifficultyComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {difficultyArray.map((item, i) => {
+        {difficulty.map((item, i) => {
           return (
             <Pressable
               key={i}
               onPress={() => {
-                if (activeFilters.some((i) => Object.values(i) == item)) {
+                if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
                   dispatch(addFilter({ type: "difficulty", name: item }));
@@ -357,7 +365,7 @@ const DifficultyComponent = ({ activeFilters }) => {
               }}
               style={{
                 backgroundColor: activeFilters.some(
-                  (i) => Object.values(i) == item
+                  (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
                   : "white",
@@ -373,7 +381,7 @@ const DifficultyComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i) == item)
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
@@ -390,9 +398,11 @@ const DifficultyComponent = ({ activeFilters }) => {
     </View>
   );
 };
+
 const TempsComponent = ({ setTempsHeader }) => {
   const [temps, setTemps] = useState(0);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   return (
     <View
       style={{
@@ -412,7 +422,9 @@ const TempsComponent = ({ setTempsHeader }) => {
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>Temps max </Text>
+        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
+          {t('filterScreen_maxDuration')}
+        </Text>
         {temps !== 0 && (
           <Text
             style={{
@@ -421,7 +433,7 @@ const TempsComponent = ({ setTempsHeader }) => {
               color: COLORS.primary,
             }}
           >
-            {parseInt(temps)} min
+            {t('filterScreen_minDuration', { duration: temps })}
           </Text>
         )}
         <Time height={40} width={40} fill="black" />
@@ -453,10 +465,10 @@ const TempsComponent = ({ setTempsHeader }) => {
     </View>
   );
 };
+
 const FilterScreen = forwardRef(
   ({ pressedFilter, setTemps, setCount }, ref) => {
     const { activeFilters } = useSelector((state) => state.recipeStore);
-    const dispatch = useDispatch();
     const [array, setArray] = useState([
       <TypePlatsComponent key={1} activeFilters={activeFilters} />,
       <RegimeComponent key={2} activeFilters={activeFilters} />,
@@ -464,24 +476,6 @@ const FilterScreen = forwardRef(
       <MaterielsComponent key={3} activeFilters={activeFilters} />,
     ]);
 
-    // useEffect(() => {
-    //   console.log("THOS ASE ACTIVE", activeFilters.tempsCuisson);
-    //   let arr = [];
-
-    //   setCount((p) => p);
-    //   activeFilters.forEach((i) => {
-    //     const counts = {};
-
-    //     console.log("THIS IS FOREACH I", Object.keys(i));
-    //     arr.push(...Object.keys(i));
-    //     arr.forEach((x) => {
-    //       counts[x] = (counts[x] || 0) + 1;
-    //     });
-    //     console.log("AAAAAAAAAARTRRR", arr);
-    //     setCount(counts);
-    //     console.log("counts", counts);
-    //   });
-    // }, [activeFilters]);
 
     useEffect(() => {
       if (pressedFilter === "types") {
@@ -570,5 +564,3 @@ const FilterScreen = forwardRef(
 );
 
 export default FilterScreen;
-
-const styles = StyleSheet.create({});

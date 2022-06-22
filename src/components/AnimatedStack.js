@@ -22,20 +22,21 @@ import LottieView from "lottie-react-native";
 import CustomButton from "./CustomButton";
 import { resetFilters } from "../redux/slicer/recipeSlicer";
 import { useDispatch } from "react-redux";
+import {useTranslation} from "react-i18next";
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
 
-const AnimatedStack = (props) => {
-  const { data, renderItem, onSwipeRight, onSwipeLeft } = props;
+const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swiped, setSwipe] = useState();
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
+
   const currentProfile = data[currentIndex];
   const nextProfile = data[nextIndex];
-
   const { width: screenWidth } = useWindowDimensions();
 
   const hiddenTranslateX = 2 * screenWidth;
@@ -124,16 +125,19 @@ const AnimatedStack = (props) => {
   useEffect(() => {
     setNextIndex(currentIndex + 1);
   }, [currentIndex]);
+
   useEffect(() => {
     translateX.value = 0;
   }, [nextIndex]);
+
   useEffect(() => {
-    if (swiped == "right") {
+    if (swiped === "right") {
       onSwipeRight(currentProfile);
       console.log("swiped right");
       setSwipe("");
     }
-    if (swiped == "left") {
+
+    if (swiped === "left") {
       onSwipeLeft(currentProfile);
       console.log("swiped leeft");
       setSwipe("");
@@ -142,7 +146,7 @@ const AnimatedStack = (props) => {
 
   //   To show or not the oops view if theres no data or end of list
   useEffect(() => {
-    if (data.length == currentIndex || data == "") {
+    if (data.length === currentIndex || data === "") {
       setShow(false);
     } else {
       setShow(true);
@@ -164,10 +168,10 @@ const AnimatedStack = (props) => {
           marginTop: 150,
         }}
       >
-        Les filtres réduisent le choix des recettes que vous pouvez swiper .
+        {t('animatedStack_filters_description')}
       </Text>
       <CustomButton
-        title={"Réinitialiser tous les filtres"}
+        title={t('animatedStack_filters_reset')}
         textStyle={{ textAlign: "center" }}
         style={{ padding: 5, marginTop: 10 }}
         onPress={() => {

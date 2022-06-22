@@ -1,6 +1,7 @@
 //L'ecran qui gere toutes les commandes passées,CommandeItem c'est chaque component de notre liste
 
-import { format } from "date-fns";
+import { formatRelative } from "date-fns";
+import { fr } from 'date-fns/locale';
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {
@@ -46,7 +47,7 @@ const CommandeItem = ({ item }) => {
     >
       <View style={{ width: "90%" }}>
         <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-          {t('commandsScreen_listDate', { date: format(time, "dd/MM/yyy") })}
+          {formatRelative(time, new Date(), { locale: fr })}
         </Text>
         {item.recipes.map((elmt, i) => {
           return (

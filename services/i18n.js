@@ -5,7 +5,7 @@ import {getLocales} from 'react-native-localize';
 import locales from '../locales';
 
 const acceptedLocales = ['en', 'fr', 'ge'];
-console.log({locales})
+
 const formatTranslations = () => acceptedLocales.reduce((acc, val) => {
         acc[val] = { translation: locales[val] };
         return acc

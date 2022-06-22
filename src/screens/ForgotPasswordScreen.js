@@ -1,26 +1,34 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { Dimensions, Alert, Text, View } from "react-native";
+import React, { useState, useEffect } from "react";
 import TextInputColored from "../components/TextInputColored";
 import CustomButton from "../components/CustomButton";
 import useAuth from "../hooks/useAuth";
-import { COLORS } from "../consts/colors";
+import { useTranslation } from 'react-i18next';
+
 const { height, width } = Dimensions.get("screen");
 
 const ForgotPasswordScreen = () => {
+    const { t } = useTranslation()
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [msg, setMsg] = useState(
-    "Vous receverez un email pour reinitialiser votre mot de passe"
   );
-  const { resetPassword } = useAuth();
+  const { resetPassword, validateEmail } = useAuth();
+
+  useEffect(() => {
+      setMsg(t('forgotPasswordScreen_defaultMsg'))
+  }, []);
+
   return (
     <View style={{ width, height }}>
       <View style={{ padding: 20 }}>
         <Text style={{ fontSize: 22, fontWeight: "bold" }}>
-          Saisissez votre adresse e-mail
+            {t('forgotPasswordScreen_enterYourEmail')}
         </Text>
         <TextInputColored
-          label="E-mail"
+            type='email'
+            keyboardType={'email-address'}
+          label={t('email')}
           setChangeText={(text) => {
             setEmail(text);
           }}
@@ -30,11 +38,7 @@ const ForgotPasswordScreen = () => {
           style={{
             textAlign: "center",
             marginTop: 10,
-            color:
-              msg ===
-              "Il semblerait que cette adresse e-mail n’a jamais été enregistrée !"
-                ? "red"
-                : "black",
+            color: msg === t('forgotPasswordScreen_unknownEmail') || msg === t('email_badFormat') ? "red"  : "black",
           }}
         >
           {msg}
@@ -42,16 +46,19 @@ const ForgotPasswordScreen = () => {
       </View>
       <CustomButton
         disabled={email === ""}
-        title="Envoyer"
+        title={t('forgotPasswordScreen_send')}
         isLoading={isLoading}
         onPress={async () => {
           setIsLoading(true);
           try {
-            await resetPassword(email, setMsg, setIsLoading);
+              const goodFormat = validateEmail(email);
+            if (goodFormat) await resetPassword(email, setMsg, setIsLoading, t);
+            else setMsg(t('email_badFormat'));
+
+            setIsLoading(false);
           } catch (e) {
-            console.log("WSEL HNA", e);
+            console.error(e);
           }
-          console.log("daazga gaga");
         }}
       />
     </View>
@@ -59,5 +66,3 @@ const ForgotPasswordScreen = () => {
 };
 
 export default ForgotPasswordScreen;
-
-const styles = StyleSheet.create({});

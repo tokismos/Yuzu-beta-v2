@@ -1,9 +1,10 @@
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { COLORS } from "../consts/colors";
-const { height, width } = Dimensions.get("screen");
+import { useTranslation } from "react-i18next";
 
 const MaintenanceScreen = () => {
+    const { t } = useTranslation();
   return (
     <View
       style={{
@@ -31,7 +32,7 @@ const MaintenanceScreen = () => {
           style={{ height: 100, width: 100 }}
         />
         <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
-          Nous nous excusons pour la gène occasionée, Yuzu est en maintenance.
+            {t('maintenanceScreen_sorry')}
         </Text>
       </View>
     </View>
@@ -39,5 +40,3 @@ const MaintenanceScreen = () => {
 };
 
 export default MaintenanceScreen;
-
-const styles = StyleSheet.create({});

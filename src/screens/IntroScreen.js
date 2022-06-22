@@ -1,13 +1,13 @@
 //Le tout premier ecran d'acceuil , qui nous donne le choix de sois s'inscrire,sois se connecter ou d'accepter sans insription
 
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {Image, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { COLORS } from "../consts/colors";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import CustomButton from "../components/CustomButton";
 
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const IntroScreen = ({ navigation }) => {
   const [isFirstTime, setIsFirstTime] = useState(true);
@@ -16,7 +16,7 @@ const IntroScreen = ({ navigation }) => {
   useEffect(() => {
     (async () => {
       const isFirstTimeStorage = await AsyncStorage.getItem("isFirstTime");
-      if (isFirstTimeStorage == "false") {
+      if (isFirstTimeStorage === "false") {
         setIsFirstTime(false);
       }
     })();
@@ -24,6 +24,7 @@ const IntroScreen = ({ navigation }) => {
 
   return (
     <View style={{ width: "100%", height: "100%" }}>
+      <StatusBar backgroundColor={'transparent'} />
       <Image
         source={require("../assets/intro.jpg")}
         style={{ height: "100%", width: "100%", resizeMode: "cover" }}

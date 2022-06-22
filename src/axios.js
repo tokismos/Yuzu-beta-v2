@@ -1,14 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  // baseURL: "http://9a9b-50-100-167-5.ngrok.io",
-  baseURL: "https://backend-yuzi.herokuapp.com/",
+  baseURL: "https://yuzu-backend.herokuapp.com/"
 });
 
 const getAllRecipes = async (item) => {
   //randomize data of array
   const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
+    for (let i = array?.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
@@ -19,21 +18,28 @@ const getAllRecipes = async (item) => {
     // console.log("ITEM", ...Object.values(i));
     url = url + `${Object.keys(i)}=${Object.values(i)}&`;
   });
-  // Object.keys(item).map((key) => {
-  //   console.log(`${key}=${item[key]}&`);
-  // });
-  console.log("url", url);
   let data;
   try {
     const res = await api.get(`/recipes${url}`);
     data = res.data.filter((item) => item.imgURL != null);
+
+    shuffleArray(data);
   } catch (e) {
     console.log("ERROR", e);
   }
-  shuffleArray(data);
 
   return data;
 };
+
+const getRecipeByName = async (name) => {
+  try {
+    const { data } = await api.get(`/recipes/byName/${name}`);
+
+    return data;
+  } catch (e) {
+    console.error(e)
+  }
+}
 
 const getRecipe = async (_id) => {
   try {
@@ -65,4 +71,4 @@ const incrementLeft = async (_id) => {
     console.log("ERROR, Not Incremented", e);
   }
 };
-export { getAllRecipes, getRecipe, api, incrementRight, incrementLeft };
+export { getAllRecipes, getRecipe, api, incrementRight, incrementLeft, getRecipeByName };

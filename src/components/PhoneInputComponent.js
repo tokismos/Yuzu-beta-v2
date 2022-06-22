@@ -1,8 +1,9 @@
 import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
+import {useTranslation} from "react-i18next";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const PhoneInputComponent = ({
   setCountryCode,
@@ -10,6 +11,7 @@ const PhoneInputComponent = ({
   error,
   setPhoneNumber,
 }) => {
+    const { t } = useTranslation();
   return (
     <View style={[{ width, alignItems: "center" }, { ...style }]}>
       <Text
@@ -20,7 +22,7 @@ const PhoneInputComponent = ({
           textAlign: "center",
         }}
       >
-        Entrez votre numero de téléphone
+          {t('phoneInputComponent_enterPhone')}
       </Text>
       <PhoneInput
         layout="first"
@@ -33,30 +35,25 @@ const PhoneInputComponent = ({
       />
       {error ? (
         <Text style={{ color: "red", marginTop: 10 }}>
-          Veuillez entrer un numéro de téléphone valide !{" "}
+            {t('phoneInputComponent_wrongFormat')}
         </Text>
       ) : null}
       <View style={{ margin: 40 }}>
         <Text style={{ textAlign: "left", color: "gray", fontSize: 12 }}>
-          Nous vous enverrons un code par SMS pour confirmer votre numéro de
-          téléphone.
+            {t('phoneInputComponent_confirmationDescription')}
         </Text>
         <Text
           style={{
-            textAlign: "center",
             textAlign: "left",
             marginTop: 10,
             color: "gray",
             fontSize: 12,
           }}
         >
-          Nous pouvons occasionnellement vous envoyer des messages liés au
-          service.
+            {t('phoneInputComponent_disclaimer')}
         </Text>
       </View>
     </View>
   );
 };
 export default PhoneInputComponent;
-
-const styles = StyleSheet.create({});

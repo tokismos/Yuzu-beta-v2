@@ -1,10 +1,9 @@
-import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 import React from "react";
-import { MaterialIcons, FontAwesome, Feather } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 
-import PagerView from "react-native-pager-view";
 import { COLORS } from "../consts/colors";
 import Animated, {
   interpolate,
@@ -69,7 +68,6 @@ const AnimatedIntroCard = ({ swiped, right }) => {
           },
           () => {
             runOnJS(swiped)();
-            //   runOnJS(setNextIndex)(nextIndex + 1);
           }
         );
       } else if (right && event.velocityX > 0) {
@@ -80,16 +78,12 @@ const AnimatedIntroCard = ({ swiped, right }) => {
           },
           () => {
             runOnJS(swiped)();
-            //   runOnJS(setNextIndex)(nextIndex + 1);
           }
         );
       }
-
-      //   translateX.value == hiddenTranslateX
-      //     ? runOnJS()("right")
-      //     : runOnJS(swiped)();
     },
   });
+
   const nopeStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       translateX.value,

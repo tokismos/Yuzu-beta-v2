@@ -58,24 +58,24 @@ const FeedBackScreen = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.container}>
-          <Text style={styles.titleText}>Ton FeedBack</Text>
+          <Text style={styles.titleText}>{t('feedbackScreen_yourFeedback')}</Text>
           <View style={styles.insideContainer}>
             {!auth().currentUser && (
               <TextInputColored
                 value={fullName}
-                label="Nom et Prénom"
+                label={t('feedbackScreen_nameAndSurname')}
                 setChangeText={setFullName}
               />
             )}
             <TextInputColored
               value={title}
-              label="Titre du message"
+              label={t('feedbackScreen_messageTitle')}
               setChangeText={setTitle}
             />
 
             <TextInput
               style={{ height: 200 }}
-              placeholder="Un bug, une suggestion d’amélioration, une remarque, un petit message d’encouragement..."
+              placeholder={t('feedbackScreen_messageDescription')}
               theme={{ colors: { primary: COLORS.primary } }}
               multiline
               mode="outlined"
@@ -89,7 +89,7 @@ const FeedBackScreen = () => {
               <Text
                 style={{ color: "gray", textAlign: "center", marginTop: 10 }}
               >
-                {30 - message.length} caractères manquants
+                {t('feedbackScreen_minimumLength', { min: 30 - message.length })}
               </Text>
             )}
 
@@ -97,7 +97,7 @@ const FeedBackScreen = () => {
               style={{ marginTop: 15 }}
               disabled={message.length < 30}
               isLoading={isLoading}
-              title="Envoyer"
+              title={t('send')}
               onPress={() => sendEmail(fullName, title, message)}
             />
           </View>
@@ -116,7 +116,6 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     borderRadius: 10,
-    alignSelf: "center",
     marginTop: 50,
     alignSelf: "flex-end",
   },

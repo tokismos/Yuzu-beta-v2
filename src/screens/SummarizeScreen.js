@@ -14,11 +14,14 @@ import { useDispatch } from "react-redux";
 import { COLORS } from "../consts/colors";
 import { setCommandes } from "../helpers/db";
 import { resetMatches } from "../redux/slicer/MatchSlicer";
+import {useTranslation} from "react-i18next";
 
 const SummarizeScreen = ({ route, navigation }) => {
   const [cartArray, setCartArray] = useState([]);
   const { finalCart } = route.params;
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   //To transform the cart from obj to array
   useEffect(() => {
     let arr = [];
@@ -27,6 +30,7 @@ const SummarizeScreen = ({ route, navigation }) => {
     });
     setCartArray(arr);
   }, []);
+
   const CartComponent = ({ imgURL, name, ingredients }) => {
     return (
       <>
@@ -41,7 +45,6 @@ const SummarizeScreen = ({ route, navigation }) => {
               }}
               resizeMode={FastImage.resizeMode.contain}
             />
-            {/* <Image source={{ uri: imgURL }} style={styles.image} /> */}
           </View>
           <View style={{ width: "90%" }}>
             <Text
@@ -75,13 +78,13 @@ const SummarizeScreen = ({ route, navigation }) => {
     <>
       <View style={{ height: "80%", backgroundColor: "white" }}>
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>Résumé de la commande</Text>
+          <Text style={styles.title}>{t('summarizeScreen_orderSummarize')}</Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 16 }}>Supermarché sélectionné :</Text>
+            <Text style={{ fontSize: 16 }}>{t('summarizeScreen_selectedSupermarket')}</Text>
             <Text style={{ fontSize: 22, marginLeft: 10 }}>Manor Food</Text>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 16 }}>Addresse de Livraison:</Text>
+            <Text style={{ fontSize: 16 }}>{t('summarizeScreen_deliveryAddress')}</Text>
             <View>
               <Text style={{ fontSize: 16, marginLeft: 10 }}>Tim ITTEN </Text>
               <Text style={{ fontSize: 16, marginLeft: 10 }}>
@@ -118,8 +121,7 @@ const SummarizeScreen = ({ route, navigation }) => {
       <View style={styles.bottomComponent}>
         <View style={styles.bottomContainer}>
           <Text style={styles.text}>
-            Pour continuer la commande, tu vas être redirigé vers le site de ton
-            supermarché.
+            {t('summarizeScreen_redirect')}
           </Text>
           <TouchableOpacity
             onPress={() => {
@@ -133,7 +135,7 @@ const SummarizeScreen = ({ route, navigation }) => {
             style={styles.button}
           >
             <Text style={styles.textButton}>
-              Enregistrer les recettes & continuer la commande
+              {t('summarizeScreen_saveAndContinue')}
             </Text>
           </TouchableOpacity>
         </View>
