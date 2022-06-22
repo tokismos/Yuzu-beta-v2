@@ -69,6 +69,7 @@ const IngredientComponent = ({
             style={{
               ...styles.textQuantity,
               textDecorationLine: toggle ? "line-through" : null,
+              color: toggle ? COLORS.grey : 'black'
             }}
           >{`${+((safeQuantity * nbrPersonne) / defaultNbrPersonne).toFixed(1)} ${unite === "unite" ? "" : unite
             }`}</Text>
@@ -80,6 +81,7 @@ const IngredientComponent = ({
               fontSize: 16,
               width: "75%",
               textDecorationLine: toggle ? "line-through" : null,
+              color: toggle ? COLORS.grey : 'black'
             }}
           >
             {name}
