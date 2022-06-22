@@ -1,5 +1,4 @@
 export default {
-<<<<<<< HEAD
   cancel: "Annuler",
   no_thanks: "Non, merci",
   next: "Suivant",
