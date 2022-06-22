@@ -138,7 +138,7 @@ export default {
   rateScreen_validate: "Valider",
   rateScreen_disclaimer: "Les notes sont anonymes et nous permettre d'améliorer tes futures\nsuggestions",
   searchRecipeScreen_title: "Rechercher une recette",
-  searchbarScreen_search: "Rechercher",
+  searchbarScreen_search: "Recettes ou ingrédients",
   searchItem_author: " (durch {{author}})",
   signinScreen_connectFor: "Connectez vous pour pouvoir enregistrer vos recettes",
   signinScreen_connectTo: "Connectez vous à votre compte :",
@@ -206,5 +206,7 @@ export default {
   recipeModale_moreInfo: "Plus d'information sur la recette",
   recipeModale_ingredientsLength: "{{ len }} ingrédients",
   recipeModale_preparationTotal: "{{ time }} mins",
-  recipeModale_unknownAuthor: "Chef inconnu"
+  recipeModale_unknownAuthor: "Chef inconnu",
+  recipeModale_addMatch: "Ajouter",
+  recipeModale_removeMatch: "Retirer",
 }

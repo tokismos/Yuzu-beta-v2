@@ -122,6 +122,8 @@ const TinderScreen = ({ navigation, route }) => {
   const { activeFilters } = useSelector((state) => state.recipeStore);
   const { isFirstTime } = useSelector((state) => state.userStore);
 
+
+
   const bottomSheetRef = useRef();
   const [count, setCount] = useState();
 
