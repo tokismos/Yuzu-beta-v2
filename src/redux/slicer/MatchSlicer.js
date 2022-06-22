@@ -10,6 +10,9 @@ export const matchSlice = createSlice({
   name: "matches",
   initialState,
   reducers: {
+    removeMatch: (state, action) => {
+      state.matches = [...state.matches.filter(i => i._id !== action.payload._id)]
+    },
     addMatch: (state, action) => {
       console.log("added");
       state.matches = [...state.matches, action.payload];
@@ -21,6 +24,6 @@ export const matchSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addMatch, resetMatches } = matchSlice.actions;
+export const { addMatch, resetMatches, removeMatch } = matchSlice.actions;
 
 export default matchSlice.reducer;

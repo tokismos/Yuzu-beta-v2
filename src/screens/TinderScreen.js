@@ -27,7 +27,6 @@ import { setUser } from "../redux/slicer/userSlicer";
 import { getAdditionalInfo, getFavoris } from "../helpers/db";
 import CustomButton from "../components/CustomButton";
 import { Alert } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from '@expo/vector-icons'
 
 import { setFavorites } from "../redux/slicer/favoritesSlicer";
@@ -35,77 +34,76 @@ import { storeRecipes } from "../redux/slicer/recipeSlicer";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useRef } from "react";
 import FilterScreen from "./FilterScreen";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import FastImage from "react-native-fast-image";
 import auth from "@react-native-firebase/auth";
 
-const { height, width } = Dimensions.get("screen");
+const { height } = Dimensions.get("screen");
 
-const Header = ({ bottomSheetRef, navigation, recipes, count, setPressedFilter, temps }) => {
+const Header = ({ bottomSheetRef, navigation }) => {
   const logo = Image.resolveAssetSource(require('../assets/logo.png')).uri
   return (
-      <View
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between"
+      }}
+    >
+      <View style={{
+        height: height * 0.06,
+      }}>
+        <FastImage
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between"
+            marginLeft: 20,
+            width: 100,
+            height: 55
           }}
-      >
-        <View style={{
-          height: height * 0.06,
-        }}>
-          <FastImage
-              style={{
-                marginLeft: 20,
-                width: 100,
-                height: 55
-              }}
-              source={{ uri: logo, priority: FastImage.priority.high }}
-              resizeMode={FastImage.resizeMode.contain}
-          />
-        </View>
-        <View
-            style={{
-              backgroundColor: COLORS.primary,
-              // width,
-              height: height * 0.06,
-              marginRight: 16,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-end",
-            }}
-        >
-          <Pressable
-              onPress={() => {
-                bottomSheetRef.current.open();
-              }}
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                height: "200%",
-                margin: 10
-              }}
-          >
-            <Ionicons name='filter-sharp' size={27} color='white'/>
-          </Pressable>
-          <Pressable
-              onPress={() => {
-                if (auth().currentUser) {
-                  navigation.navigate('ProfileScreen');
-                } else {
-                  navigation.navigate('IntroScreen', {headerShown: false});
-                }
-              }}
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                height: "200%",
-                margin: 10,
-              }}
-          >
-            <ProfileIcon height={24} width={24} fill="white" />
-          </Pressable>
-        </View>
+          source={{ uri: logo, priority: FastImage.priority.high }}
+          resizeMode={FastImage.resizeMode.contain}
+        />
       </View>
+      <View
+        style={{
+          backgroundColor: COLORS.primary,
+          height: height * 0.06,
+          marginRight: 16,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            bottomSheetRef.current.open();
+          }}
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: "200%",
+            margin: 10
+          }}
+        >
+          <Ionicons name='filter-sharp' size={27} color='white' />
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            if (auth().currentUser) {
+              navigation.navigate('ProfileScreen');
+            } else {
+              navigation.navigate('IntroScreen', { headerShown: false });
+            }
+          }}
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: "200%",
+            margin: 10,
+          }}
+        >
+          <ProfileIcon height={24} width={24} fill="white" />
+        </Pressable>
+      </View>
+    </View>
   );
 };
 

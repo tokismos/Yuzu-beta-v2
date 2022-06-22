@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
   TextInput,
   View,
-  Keyboard,
-  Text,
-  Button,
-  SafeAreaView,
   StyleSheet,
-  StatusBar
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';

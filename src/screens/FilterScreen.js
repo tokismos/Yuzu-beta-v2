@@ -1,7 +1,7 @@
 //C'est un modale qui affiche tous les differents components des filtres, et cela il s'active
 // apres clique sur chaqun des filtres
 
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Pressable, Text, View } from "react-native";
 import React, { forwardRef, useEffect, useState } from "react";
 import { COLORS } from "../consts/colors";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
@@ -13,9 +13,9 @@ import Slider from "@react-native-community/slider";
 import { ScrollView } from "react-native";
 import Modal from "react-native-modalbox";
 import {
-    addFilter,
-    changeTime,
-    removeFilter,
+  addFilter,
+  changeTime,
+  removeFilter,
 } from "../redux/slicer/recipeSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -23,48 +23,48 @@ import { useTranslation } from "react-i18next";
 const { height } = Dimensions.get("screen");
 
 const useCategories = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    const mealTypes = [
-        'starter',
-        'main',
-        'sauce',
-        'dessert',
-        'breakfast',
-        'sweet',
-        'salty'
-    ];
+  const mealTypes = [
+    'starter',
+    'main',
+    'sauce',
+    'dessert',
+    'breakfast',
+    'sweet',
+    'salty'
+  ];
 
-    const regime = [
-        'meat',
-        'vegan',
-        'vegetarian',
-        'fish'
-    ];
+  const regime = [
+    'meat',
+    'vegan',
+    'vegetarian',
+    'fish'
+  ];
 
-    const equipment = [
-        'oven',
-        'microWave',
-        'blender',
-        'foodProcessor',
-        'fish',
-        'beater'
-    ];
+  const equipment = [
+    'oven',
+    'microWave',
+    'blender',
+    'foodProcessor',
+    'fish',
+    'beater'
+  ];
 
-    const difficulty = [
-        'easy',
-        'medium',
-        'hard'
-    ];
+  const difficulty = [
+    'easy',
+    'medium',
+    'hard'
+  ];
 
-    const getTranslation = arr => arr.map(type => t(`filterScreen_${type}`));
+  const getTranslation = arr => arr.map(type => t(`filterScreen_${type}`));
 
-    return {
-        mealTypes: getTranslation(mealTypes),
-        regime: getTranslation(regime),
-        equipment: getTranslation(equipment),
-        difficulty: getTranslation(difficulty)
-    }
+  return {
+    mealTypes: getTranslation(mealTypes),
+    regime: getTranslation(regime),
+    equipment: getTranslation(equipment),
+    difficulty: getTranslation(difficulty)
+  }
 }
 
 const TypePlatsComponent = ({ activeFilters }) => {
@@ -94,7 +94,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-            {t('filterScreen_mealType')}
+          {t('filterScreen_mealType')}
         </Text>
         <Livre height={40} width={40} fill="black" />
       </View>
@@ -110,7 +110,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
             <Pressable
               key={i}
               onPress={() => {
-                  console.log({ activeFilters, item })
+                console.log({ activeFilters, item })
                 if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
@@ -176,7 +176,7 @@ const RegimeComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-            {t('filterScreen_regime')}
+          {t('filterScreen_regime')}
         </Text>
         <MaterialCommunityIcons name="fish-off" size={40} color="black" />
       </View>
@@ -196,13 +196,13 @@ const RegimeComponent = ({ activeFilters }) => {
             <Pressable
               key={i}
               onPress={() => {
-                  const filter = item.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const filter = item.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-                  if (selected) dispatch(removeFilter(filter))
-                  else dispatch(addFilter({ type: 'category', name: filter }))
+                if (selected) dispatch(removeFilter(filter))
+                else dispatch(addFilter({ type: 'category', name: filter }))
 
-                  setSelected(!selected);
-                }
+                setSelected(!selected);
+              }
               }
               style={{
                 backgroundColor: selected ? COLORS.primary : "white",
@@ -258,7 +258,7 @@ const MaterielsComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-            {t('filterScreen_equipment')}
+          {t('filterScreen_equipment')}
         </Text>
         <Oven height={40} width={40} fill="black" />
       </View>
@@ -341,7 +341,7 @@ const DifficultyComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-            {t('filterScreen_difficulty')}
+          {t('filterScreen_difficulty')}
         </Text>
         <Feather name="bar-chart" size={35} color="black" />
       </View>
@@ -423,7 +423,7 @@ const TempsComponent = ({ setTempsHeader }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-            {t('filterScreen_maxDuration')}
+          {t('filterScreen_maxDuration')}
         </Text>
         {temps !== 0 && (
           <Text
@@ -433,7 +433,7 @@ const TempsComponent = ({ setTempsHeader }) => {
               color: COLORS.primary,
             }}
           >
-              {t('filterScreen_minDuration', { duration: temps })}
+            {t('filterScreen_minDuration', { duration: temps })}
           </Text>
         )}
         <Time height={40} width={40} fill="black" />
