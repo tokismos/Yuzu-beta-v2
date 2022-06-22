@@ -70,9 +70,7 @@ const CommandeItem = ({ recipe }) => {
   return (
     <Pressable
       android_ripple={{ color: "#d3d3d3", foreground: true }}
-      onPress={() =>
-        navigation.navigate("IngredientScreen", { _id: recipe._id })
-      }
+      onPress={() => navigation.navigate("IngredientScreen", { _id: recipe._id })}
       style={{
         width: "90%",
         marginVertical: 10,
@@ -118,7 +116,7 @@ const CommandeItem = ({ recipe }) => {
       >
         <MaterialIcons name="keyboard-arrow-right" size={20} color="black" />
       </View>
-    </Pressable>
+    </Pressable >
   );
 };
 

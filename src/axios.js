@@ -15,13 +15,14 @@ const getAllRecipes = async (item) => {
   let url = "?";
 
   item.map((i) => {
-    // console.log("ITEM", ...Object.values(i));
     url = url + `${Object.keys(i)}=${Object.values(i)}&`;
   });
+
+  console.log({ url })
   let data;
   try {
     const res = await api.get(`/recipes${url}`);
-    data = res.data.filter((item) => item.imgURL != null);
+    data = res.data.filter((item) => item.imgURL !== null && item.thumbURL !== null && item.nbrPersonne !== null);
 
     shuffleArray(data);
   } catch (e) {
@@ -45,7 +46,6 @@ const getRecipe = async (_id) => {
   try {
     const res = await api.get(`/recipes/${_id}`);
     data = res.data;
-    console.log("DAATA", data);
   } catch (e) {
     console.log("ERROR", e);
   }
@@ -53,20 +53,14 @@ const getRecipe = async (_id) => {
 };
 const incrementRight = async (_id) => {
   try {
-    console.log("IIIIIDD", _id);
-    const res = await api.patch("/recipes/incrementRight", { _id });
-
-    console.log("It incremented");
+    await api.patch("/recipes/incrementRight", { _id });
   } catch (e) {
     console.log("ERROR, Not Incremented", e);
   }
 };
 const incrementLeft = async (_id) => {
   try {
-    console.log("lololoolo");
     await api.patch("/recipes/incrementLeft", { _id });
-
-    console.log("It incremented");
   } catch (e) {
     console.log("ERROR, Not Incremented", e);
   }
