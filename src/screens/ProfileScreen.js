@@ -25,7 +25,7 @@ import CustomButton from "../components/CustomButton";
 import { KeyboardAvoidingView } from "react-native";
 import { setUser } from "../redux/slicer/userSlicer";
 import { ToastAndroid } from "react-native";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import useAuth from '../hooks/useAuth';
 
 const { width, height } = Dimensions.get("screen");
@@ -303,7 +303,7 @@ const ProfileScreen = () => {
               style={{ marginRight: 20 }}
             />
             <Text style={{ fontSize: 18, flex: 1, color: "red" }}>
-                {t('disconnect')}
+              {t('disconnect')}
             </Text>
             <MaterialIcons name="keyboard-arrow-right" size={20} color="red" />
           </TouchableOpacity>
