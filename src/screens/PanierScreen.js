@@ -23,12 +23,12 @@ import { useTranslation } from "react-i18next";
 
 const PanierScreen = ({ navigation }) => {
   const { matches } = useSelector((state) => state.matchStore);
-  const [finalCart, setFinalCart] = useState([...matches]);
+  const [finalCart, setFinalCart] = useState([...matches.map(i => ({ ...i, isChecked: true}))]);
   const { t } = useTranslation();
 
   const validate = () => {
     //Filter just the items in cart which are checked
-    const checkedCart = finalCart.filter((item) => item.isChecked == true);
+    const checkedCart = finalCart.filter((item) => item.isChecked === true);
     //Change the quantity of every item in the cart
     checkedCart.forEach((item, index) => {
       const newQuantity = item.ingredients.map((elmt, i) => {
@@ -89,7 +89,7 @@ const PanierScreen = ({ navigation }) => {
           textStyle={{ fontWeight: "800", fontSize: 18, color: "black" }}
         />
         <CustomButton
-          disabled={finalCart.length == ""}
+          disabled={finalCart.length === 0}
           onPress={validate}
           title={t('panierScreen_validate')}
           style={{

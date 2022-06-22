@@ -24,6 +24,7 @@ import TextInputColored from "../components/TextInputColored";
 import CustomButton from "../components/CustomButton";
 import { AntDesign } from "@expo/vector-icons";
 import IngredientComponent from "../components/IngredientComponent";
+import LazyLoadImage from "../components/LazyLoadImage";
 import CheckBox from "@react-native-community/checkbox";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -31,39 +32,7 @@ import { useTranslation } from 'react-i18next';
 
 const { height, width } = Dimensions.get("screen");
 
-const LazyLoadImage = ({ thumbURL, imgURL }) => {
-    const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
-    return (
-        <>
-            <FastImage
-                style={styles.recipeImg}
-                source={{
-                    uri: defaultImage,
-                    priority: FastImage.priority.high,
-                }}
-                resizeMode={FastImage.resizeMode.cover}
-            />
 
-            <FastImage
-                style={styles.recipeImg}
-                source={{
-                    uri: thumbURL,
-                    priority: FastImage.priority.high,
-                }}
-                resizeMode={FastImage.resizeMode.cover}
-            />
-
-            <FastImage
-                style={styles.recipeImg}
-                source={{
-                    uri: imgURL,
-                    priority: FastImage.priority.high,
-                }}
-                resizeMode={FastImage.resizeMode.cover}
-            />
-        </>
-)
-}
 
 // Each recipe which contain ingredients
 const CartComponent = ({
@@ -85,7 +54,7 @@ const CartComponent = ({
 
         </View>
       <View style={styles.cartComponent}>
-          <LazyLoadImage thumbURL={thumbURL} imgURL={imgURL} styles={styles} />
+          <LazyLoadImage thumbURL={thumbURL} imgURL={imgURL} styles={styles.recipeImg} />
 
         <View style={styles.titleComponent}>
           <Text
@@ -244,9 +213,10 @@ const InfoCommandeScreen = ({ navigation, route }) => {
     );
   };
   const AllProductsComponent = () => {
+      const { t } = useTranslation();
     return (
       <View style={styles.productsComponent}>
-        <Text style={styles.title}>{t('infoCommandeScreen_alreadyAdded')}</Text>
+        <Text style={styles.title}>{t('infoCommandeScreen_addedArticle')}</Text>
 
         {products.map((item, i) => {
           return (

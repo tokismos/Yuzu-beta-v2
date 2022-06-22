@@ -15,12 +15,7 @@ import {
 } from "react-native";
 import TinderCard from "../components/TinderCard";
 import { AntDesign } from "@expo/vector-icons";
-import Oven from "../assets/oven.svg";
-import Filter from '../assets/filter.svg';
-import Search from '../assets/search.svg';
 import ProfileIcon from "../assets/profile.svg";
-import Time from "../assets/time.svg";
-import Livre from "../assets/livre.svg";
 import AnimatedStack from "../components/AnimatedStack";
 import { useDispatch, useSelector } from "react-redux";
 import { addMatch, resetMatches } from "../redux/slicer/MatchSlicer";
@@ -33,18 +28,21 @@ import { getAdditionalInfo, getFavoris } from "../helpers/db";
 import CustomButton from "../components/CustomButton";
 import { Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons'
 
 import { setFavorites } from "../redux/slicer/favoritesSlicer";
+import { storeRecipes } from "../redux/slicer/recipeSlicer";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useRef } from "react";
 import FilterScreen from "./FilterScreen";
 import {useTranslation} from "react-i18next";
 import FastImage from "react-native-fast-image";
+import auth from "@react-native-firebase/auth";
 
 const { height, width } = Dimensions.get("screen");
 
 const Header = ({ bottomSheetRef, navigation, recipes, count, setPressedFilter, temps }) => {
-  const logo = Image.resolveAssetSource(require('../assets/icon.png')).uri
+  const logo = Image.resolveAssetSource(require('../assets/logo.png')).uri
   return (
       <View
           style={{
@@ -57,8 +55,9 @@ const Header = ({ bottomSheetRef, navigation, recipes, count, setPressedFilter, 
         }}>
           <FastImage
               style={{
-                width: 50,
-                height: 50
+                marginLeft: 20,
+                width: 100,
+                height: 55
               }}
               source={{ uri: logo, priority: FastImage.priority.high }}
               resizeMode={FastImage.resizeMode.contain}
@@ -69,24 +68,12 @@ const Header = ({ bottomSheetRef, navigation, recipes, count, setPressedFilter, 
               backgroundColor: COLORS.primary,
               // width,
               height: height * 0.06,
-              marginLeft: -50,
+              marginRight: 16,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "flex-end",
             }}
         >
-          <Pressable
-              onPress={() => navigation.navigate('SearchTabbedScreen', { recipes })}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '200%',
-                margin: 10
-              }}
-          >
-
-            <Search height={20} width={20} fill="white" />
-          </Pressable>
           <Pressable
               onPress={() => {
                 bottomSheetRef.current.open();
@@ -98,11 +85,15 @@ const Header = ({ bottomSheetRef, navigation, recipes, count, setPressedFilter, 
                 margin: 10
               }}
           >
-            <Filter height={20} width={20} fill="white" />
+            <Ionicons name='filter-sharp' size={27} color='white'/>
           </Pressable>
           <Pressable
               onPress={() => {
-                navigation.navigate('ProfileScreen')
+                if (auth().currentUser) {
+                  navigation.navigate('ProfileScreen');
+                } else {
+                  navigation.navigate('IntroScreen', {headerShown: false});
+                }
               }}
               style={{
                 justifyContent: "center",
@@ -111,7 +102,7 @@ const Header = ({ bottomSheetRef, navigation, recipes, count, setPressedFilter, 
                 margin: 10,
               }}
           >
-            <ProfileIcon height={22} width={22} fill="white" />
+            <ProfileIcon height={24} width={24} fill="white" />
           </Pressable>
         </View>
       </View>
@@ -132,8 +123,6 @@ const TinderScreen = ({ navigation, route }) => {
   const { matches } = useSelector((state) => state.matchStore);
   const { activeFilters } = useSelector((state) => state.recipeStore);
   const { isFirstTime } = useSelector((state) => state.userStore);
-
-  console.log('TinderScreen', { activeFilters, matches })
 
   const bottomSheetRef = useRef();
   const [count, setCount] = useState();
@@ -156,6 +145,7 @@ const TinderScreen = ({ navigation, route }) => {
     setIsLoading(true);
     getAllRecipes(item)
       .then((result) => {
+        dispatch(storeRecipes(result));
         setRecipes(result);
         setIsLoading(false);
       })
@@ -274,7 +264,7 @@ const TinderScreen = ({ navigation, route }) => {
                   t('tinderScreen_preserveAlert_description', { matches: matches.length }),
                   [
                     {
-                      text: t('tinderScreen_preserveAlert_confirm'),
+                      text: t('tinderScreen_preserveAlert_delete'),
                       onPress: () => {
                         setShowButton(false);
                         dispatch(resetMatches());
@@ -282,8 +272,8 @@ const TinderScreen = ({ navigation, route }) => {
                       style: "cancel",
                     },
                     {
-                      text: t('tinderScreen_preserveAlert_delete'),
-                      onPress: () => setShowButton(false),
+                      text: t('tinderScreen_preserveAlert_confirm'),
+                      onPress: () => setShowButton(true),
                     },
                   ]
                 );

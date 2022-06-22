@@ -7,7 +7,6 @@ import RootNavigation from "./src/navigation/Navigator";
 import SplashScreen from "react-native-splash-screen";
 import { StripeProvider } from "@stripe/stripe-react-native";
 
-import { useTranslation } from "react-i18next";
 import './services/i18n';
 
 export default function App() {

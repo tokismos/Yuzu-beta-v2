@@ -15,6 +15,7 @@ import FastImage from "react-native-fast-image";
 import { COLORS } from "../consts/colors";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import {useTranslation} from "react-i18next";
+import LazyLoadImage from "./LazyLoadImage";
 
 const { height } = Dimensions.get("screen");
 const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
@@ -86,21 +87,7 @@ const CartComponent = ({ item, onPress, setFinalCart, index }) => {
       >
         <View style={styles.imgContainer}>
 
-            <FastImage
-                style={styles.imageStyle}
-                source={{ uri: Image.resolveAssetSource(require('../assets/default.jpg')).uri }}
-            />
-
-            <FastImage
-                style={styles.imageStyle}
-                source={{ uri: item.thumbURL }}
-            />
-
-            <FastImage
-                style={styles.imageStyle}
-                source={{ uri: item.imgURL }}
-            />
-
+            <LazyLoadImage thumbURL={item.thumbURL} style={styles.imageStyle} />
 
         </View>
         <View style={styles.midContainer}>

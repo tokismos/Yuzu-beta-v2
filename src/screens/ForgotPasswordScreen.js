@@ -1,4 +1,4 @@
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, Alert, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
 import TextInputColored from "../components/TextInputColored";
 import CustomButton from "../components/CustomButton";
@@ -13,11 +13,11 @@ const ForgotPasswordScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [msg, setMsg] = useState(
   );
-  const { resetPassword } = useAuth();
+  const { resetPassword, validateEmail } = useAuth();
 
   useEffect(() => {
       setMsg(t('forgotPasswordScreen_defaultMsg'))
-  }, [])
+  }, []);
 
   return (
     <View style={{ width, height }}>
@@ -26,6 +26,8 @@ const ForgotPasswordScreen = () => {
             {t('forgotPasswordScreen_enterYourEmail')}
         </Text>
         <TextInputColored
+            type='email'
+            keyboardType={'email-address'}
           label={t('email')}
           setChangeText={(text) => {
             setEmail(text);
@@ -36,7 +38,7 @@ const ForgotPasswordScreen = () => {
           style={{
             textAlign: "center",
             marginTop: 10,
-            color: msg === t('forgotPasswordScreen_unknownEmail')  ? "red"  : "black",
+            color: msg === t('forgotPasswordScreen_unknownEmail') || msg === t('email_badFormat') ? "red"  : "black",
           }}
         >
           {msg}
@@ -49,7 +51,11 @@ const ForgotPasswordScreen = () => {
         onPress={async () => {
           setIsLoading(true);
           try {
-            await resetPassword(email, setMsg, setIsLoading, t);
+              const goodFormat = validateEmail(email);
+            if (goodFormat) await resetPassword(email, setMsg, setIsLoading, t);
+            else setMsg(t('email_badFormat'));
+
+            setIsLoading(false);
           } catch (e) {
             console.error(e);
           }

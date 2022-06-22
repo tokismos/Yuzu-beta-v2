@@ -24,16 +24,16 @@ import { useTranslation } from 'react-i18next';
 
 const { height, width } = Dimensions.get("screen");
 const EmailComponent = ({ setEmail, refe, email }) => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
   return (
     <View style={{ width, height }}>
       <View style={{ padding: 20 }}>
         <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-          {t('signupScreen_enterEmail')}
+            {t('signupScreen_enterEmail')}
         </Text>
-        <TextInputColored label={t('email')} setChangeText={setEmail} />
+        <TextInputColored type='email' keyboardType='email-address' label={t('email')} setChangeText={setEmail} />
         <Text style={styles.description}>
-          {t('signupScreen_confirmEmail')}
+            {t('signupScreen_confirmEmail')}
         </Text>
       </View>
       <NextButton
@@ -46,12 +46,12 @@ const EmailComponent = ({ setEmail, refe, email }) => {
   );
 };
 const PasswordComponent = ({ setPassword, refe, password }) => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
   return (
     <View style={{ width }}>
       <View style={{ padding: 20 }}>
         <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-          {t('signupScreen_createPassword')}
+            {t('signupScreen_createPassword')}
         </Text>
         <TextInputColored
           label={t('signupScreen_password')}
@@ -60,7 +60,7 @@ const PasswordComponent = ({ setPassword, refe, password }) => {
         />
         {password.length < 8 && (
           <Text style={styles.description}>
-            {t('signupScreen_passwordMinimumLength')}
+              {t('signupScreen_passwordMinimumLength')}
           </Text>
         )}
       </View>
@@ -96,8 +96,7 @@ const PhoneComponent = ({
         onPress={async () => {
           setIsLoading(true);
           const status = await sendPhoneVerification(fullNumber);
-          if (status == 200) {
-            console.log("yeaah 200");
+          if (status === 200) {
             refe.current.setPage(3);
             setIsLoading(false);
           } else {
@@ -156,7 +155,7 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
   );
 };
 const NextButton = ({ onPress, disabled }) => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
   return (
     <CustomButton
       onPress={onPress}
@@ -170,22 +169,18 @@ const NextButton = ({ onPress, disabled }) => {
   );
 };
 
-const SignUpScreen = ({ }) => {
+const SignUpScreen = ({}) => {
   const ref = createRef();
   const [ind, setIndex] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [verificationCode, setCode] = useState("");
   const [countryCode, setCountryCode] = useState("1");
   const [fullNumber, setFullNumber] = useState("");
 
   useEffect(() => {
     setFullNumber(`+${countryCode}${phoneNumber}`);
   }, [phoneNumber, countryCode]);
-  useEffect(() => {
-    console.log("vcode", verificationCode);
-  }, [verificationCode]);
 
   return (
     <View style={{ backgroundColor: "white" }}>

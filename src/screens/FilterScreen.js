@@ -46,7 +46,7 @@ const useCategories = () => {
         'oven',
         'microWave',
         'blender',
-        'kitchenAid',
+        'foodProcessor',
         'fish',
         'beater'
     ];
@@ -110,7 +110,8 @@ const TypePlatsComponent = ({ activeFilters }) => {
             <Pressable
               key={i}
               onPress={() => {
-                if (activeFilters.some((i) => Object.values(i) == item)) {
+                  console.log({ activeFilters, item })
+                if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
                   dispatch(addFilter({ type: "typePlat", name: item }));
@@ -118,7 +119,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
               }}
               style={{
                 backgroundColor: activeFilters.some(
-                  (i) => Object.values(i) == item
+                  (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
                   : "white",
@@ -133,7 +134,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i) == item)
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
@@ -188,55 +189,21 @@ const RegimeComponent = ({ activeFilters }) => {
       >
         {regime.map((item, i) => {
           const [selected, setSelected] = useState(
-            activeFilters.some((i) => Object.values(i) == item)
+            activeFilters.some((i) => Object.values(i)?.[0] === item)
           );
 
           return (
             <Pressable
               key={i}
               onPress={() => {
-                if (selected) {
-                  switch (item) {
-                    case "Viande":
-                      dispatch(removeFilter("viande"));
+                  const filter = item.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-                      break;
-                    case "Vegan":
-                      dispatch(removeFilter("vegan"));
+                  if (selected) dispatch(removeFilter(filter))
+                  else dispatch(addFilter({ type: 'category', name: filter }))
 
-                      break;
-                    case "Poisson":
-                      dispatch(removeFilter("poisson"));
-
-                      break;
-                    case "Végétarien":
-                      dispatch(removeFilter("vegetarien"));
-
-                      break;
-                  }
-                  setSelected(false);
-                } else {
-                  switch (item) {
-                    case "Viande":
-                      dispatch(addFilter({ type: "category", name: "viande" }));
-                      break;
-                    case "Vegan":
-                      dispatch(addFilter({ type: "category", name: "vegan" }));
-                      break;
-                    case "Poisson":
-                      dispatch(
-                        addFilter({ type: "category", name: "poisson" })
-                      );
-                      break;
-                    case "Végétarien":
-                      dispatch(
-                        addFilter({ type: "category", name: "vegetarien" })
-                      );
-                      break;
-                  }
-                  setSelected(true);
+                  setSelected(!selected);
                 }
-              }}
+              }
               style={{
                 backgroundColor: selected ? COLORS.primary : "white",
                 borderWidth: 3,
@@ -307,7 +274,7 @@ const MaterielsComponent = ({ activeFilters }) => {
             <Pressable
               key={i}
               onPress={() => {
-                if (activeFilters.some((i) => Object.values(i) == item)) {
+                if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
                   dispatch(addFilter({ type: "material", name: item }));
@@ -315,7 +282,7 @@ const MaterielsComponent = ({ activeFilters }) => {
               }}
               style={{
                 backgroundColor: activeFilters.some(
-                  (i) => Object.values(i) == item
+                  (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
                   : "white",
@@ -331,7 +298,7 @@ const MaterielsComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i) == item)
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
@@ -390,7 +357,7 @@ const DifficultyComponent = ({ activeFilters }) => {
             <Pressable
               key={i}
               onPress={() => {
-                if (activeFilters.some((i) => Object.values(i) == item)) {
+                if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
                   dispatch(addFilter({ type: "difficulty", name: item }));
@@ -398,7 +365,7 @@ const DifficultyComponent = ({ activeFilters }) => {
               }}
               style={{
                 backgroundColor: activeFilters.some(
-                  (i) => Object.values(i) == item
+                  (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
                   : "white",
@@ -414,7 +381,7 @@ const DifficultyComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i) == item)
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
