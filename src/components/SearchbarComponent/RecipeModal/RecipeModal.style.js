@@ -47,7 +47,7 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
     width: '85%',
     overflow: 'hidden',
-    maxHeight: '60%'
+    maxHeight: '80%'
   },
   ingredients: {
     color: COLORS.grey
