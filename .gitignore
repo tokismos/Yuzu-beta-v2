@@ -72,4 +72,5 @@ web-build/
 dist/
 
 # @end expo-cli
->>>>>>> main
+ios/Yuzu.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+yuzuApp
