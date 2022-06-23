@@ -3,7 +3,8 @@ import {
   View,
   Pressable,
   FlatList,
-  SafeAreaView
+  SafeAreaView,
+  TouchableHighlight
 } from 'react-native';
 import {
   FontAwesome
@@ -15,16 +16,18 @@ import styles from './MosaicList.style';
 const MosaicList = ({ data, recipeClicked, matches }) => {
   const renderItem = ({ item }) => {
     return (
-      <View style={styles.mosaicItem}>
-        <Pressable onTouchEnd={() => recipeClicked(item)}>
-          {matches?.some?.(i => i._id === item?._id) && (
-            <>
-              <View style={styles.mosaicMatch} />
-              <FontAwesome name='heart' style={styles.mosaicStar} size={20} />
-            </>
-          ) || null}
-          <FastImage source={{ uri: item.thumbURL }} style={styles.mosaicThumbnail} />
-        </Pressable>
+      <View style={styles.mosaicItem} onStartShouldSetResponder={() => true}>
+        <TouchableHighlight onPress={() => recipeClicked(item)}>
+          <>
+            {matches?.some?.(i => i._id === item?._id) && (
+              <>
+                <View style={styles.mosaicMatch} />
+                <FontAwesome name='heart' style={styles.mosaicStar} size={20} />
+              </>
+            ) || null}
+            <FastImage source={{ uri: item.thumbURL }} style={styles.mosaicThumbnail} />
+          </>
+        </TouchableHighlight>
       </View>
     )
   }
