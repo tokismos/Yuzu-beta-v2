@@ -47,7 +47,6 @@ const useCategories = () => {
     'microWave',
     'blender',
     'foodProcessor',
-    'fish',
     'beater'
   ];
 
