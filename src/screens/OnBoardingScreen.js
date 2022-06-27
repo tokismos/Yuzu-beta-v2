@@ -4,7 +4,6 @@
 import React, { createRef, useState } from "react";
 import {
   Dimensions,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -16,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import AsyncStorage from "@react-native-community/async-storage";
 
-import { MaterialIcons, FontAwesome, Feather } from "@expo/vector-icons";
+import { MaterialIcons, Feather } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
 import PagerView from "react-native-pager-view";
 import AnimatedIntroCard from "../components/AnimatedIntroCard";
@@ -95,7 +94,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-                {t('onboardingScreen_swipeLeft')}
+              {t('onboardingScreen_swipeLeft')}
             </Text>
           </View>
         </View>
@@ -131,7 +130,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-                {t('onboardingScreen_swipeRight')}
+              {t('onboardingScreen_swipeRight')}
             </Text>
           </View>
         </View>
@@ -195,7 +194,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-                {t('onboardingScreen_clickInfo')}
+              {t('onboardingScreen_clickInfo')}
             </Text>
           </View>
         </View>
@@ -222,7 +221,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 textAlign: "center",
               }}
             >
-                {t('onboardingScreen_howTo')}
+              {t('onboardingScreen_howTo')}
             </Text>
           </View>
           <View style={{ height: "50%", width: "90%" }}>
@@ -270,7 +269,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 marginBottom: 50,
               }}
             >
-                {t('onboardingScreen_justAWord')}
+              {t('onboardingScreen_justAWord')}
             </Text>
             <YoutubePlayer
               height={"100%"}
