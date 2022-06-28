@@ -10,103 +10,34 @@ import {
   Pressable,
   StatusBar,
   SafeAreaView,
-  Image,
   ActivityIndicator,
   Alert
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import Animated, { FadeInDown } from "react-native-reanimated";
-import { AntDesign } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
-import FastImage from "react-native-fast-image";
-import auth from "@react-native-firebase/auth";
+import { useTranslation } from 'react-i18next';
 
-import { getAllRecipes, incrementLeft, incrementRight } from "../axios";
-import { getAdditionalInfo, getFavoris } from "../helpers/db";
+import { getAllRecipes, incrementLeft, incrementRight } from "../../axios";
 
-import { addMatch, resetMatches } from "../redux/slicer/MatchSlicer";
-import { setUser } from "../redux/slicer/userSlicer";
-import { setFavorites } from "../redux/slicer/favoritesSlicer";
-import { storeRecipes } from "../redux/slicer/recipeSlicer";
+import { setFavorites } from "../../redux/slicer/favoritesSlicer";
+import { storeRecipes } from "../../redux/slicer/recipeSlicer";
+import { setUser } from "../../redux/slicer/userSlicer";
+import { addMatch, resetMatches } from "../../redux/slicer/MatchSlicer";
 
-import TinderCard from "../components/TinderCard";
-import AnimatedStack from "../components/AnimatedStack";
-import CustomButton from "../components/CustomButton";
-import FilterScreen from "./FilterScreen";
+import { getAdditionalInfo, getFavoris } from "../../helpers/db";
 
-import ProfileIcon from "../assets/profile.svg";
-import FilterIcon from "../assets/filter.svg";
-import { COLORS } from "../consts/colors";
+import CustomButton from "../../components/CustomButton";
+import AnimatedStack from "../../components/AnimatedStack";
 
+import TinderCard from "./components/TinderCard";
+import Header from './components/Header/Header';
+import FilterScreen from "../FilterScreen";
+
+import { COLORS } from "../../consts/colors";
 
 const { height } = Dimensions.get("screen");
 
-const Header = ({ bottomSheetRef, navigation }) => {
-  const logo = Image.resolveAssetSource(require('../assets/logo.png')).uri
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between"
-      }}
-    >
-      <View style={{
-        height: height * 0.06,
-      }}>
-        <FastImage
-          style={{
-            marginLeft: 20,
-            width: 100,
-            height: 55
-          }}
-          source={{ uri: logo, priority: FastImage.priority.high }}
-          resizeMode={FastImage.resizeMode.contain}
-        />
-      </View>
-      <View
-        style={{
-          backgroundColor: COLORS.primary,
-          height: height * 0.06,
-          marginRight: 16,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-end",
-        }}
-      >
-        <Pressable
-          onPress={() => {
-            bottomSheetRef.current.open();
-          }}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200%",
-            margin: 10
-          }}
-        >
-          <FilterIcon height={24} width={24} fill="white" />
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            if (auth().currentUser) {
-              navigation.navigate('ProfileScreen');
-            } else {
-              navigation.navigate('IntroScreen', { headerShown: false });
-            }
-          }}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200%",
-            margin: 10,
-          }}
-        >
-          <ProfileIcon height={24} width={24} fill="white" />
-        </Pressable>
-      </View>
-    </View>
-  );
-};
 
 const TinderScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -137,6 +68,7 @@ const TinderScreen = ({ navigation }) => {
 
   useEffect(() => {
     navigation.setOptions({
+      // tabBarStyle: { display: showButton ? "none" : "flex" },
       tabBarStyle: { display: "flex" },
     });
   }, [showButton]);
@@ -145,16 +77,8 @@ const TinderScreen = ({ navigation }) => {
     setIsLoading(true);
     getAllRecipes(item)
       .then((result) => {
-        const toPreload = [];
-        const filteredRecipes = result.filter(recipe => recipe.imgURL && recipe.thumbURL && recipe.nbrPersonne);
-
-        dispatch(storeRecipes(filteredRecipes));
-        setRecipes(filteredRecipes);
-        filteredRecipes.map(recipe => {
-          if (recipe.imgURL) toPreload.push({ uri: recipe.imgURL });
-          if (recipe.thumbURL) toPreload.push({ uri: recipe.thumbURL });
-        });
-        FastImage.preload(toPreload);
+        dispatch(storeRecipes(result));
+        setRecipes(result);
         setIsLoading(false);
       })
   };
@@ -245,7 +169,6 @@ const TinderScreen = ({ navigation }) => {
                     recipe={item}
                     onSwipeRight={onSwipeRight}
                     onSwipeLeft={onSwipeLeft}
-                    setIsLoading={setIsLoading}
                   />
                 )}
                 onSwipeLeft={onSwipeLeft}

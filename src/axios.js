@@ -18,18 +18,16 @@ const getAllRecipes = async (item) => {
     url = url + `${Object.keys(i)}=${Object.values(i)}&`;
   });
 
-  console.log({ url })
-  let data;
   try {
     const res = await api.get(`/recipes${url}`);
-    data = res.data.filter((item) => item.imgURL !== null && item.thumbURL !== null && item.nbrPersonne !== null);
+    const data = res.data.filter((item) => item.imgURL !== null && item.thumbURL !== null && item.nbrPersonne !== null);
 
     shuffleArray(data);
+    return data;
   } catch (e) {
     console.log("ERROR", e);
   }
 
-  return data;
 };
 
 const getRecipeByName = async (name) => {
