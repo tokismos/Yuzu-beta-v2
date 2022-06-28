@@ -6,40 +6,40 @@ import {
   Text,
   View,
   TouchableOpacity,
-    Image
+  Image
 } from "react-native";
 import { COLORS } from "../consts/colors";
 import { useNavigation } from "@react-navigation/native";
 import FastImage from "react-native-fast-image";
 import { Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Avatar } from "react-native-paper";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const ImageFast = ({ uri, thumb }) => {
   const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
 
   return (
-      <>
-        <FastImage
-            style={styles.image}
-            source={{ uri: defaultImage, priority: FastImage.priority.high }}
-            resizeMode={FastImage.resizeMode.cover}
-        />
+    <>
+      <FastImage
+        style={styles.image}
+        source={{ uri: defaultImage, priority: FastImage.priority.high }}
+        resizeMode={FastImage.resizeMode.cover}
+      />
 
-        <FastImage
-            style={styles.image}
-            source={{ uri: thumb, priority: FastImage.priority.normal }}
-            resizeMode={FastImage.resizeMode.cover}
-            fallback
-          />
+      <FastImage
+        style={styles.image}
+        source={{ uri: thumb, priority: FastImage.priority.normal }}
+        resizeMode={FastImage.resizeMode.cover}
+        fallback
+      />
 
-        <FastImage
-            style={styles.image}
-            source={{ uri, priority: FastImage.priority.normal }}
-            fallback
-            resizeMode={FastImage.resizeMode.cover}
-        />
-      </>
+      <FastImage
+        style={styles.image}
+        source={{ uri, priority: FastImage.priority.normal }}
+        fallback
+        resizeMode={FastImage.resizeMode.cover}
+      />
+    </>
   );
 };
 

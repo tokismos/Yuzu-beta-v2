@@ -22,7 +22,7 @@ import LottieView from "lottie-react-native";
 import CustomButton from "./CustomButton";
 import { resetFilters } from "../redux/slicer/recipeSlicer";
 import { useDispatch } from "react-redux";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
