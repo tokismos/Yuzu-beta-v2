@@ -158,7 +158,7 @@ const BottomTabScreen = () => {
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
-                color: focused ? COLORS.primary : "gray",
+                color: focused ? COLORS.primary : "black",
                 fontWeight: focused ? "bold" : null,
               }}
             >
@@ -190,7 +190,7 @@ const BottomTabScreen = () => {
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
-                color: focused ? COLORS.primary : "gray",
+                color: focused ? COLORS.primary : "black",
                 fontWeight: focused ? "bold" : null,
               }}
             >
@@ -237,7 +237,7 @@ const BottomTabScreen = () => {
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
-                color: focused ? COLORS.primary : "gray",
+                color: focused ? COLORS.primary : "black",
                 fontWeight: focused ? "bold" : null,
               }}
             >
@@ -267,7 +267,7 @@ const BottomTabScreen = () => {
                   uri: icon,
                   priority: FastImage.priority.high
                 }}
-                style={{ width: 35, height: 50, marginTop: -5 }}
+                style={styles.imageIcon}
                 resizeMode={FastImage.resizeMode.contain}
               />
             )
@@ -275,7 +275,7 @@ const BottomTabScreen = () => {
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
-                color: focused ? COLORS.primary : "gray",
+                color: focused ? COLORS.primary : "black",
                 fontWeight: focused ? "bold" : null,
               }}
             >
