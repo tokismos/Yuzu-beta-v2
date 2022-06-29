@@ -177,9 +177,11 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
         display: 'flex',
         transform: [{ scale: isLoading ? 1 : 0 }],
         flex: 1,
+        height: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: -200
+        marginTop: 200,
+        marginBottom: -200
       }}>
         <LottieView
           source={require("../assets/loadingIndicator.json")}

@@ -28,6 +28,8 @@ import { setUser } from "../redux/slicer/userSlicer";
 import { setFavorites } from "../redux/slicer/favoritesSlicer";
 import { storeRecipes } from "../redux/slicer/recipeSlicer";
 
+import ProfileIcon from "../assets/profile.svg";
+import FilterIcon from "../assets/filter.svg";
 import TinderCard from "../components/TinderCard";
 import AnimatedStack from "../components/AnimatedStack";
 import CustomButton from "../components/CustomButton";
@@ -84,14 +86,7 @@ const Header = ({ bottomSheetRef, navigation }) => {
             margin: 10
           }}
         >
-          <FastImage
-            source={{
-              uri: settings,
-              priority: FastImage.priority.high
-            }}
-            style={styles.imageIcon}
-            resizeMode={FastImage.resizeMode.contain}
-          />
+          <FilterIcon height={24} width={24} fill="white" />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -108,14 +103,7 @@ const Header = ({ bottomSheetRef, navigation }) => {
             margin: 10,
           }}
         >
-          <FastImage
-            source={{
-              uri: profile,
-              priority: FastImage.priority.high
-            }}
-            style={styles.imageIcon}
-            resizeMode={FastImage.resizeMode.contain}
-          />
+          <ProfileIcon height={24} width={24} fill="white" />
         </Pressable>
       </View>
     </View>

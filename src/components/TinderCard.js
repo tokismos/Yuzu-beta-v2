@@ -1,6 +1,6 @@
 // Notre component qui affiche les tinder Swipe c'est  ici qu'on regle le design est tous ses composants
 
-import React, { useEffect } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -14,47 +14,26 @@ import { Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Avatar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
-const ImageFast = ({ uri, thumb, setIsLoading }) => {
-  // console.log('imageFast', setIsLoading);
-  // useEffect(() => {
-  //   setTimeout(() => setIsLoading(false), 10000)
-  // }, []);
-  return (
-    <>
-      <FastImage
-        style={styles.image}
-        source={{ uri: thumb, priority: FastImage.priority.high }}
-        resizeMode={FastImage.resizeMode.cover}
-        onLoadStart={(e) => console.log('thumbStarted', e)}
-        onError={(err) => {
-          console.log('error on thumb', err)
-          setIsLoading(false)
-        }}
-        onLoadEnd={() => {
-          console.log('on load thumb end')
-          setIsLoading(false)
-        }}
-        fallback
-      />
+const ImageFast = ({ uri, thumb, setIsLoading }) => (
+  <>
+    <FastImage
+      style={styles.image}
+      source={{ uri: thumb, priority: FastImage.priority.high }}
+      resizeMode={FastImage.resizeMode.cover}
+      onLoadEnd={() => setIsLoading(false)}
+      fallback
+    />
 
-      <FastImage
-        style={styles.image}
-        source={{ uri, priority: FastImage.priority.high }}
-        fallback
-        onLoadStart={(e) => console.log('imgStarted', e)}
-        onError={(err) => {
-          console.log('on imgURL error', err)
-          setIsLoading(false)
-        }}
-        onLoadEnd={() => {
-          console.log('on load imgURL ended')
-          setIsLoading(false)
-        }}
-        resizeMode={FastImage.resizeMode.cover}
-      />
-    </>
-  )
-};
+    <FastImage
+      style={{ ...styles.image, backgroundColor: 'transparent' }}
+      source={{ uri, priority: FastImage.priority.high }}
+      fallback
+      onError={() => setIsLoading(false)}
+      onLoadEnd={() => setIsLoading(false)}
+      resizeMode={FastImage.resizeMode.cover}
+    />
+  </>
+);
 
 const HeadComponent = ({ name, like }) => {
   const { t } = useTranslation();
