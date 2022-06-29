@@ -105,6 +105,7 @@ const TopTabScreen = () => {
   const { t } = useTranslation();
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar backgroundColor={COLORS.primary} />
       <TopTab.Navigator
         screenOptions={{
           headerShown: true,
@@ -141,7 +142,7 @@ const BottomTabScreen = () => {
         options={{
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(require('../assets/platJ.png')).uri;
-            const iconGrey = Image.resolveAssetSource(require('../assets/platG.png')).uri;
+            const iconGrey = Image.resolveAssetSource(require('../assets/platN.png')).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
               <FastImage
@@ -173,7 +174,7 @@ const BottomTabScreen = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(require('../assets/loupeJ.png')).uri;
-            const iconGrey = Image.resolveAssetSource(require('../assets/loupeG.png')).uri;
+            const iconGrey = Image.resolveAssetSource(require('../assets/loupeN.png')).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
               <FastImage
@@ -220,7 +221,7 @@ const BottomTabScreen = () => {
           title: t('navigator_myShoppingList'),
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(require('../assets/okJ.png')).uri;
-            const iconGrey = Image.resolveAssetSource(require('../assets/okG.png')).uri;
+            const iconGrey = Image.resolveAssetSource(require('../assets/okN.png')).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
               <FastImage
@@ -258,7 +259,7 @@ const BottomTabScreen = () => {
           },
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(require('../assets/cutJ.png')).uri;
-            const iconGrey = Image.resolveAssetSource(require('../assets/cutG.png')).uri;
+            const iconGrey = Image.resolveAssetSource(require('../assets/cutN.png')).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
               <FastImage
