@@ -15,31 +15,26 @@ import { Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Avatar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
-const ImageFast = ({ uri, thumb, setIsLoading }) => {
-  const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
+const ImageFast = ({ uri, thumb, setIsLoading }) => (
+  <>
+    <FastImage
+      style={styles.image}
+      source={{ uri: thumb, priority: FastImage.priority.normal }}
+      resizeMode={FastImage.resizeMode.cover}
+      onLoadEnd={() => setIsLoading(false)}
+      fallback
+    />
 
-
-  return (
-    <>
-
-      <FastImage
-        style={styles.image}
-        source={{ uri: thumb, priority: FastImage.priority.normal }}
-        resizeMode={FastImage.resizeMode.cover}
-        fallback
-      />
-
-      <FastImage
-        style={styles.image}
-        source={{ uri, priority: FastImage.priority.normal }}
-        fallback
-        onError={() => setIsLoading(false)}
-        onLoadEnd={() => setIsLoading(false)}
-        resizeMode={FastImage.resizeMode.cover}
-      />
-    </>
-  );
-};
+    <FastImage
+      style={styles.image}
+      source={{ uri, priority: FastImage.priority.normal }}
+      fallback
+      onError={() => setIsLoading(false)}
+      onLoadEnd={() => setIsLoading(false)}
+      resizeMode={FastImage.resizeMode.cover}
+    />
+  </>
+);
 
 const HeadComponent = ({ name, like }) => {
   const { t } = useTranslation();

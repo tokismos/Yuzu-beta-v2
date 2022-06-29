@@ -148,7 +148,7 @@ const TinderScreen = ({ navigation }) => {
     getAllRecipes(item)
       .then((result) => {
         const toPreload = [];
-        const filteredRecipes = result.filter(recipe => recipe.imgURL && recipe.thumbURL && recipe.nbrPersonne);
+        const filteredRecipes = result?.filter(recipe => recipe.imgURL && recipe.thumbURL && recipe.nbrPersonne);
 
         dispatch(storeRecipes(filteredRecipes));
         setRecipes(filteredRecipes);
@@ -158,7 +158,7 @@ const TinderScreen = ({ navigation }) => {
           if (recipe.thumbURL) toPreload.push({ uri: recipe.thumbURL });
         });
         FastImage.preload(toPreload);
-      })
+      }).catch(console.error)
   };
 
   const getAndSetFavorites = async () => {
