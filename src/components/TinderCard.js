@@ -73,7 +73,6 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft, setIsLoading }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  console.log({ setIsLoading })
   return (
     <>
       <View
