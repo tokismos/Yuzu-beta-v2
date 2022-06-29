@@ -11,7 +11,8 @@ export default StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'lightgrey',
     position: 'relative',
-    margin: 1
+    margin: 1,
+    aspectRatio: 1
   },
   mosaicMatch: {
     backgroundColor: 'black',

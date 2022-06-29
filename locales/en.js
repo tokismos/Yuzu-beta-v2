@@ -198,7 +198,7 @@ export default {
   navigator_myShoppingList: "Mes listes de courses ❤️",
   navigator_list: "Liste",
   navigator_shoppingList: "Liste de courses",
-  navigator_toKitchen: "En cuisine",
+  navigator_toKitchen: "Préparation",
   navigator_myProfile: "Mon profil",
   navigator_profile: "Profil",
   useAuth_linkSent: "Un lien de reinitialisation a été envoyé à votre adresse email. Attention, il peut être dans vos indésirables",

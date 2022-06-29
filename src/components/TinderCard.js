@@ -21,11 +21,6 @@ const ImageFast = ({ uri, thumb, setIsLoading }) => {
 
   return (
     <>
-      <FastImage
-        style={styles.image}
-        source={{ uri: defaultImage, priority: FastImage.priority.high }}
-        resizeMode={FastImage.resizeMode.cover}
-      />
 
       <FastImage
         style={styles.image}
@@ -170,6 +165,7 @@ export default TinderCard;
 
 const styles = StyleSheet.create({
   image: {
+    backgroundColor: 'lightgrey',
     aspectRatio: 1,
     opacity: 1,
     position: 'absolute',

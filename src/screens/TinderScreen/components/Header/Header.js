@@ -2,9 +2,6 @@ import React from 'react';
 import { Image, View, Pressable, Dimensions } from 'react-native';
 import FastImage from "react-native-fast-image";
 
-import ProfileIcon from "../../../../assets/profile.svg";
-import FilterIcon from "../../../../assets/filter.svg";
-
 import { COLORS } from '../../../../consts/colors'
 
 const { height } = Dimensions.get("screen");
@@ -52,7 +49,6 @@ const Header = ({ bottomSheetRef, navigation }) => {
             margin: 10
           }}
         >
-          <FilterIcon height={24} width={24} fill="white" />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -69,7 +65,9 @@ const Header = ({ bottomSheetRef, navigation }) => {
             margin: 10,
           }}
         >
-          <ProfileIcon height={24} width={24} fill="white" />
+          <FastImage
+            style={{ width: 50, height: 50 }}
+            source={{ uri: Image.resolveAssetSource(require('../../../../assets/traitb.png')) }} />
         </Pressable>
       </View>
     </View>
