@@ -174,7 +174,8 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
   ) : (
     <>
       <View style={{
-        display: isLoading ? 'flex' : 'none',
+        display: 'flex',
+        transform: [{ scale: isLoading ? 1 : 0 }],
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -185,14 +186,14 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
           autoPlay
           loop={true}
           resizeMode='cover'
-          speed={2.5}
+          speed={1}
           style={{
-            height: 200,
-            width: 200,
+            height: 150,
+            width: 150,
           }}
         />
       </View>
-      <View style={{ ...styles.root, display: isLoading ? 'none' : 'flex' }}>
+      <View style={{ ...styles.root, display: 'flex', transform: [{ scale: isLoading ? 0 : 1 }] }}>
         {nextProfile && (
           <View style={styles.nextCardContainer}>
             <Animated.View style={[styles.animatedCard, nextCardStyle]}>
