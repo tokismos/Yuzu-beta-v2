@@ -11,7 +11,6 @@ import {
   StatusBar,
   SafeAreaView,
   Image,
-  ActivityIndicator,
   Alert
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -116,7 +115,6 @@ const TinderScreen = ({ navigation }) => {
   const [pressedFilter, setPressedFilter] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [showButton, setShowButton] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [temps, setTemps] = useState(0);
 
   const { matches } = useSelector((state) => state.matchStore);
@@ -142,7 +140,6 @@ const TinderScreen = ({ navigation }) => {
   }, [showButton]);
 
   const loadData = async (item) => {
-    setIsLoading(true);
     getAllRecipes(item)
       .then((result) => {
         const toPreload = [];
@@ -155,7 +152,6 @@ const TinderScreen = ({ navigation }) => {
           if (recipe.thumbURL) toPreload.push({ uri: recipe.thumbURL });
         });
         FastImage.preload(toPreload);
-        setIsLoading(false);
       })
   };
 
@@ -233,24 +229,25 @@ const TinderScreen = ({ navigation }) => {
               paddingTop: 20,
             }}
           >
-            {isLoading ? (
-              <ActivityIndicator size="small" color="#0000ff" />
-            ) : recipes ? (
-              <AnimatedStack
-                data={recipes}
-                renderItem={({ item, onSwipeRight, onSwipeLeft }) => (
-                  <TinderCard
-                    height="100%"
-                    width="100%"
-                    recipe={item}
-                    onSwipeRight={onSwipeRight}
-                    onSwipeLeft={onSwipeLeft}
-                    setIsLoading={setIsLoading}
-                  />
-                )}
-                onSwipeLeft={onSwipeLeft}
-                onSwipeRight={onSwipeRight}
-              />
+            {recipes ? (
+              <>
+                <AnimatedStack
+                  data={recipes}
+                  renderItem={({ item, onSwipeRight, onSwipeLeft, setIsLoading }) => (
+                    <TinderCard
+                      height="100%"
+                      width="100%"
+                      recipe={item}
+                      setIsLoading={setIsLoading}
+                      onSwipeRight={onSwipeRight}
+                      onSwipeLeft={onSwipeLeft}
+                    />
+                  )
+                  }
+                  onSwipeLeft={onSwipeLeft}
+                  onSwipeRight={onSwipeRight}
+                />
+              </>
             ) : (
               <Text>{t('tinderScreen_nothingToShow')}</Text>
             )}

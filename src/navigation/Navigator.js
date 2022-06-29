@@ -784,8 +784,6 @@ const OnBoardScreen = () => {
 
 const RootNavigation = () => {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isNotFirstTime, setIsNotFirstTime] = useState(false);
 
   const { user } = useSelector((state) => state.userStore);
 
@@ -799,16 +797,6 @@ const RootNavigation = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const isNotFirstTime = await AsyncStorage.getItem("isNotFirstTime");
-      if (!isNotFirstTime) {
-        setIsNotFirstTime(false);
-      } else {
-        setIsNotFirstTime(true);
-      }
-      setIsLoading(false);
-    })();
-
     GoogleSignin.configure(config);
 
     const sub = auth().onAuthStateChanged(async (userInfo) => {
@@ -818,7 +806,6 @@ const RootNavigation = () => {
             uid: userInfo.uid,
             displayName: userInfo.displayName,
             email: userInfo.email, //if we log with FB we get the info
-            //    phoneNumber: additionalInfo,
             photoURL: userInfo.photoURL,
           })
         );
@@ -831,20 +818,9 @@ const RootNavigation = () => {
 
   return (
     <>
-      {isLoading ? (
-        <>
-          <View style={{ flex: 1, justifyContent: "center" }}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </View>
-        </>
-      ) : user ? (
-        <LoggedStackScreen />
-      ) : (
-        <LoginStackScreen />
-      )}
+      {user ? <LoggedStackScreen /> : <LoginStackScreen />}
     </>
   );
 };
 
 export default RootNavigation;
-const styles = StyleSheet.create({});

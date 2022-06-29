@@ -16,6 +16,7 @@ import Animated, {
   runOnJS,
 } from "react-native-reanimated";
 import { PanGestureHandler } from "react-native-gesture-handler";
+
 import Like from "../assets/LIKE.png";
 import Nope from "../assets/nope.png";
 import LottieView from "lottie-react-native";
@@ -29,10 +30,10 @@ const SWIPE_VELOCITY = 800;
 
 const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swiped, setSwipe] = useState();
   const [nextIndex, setNextIndex] = useState(currentIndex + 1);
-  const [show, setShow] = useState(false);
   const dispatch = useDispatch();
 
   const currentProfile = data[currentIndex];
@@ -144,16 +145,7 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
     }
   }, [swiped]);
 
-  //   To show or not the oops view if theres no data or end of list
-  useEffect(() => {
-    if (data.length === currentIndex || data === "") {
-      setShow(false);
-    } else {
-      setShow(true);
-    }
-  }, [data, currentIndex]);
-
-  return data.length < nextIndex ? (
+  return data.length < nextIndex && !isLoading ? (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <LottieView
         source={require("../assets/oops.json")}
@@ -180,50 +172,73 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
       />
     </View>
   ) : (
-    <View style={styles.root}>
-      {nextProfile && (
-        <View style={styles.nextCardContainer}>
-          <Animated.View style={[styles.animatedCard, nextCardStyle]}>
-            {renderItem({
-              item: nextProfile,
-            })}
-          </Animated.View>
-        </View>
-      )}
+    <>
+      <View style={{
+        display: isLoading ? 'flex' : 'none',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: -200
+      }}>
+        <LottieView
+          source={require("../assets/loadingIndicator.json")}
+          autoPlay
+          loop={true}
+          resizeMode='cover'
+          speed={2.5}
+          style={{
+            height: 200,
+            width: 200,
+          }}
+        />
+      </View>
+      <View style={{ ...styles.root, display: isLoading ? 'none' : 'flex' }}>
+        {nextProfile && (
+          <View style={styles.nextCardContainer}>
+            <Animated.View style={[styles.animatedCard, nextCardStyle]}>
+              {renderItem({
+                setIsLoading,
+                item: nextProfile,
+              })}
+            </Animated.View>
+          </View>
+        )}
 
-      {currentProfile && (
-        <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View style={[styles.animatedCard, cardStyle]}>
-            <Animated.Image
-              source={Like}
-              style={[styles.like, { left: 10 }, likeStyle]}
-              resizeMode="contain"
-            />
-            <Animated.Image
-              source={Nope}
-              style={[
-                styles.like,
-                { right: 5, width: 200, height: 200 },
-                nopeStyle,
-              ]}
-              resizeMode="contain"
-            />
-            {/* We added the onwspLeft and Right in render to make the current index change,there's no way to send it outside  */}
-            {renderItem({
-              item: currentProfile,
-              onSwipeRight: () => {
-                setCurrentIndex(currentIndex + 1);
-                onSwipeRight(currentProfile);
-              },
-              onSwipeLeft: () => {
-                setCurrentIndex(currentIndex + 1);
-                onSwipeLeft(currentProfile);
-              },
-            })}
-          </Animated.View>
-        </PanGestureHandler>
-      )}
-    </View>
+        {currentProfile && (
+          <PanGestureHandler onGestureEvent={gestureHandler}>
+            <Animated.View style={[styles.animatedCard, cardStyle]}>
+              <Animated.Image
+                source={Like}
+                style={[styles.like, { left: 10 }, likeStyle]}
+                resizeMode="contain"
+              />
+              <Animated.Image
+                source={Nope}
+                style={[
+                  styles.like,
+                  { right: 5, width: 200, height: 200 },
+                  nopeStyle,
+                ]}
+                resizeMode="contain"
+              />
+              {/* We added the onwspLeft and Right in render to make the current index change,there's no way to send it outside  */}
+              {renderItem({
+                item: currentProfile,
+                setIsLoading,
+                onSwipeRight: () => {
+                  setCurrentIndex(currentIndex + 1);
+                  onSwipeRight(currentProfile);
+                },
+                onSwipeLeft: () => {
+                  setCurrentIndex(currentIndex + 1);
+                  onSwipeLeft(currentProfile);
+                },
+              })}
+            </Animated.View>
+          </PanGestureHandler>
+        )}
+      </View>
+    </>
   );
 };
 

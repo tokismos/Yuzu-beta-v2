@@ -15,8 +15,9 @@ import { Feather, FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { Avatar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
-const ImageFast = ({ uri, thumb }) => {
+const ImageFast = ({ uri, thumb, setIsLoading }) => {
   const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
+
 
   return (
     <>
@@ -37,6 +38,7 @@ const ImageFast = ({ uri, thumb }) => {
         style={styles.image}
         source={{ uri, priority: FastImage.priority.normal }}
         fallback
+        onLoadEnd={() => setIsLoading(false)}
         resizeMode={FastImage.resizeMode.cover}
       />
     </>
@@ -77,7 +79,7 @@ const HeadComponent = ({ name, like }) => {
   );
 };
 
-const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
+const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft, setIsLoading }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
@@ -91,7 +93,7 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
       >
         <HeadComponent name={recipe.name} like={recipe.stats?.nbrRight} />
 
-        <ImageFast uri={recipe?.imgURL} thumb={recipe?.thumbURL} />
+        <ImageFast uri={recipe?.imgURL} thumb={recipe?.thumbURL} setIsLoading={setIsLoading} />
         <View style={styles.bottomContainer}>
           <View style={styles.descriptionContainer}>
             <View
