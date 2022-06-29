@@ -38,6 +38,7 @@ const ImageFast = ({ uri, thumb, setIsLoading }) => {
         style={styles.image}
         source={{ uri, priority: FastImage.priority.normal }}
         fallback
+        onError={() => setIsLoading(false)}
         onLoadEnd={() => setIsLoading(false)}
         resizeMode={FastImage.resizeMode.cover}
       />
