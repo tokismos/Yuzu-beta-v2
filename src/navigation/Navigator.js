@@ -1,25 +1,23 @@
 // Tout simplement c'est ici ou on gere tous les screens de la navigation
 
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Animated,
   SafeAreaView,
+  Image,
   StyleSheet,
   Text,
   StatusBar,
-  ActivityIndicator,
-  View,
 } from "react-native";
+import FastImage from "react-native-fast-image";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   MaterialCommunityIcons,
   FontAwesome,
-  Entypo,
 } from "@expo/vector-icons";
 import auth from "@react-native-firebase/auth";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import AsyncStorage from "@react-native-community/async-storage";
 import { useTranslation } from 'react-i18next';
 
 import { COLORS } from "../consts/colors";
@@ -30,9 +28,6 @@ import IngredientCartScreen from "../screens/IngredientCartScreen";
 import SummarizeScreen from "../screens/SummarizeScreen";
 import IntroScreen from "../screens/IntroScreen";
 import SearchRecipesScreen from "../screens/SearchRecipesScreen/SearchRecipesScreen"
-import Recipe from "../assets/recipe.svg";
-import Search from "../assets/search.svg";
-import MyRecipes from "../assets/MyRecipes.svg";
 import { setUser } from "../redux/slicer/userSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import SignUpScreen from "../screens/createAccountScreens/SignUpScreen";
@@ -144,13 +139,21 @@ const BottomTabScreen = () => {
     >
       <Tab.Screen
         options={{
-          tabBarIcon: ({ focused }) => (
-            <Recipe
-              width={"100%"}
-              height={"100%"}
-              fill={focused ? COLORS.primary : "gray"}
-            />
-          ),
+          tabBarIcon: ({ focused }) => {
+            const iconYellow = Image.resolveAssetSource(require('../assets/platJ.png')).uri;
+            const iconGrey = Image.resolveAssetSource(require('../assets/platG.png')).uri;
+            const icon = focused ? iconYellow : iconGrey;
+            return (
+              <FastImage
+                source={{
+                  uri: icon,
+                  priority: FastImage.priority.high
+                }}
+                style={styles.imageIcon}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            )
+          },
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
@@ -168,13 +171,21 @@ const BottomTabScreen = () => {
       <Tab.Screen
         options={{
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Search
-              width={"90%"}
-              height={"90%"}
-              fill={focused ? COLORS.primary : "gray"}
-            />
-          ),
+          tabBarIcon: ({ focused }) => {
+            const iconYellow = Image.resolveAssetSource(require('../assets/loupeJ.png')).uri;
+            const iconGrey = Image.resolveAssetSource(require('../assets/loupeG.png')).uri;
+            const icon = focused ? iconYellow : iconGrey;
+            return (
+              <FastImage
+                source={{
+                  uri: icon,
+                  priority: FastImage.priority.high
+                }}
+                style={styles.imageIcon}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            )
+          },
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
@@ -207,14 +218,22 @@ const BottomTabScreen = () => {
             fontWeight: "bold",
           },
           title: t('navigator_myShoppingList'),
-          tabBarIcon: ({ focused }) => (
-            <Entypo
-              name="list"
-              size={30}
-              color={focused ? COLORS.primary : "gray"}
-            />
-          ),
-          tabBarLabel: ({ focused, color, size }) => (
+          tabBarIcon: ({ focused }) => {
+            const iconYellow = Image.resolveAssetSource(require('../assets/okJ.png')).uri;
+            const iconGrey = Image.resolveAssetSource(require('../assets/okG.png')).uri;
+            const icon = focused ? iconYellow : iconGrey;
+            return (
+              <FastImage
+                source={{
+                  uri: icon,
+                  priority: FastImage.priority.high
+                }}
+                style={styles.imageIcon}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            )
+          },
+          tabBarLabel: ({ focused }) => (
             <Text
               style={{
                 color: focused ? COLORS.primary : "gray",
@@ -237,14 +256,22 @@ const BottomTabScreen = () => {
             top: 0,
             transform: [{ scale: 0.5 }],
           },
-          tabBarIcon: ({ focused }) => (
-            <MyRecipes
-              width={"90%"}
-              height={"90%"}
-              fill={focused ? COLORS.primary : "gray"}
-            />
-          ),
-          tabBarLabel: ({ focused, color, size }) => (
+          tabBarIcon: ({ focused }) => {
+            const iconYellow = Image.resolveAssetSource(require('../assets/cutJ.png')).uri;
+            const iconGrey = Image.resolveAssetSource(require('../assets/cutG.png')).uri;
+            const icon = focused ? iconYellow : iconGrey;
+            return (
+              <FastImage
+                source={{
+                  uri: icon,
+                  priority: FastImage.priority.high
+                }}
+                style={{ width: 35, height: 50, marginTop: -5 }}
+                resizeMode={FastImage.resizeMode.contain}
+              />
+            )
+          },
+          tabBarLabel: ({ focused }) => (
             <Text
               style={{
                 color: focused ? COLORS.primary : "gray",
@@ -499,7 +526,7 @@ const LoggedStackScreen = () => {
   );
 };
 
-const LoginStackScreen = ({ isNotFirstTime }) => {
+const LoginStackScreen = () => {
   const { t } = useTranslation();
   return (
     <NavigationContainer>
@@ -757,31 +784,6 @@ const LoginStackScreen = ({ isNotFirstTime }) => {
   );
 };
 
-const OnBoardScreen = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false, tabBarStyle: { height: 120 } }}
-      >
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="OnBoardingScreen"
-          component={OnBoardingScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="LoginStackScreen"
-          component={LoginStackScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
-
 const RootNavigation = () => {
   const dispatch = useDispatch();
 
@@ -824,3 +826,10 @@ const RootNavigation = () => {
 };
 
 export default RootNavigation;
+
+const styles = StyleSheet.create({
+  imageIcon: {
+    width: 25,
+    height: 25,
+  }
+})

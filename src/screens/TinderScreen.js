@@ -33,8 +33,6 @@ import AnimatedStack from "../components/AnimatedStack";
 import CustomButton from "../components/CustomButton";
 import FilterScreen from "./FilterScreen";
 
-import ProfileIcon from "../assets/profile.svg";
-import FilterIcon from "../assets/filter.svg";
 import { COLORS } from "../consts/colors";
 
 
@@ -42,6 +40,8 @@ const { height } = Dimensions.get("screen");
 
 const Header = ({ bottomSheetRef, navigation }) => {
   const logo = Image.resolveAssetSource(require('../assets/yuzu.png')).uri
+  const settings = Image.resolveAssetSource(require('../assets/traitB.png')).uri
+  const profile = Image.resolveAssetSource(require('../assets/tocB.png')).uri
   return (
     <View
       style={{
@@ -84,7 +84,14 @@ const Header = ({ bottomSheetRef, navigation }) => {
             margin: 10
           }}
         >
-          <FilterIcon height={24} width={24} fill="white" />
+          <FastImage
+            source={{
+              uri: settings,
+              priority: FastImage.priority.high
+            }}
+            style={styles.imageIcon}
+            resizeMode={FastImage.resizeMode.contain}
+          />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -101,7 +108,14 @@ const Header = ({ bottomSheetRef, navigation }) => {
             margin: 10,
           }}
         >
-          <ProfileIcon height={24} width={24} fill="white" />
+          <FastImage
+            source={{
+              uri: profile,
+              priority: FastImage.priority.high
+            }}
+            style={styles.imageIcon}
+            resizeMode={FastImage.resizeMode.contain}
+          />
         </Pressable>
       </View>
     </View>
@@ -120,19 +134,9 @@ const TinderScreen = ({ navigation }) => {
 
   const { matches } = useSelector((state) => state.matchStore);
   const { activeFilters } = useSelector((state) => state.recipeStore);
-  const { isFirstTime } = useSelector((state) => state.userStore);
-
-
 
   const bottomSheetRef = useRef();
   const [count, setCount] = useState();
-
-
-  useEffect(() => {
-    if (isFirstTime) {
-      navigation.navigate("OnBoardingScreen");
-    }
-  }, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -148,6 +152,7 @@ const TinderScreen = ({ navigation }) => {
 
         dispatch(storeRecipes(filteredRecipes));
         setRecipes(filteredRecipes);
+        console.log({ len: filteredRecipes.length })
         filteredRecipes.map(recipe => {
           if (recipe.imgURL) toPreload.push({ uri: recipe.imgURL });
           if (recipe.thumbURL) toPreload.push({ uri: recipe.thumbURL });
@@ -326,6 +331,10 @@ const TinderScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  imageIcon: {
+    height: 30,
+    width: 30
+  },
   pageContainer: {
     flex: 1,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,

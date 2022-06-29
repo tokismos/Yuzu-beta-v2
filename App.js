@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StatusBar, StyleSheet } from "react-native";
+import { StatusBar } from "react-native";
 
 import { store } from "./src/redux/store";
 import { Provider } from "react-redux";
