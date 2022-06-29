@@ -25,7 +25,7 @@ const MosaicList = ({ data, recipeClicked, matches }) => {
                 <FontAwesome name='heart' style={styles.mosaicStar} size={20} />
               </>
             ) || null}
-            <FastImage source={{ uri: item.thumbURL }} style={styles.mosaicThumbnail} />
+            <FastImage source={{ uri: item.thumbURL }} style={styles.mosaicThumbnail} resizeMode={FastImage.resizeMode.cover} />
           </>
         </TouchableHighlight>
       </View>
