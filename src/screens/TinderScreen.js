@@ -41,22 +41,24 @@ import { COLORS } from "../consts/colors";
 const { height } = Dimensions.get("screen");
 
 const Header = ({ bottomSheetRef, navigation }) => {
-  const logo = Image.resolveAssetSource(require('../assets/logo.png')).uri
+  const logo = Image.resolveAssetSource(require('../assets/yuzu.png')).uri
   return (
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
       }}
     >
       <View style={{
         height: height * 0.06,
+        justifyContent: 'center',
+        alignItems: 'center',
       }}>
         <FastImage
           style={{
             marginLeft: 20,
             width: 100,
-            height: 55
+            height: 50
           }}
           source={{ uri: logo, priority: FastImage.priority.high }}
           resizeMode={FastImage.resizeMode.contain}
@@ -64,7 +66,6 @@ const Header = ({ bottomSheetRef, navigation }) => {
       </View>
       <View
         style={{
-          backgroundColor: COLORS.primary,
           height: height * 0.06,
           marginRight: 16,
           flexDirection: "row",
