@@ -267,7 +267,7 @@ const BottomTabScreen = () => {
                   uri: icon,
                   priority: FastImage.priority.high
                 }}
-                style={styles.imageIcon}
+                style={{ ...styles.imageIcon, height: 30, width: 30 }}
                 resizeMode={FastImage.resizeMode.contain}
               />
             )
