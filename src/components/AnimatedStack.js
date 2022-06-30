@@ -24,6 +24,9 @@ import CustomButton from "./CustomButton";
 import { resetFilters } from "../redux/slicer/recipeSlicer";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { ActivityIndicator } from "react-native-paper";
+
+import { COLORS } from '../consts/colors';
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -183,17 +186,7 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
         marginTop: 200,
         marginBottom: -200
       }}>
-        <LottieView
-          source={require("../assets/loadingIndicator.json")}
-          autoPlay
-          loop={true}
-          resizeMode='cover'
-          speed={1}
-          style={{
-            height: 150,
-            width: 150,
-          }}
-        />
+        <ActivityIndicator size={'large'} color={COLORS.primary} />
       </View>
       <View style={{ ...styles.root, display: 'flex', transform: [{ scale: isLoading ? 0 : 1 }] }}>
         {nextProfile && (

@@ -135,7 +135,7 @@ android {
         applicationId 'com.yuzu.itten'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
+        versionCode 19
         versionName "2.1.0"
     }
     splits {
