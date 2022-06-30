@@ -16,19 +16,19 @@ import { Avatar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
 const ImageFast = ({ uri, thumb, setIsLoading }) => (<>
-  <FastImage
+  <ActivityIndicator
     style={styles.image}
+    size={'large'} color={COLORS.primary} />
+  <FastImage
     source={{ uri: thumb, priority: FastImage.priority.high }}
+    style={{ ...styles.image, backgroundColor: 'transparent' }}
     resizeMode={FastImage.resizeMode.cover}
     onLoadEnd={() => setIsLoading(false)}
-    fallback
   />
 
-  <ActivityIndicator style={{ ...styles.image, backgroundColor: 'transparent' }} size={'large'} color={COLORS.primary} />
   <FastImage
     style={{ ...styles.image, backgroundColor: 'transparent' }}
     source={{ uri, priority: FastImage.priority.high }}
-    fallback
     onError={() => setIsLoading(false)}
     onLoadEnd={() => setIsLoading(false)}
     resizeMode={FastImage.resizeMode.cover}
