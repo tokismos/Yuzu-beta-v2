@@ -56,10 +56,8 @@ const List = ({ searchPhrase, setClicked, clicked, data, navigation, openModal, 
   return (
     <SafeAreaView style={styles.container}>
       <View
-        onStartShouldSetResponder={() => {
-          setClicked(false)
-        }}>
-        {clicked && <FlatList style={{ marginBottom: height - 20 }} data={data} renderItem={renderItem} keyExtractor={(item) => item._id} />}
+        onStartShouldSetResponder={() => setClicked(false)}>
+        {clicked && <FlatList data={data} renderItem={renderItem} keyExtractor={(item) => item._id} />}
         {(!clicked || searchPhrase.trim().length === 0) && <MosaicList matches={matches} data={data} recipeClicked={openModal} />}
       </View>
     </SafeAreaView>
