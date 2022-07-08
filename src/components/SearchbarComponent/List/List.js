@@ -2,8 +2,9 @@ import React from 'react';
 import {
   FlatList,
   SafeAreaView,
-  View
+  View,
 } from 'react-native';
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useTranslation } from 'react-i18next';
 
 import SearchedItem from '../SearchedItem/SearchedItem';
@@ -26,6 +27,7 @@ const searchStr = (item, str) =>
 
 const List = ({ searchPhrase, setClicked, clicked, data, navigation, openModal, matches }) => {
   const { t } = useTranslation();
+  const height = useBottomTabBarHeight();
   const renderItem = ({ item }) => {
     const searchPhraseNormed = normalize(searchPhrase);
     const searchedIngredients = item.ingredients?.filter(({ name }) => searchStr(name, searchPhraseNormed));
@@ -57,7 +59,7 @@ const List = ({ searchPhrase, setClicked, clicked, data, navigation, openModal, 
         onStartShouldSetResponder={() => {
           setClicked(false)
         }}>
-        {clicked && <FlatList data={data} renderItem={renderItem} keyExtractor={(item) => item._id} />}
+        {clicked && <FlatList style={{ marginBottom: height - 20 }} data={data} renderItem={renderItem} keyExtractor={(item) => item._id} />}
         {(!clicked || searchPhrase.trim().length === 0) && <MosaicList matches={matches} data={data} recipeClicked={openModal} />}
       </View>
     </SafeAreaView>

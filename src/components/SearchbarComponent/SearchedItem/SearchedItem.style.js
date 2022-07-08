@@ -5,7 +5,8 @@ export default StyleSheet.create({
     margin: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'flex-start',
+    maxHeight: 70,
   },
   image: {
     height: 60,
@@ -15,23 +16,26 @@ export default StyleSheet.create({
     backgroundColor: 'lightgrey'
   },
   column: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    width: '80%'
   },
   ingredients_title: {
     flexDirection: "row",
-    alignItems: "center",
-    width: "60%",
+    justifyContent: "flex-start",
+    alignItems: 'flex-start',
+    marginTop: -4,
   },
   title: {
     fontSize: 17,
     flexWrap: 'wrap',
-    width: "60%",
     fontWeight: "bold",
     marginBottom: 5,
   },
   ingredients_list: {
     flexDirection: 'row',
-    width: "95%",
+    width: "104%",
     overflow: "hidden",
     // height: 40,
     // flexWrap: 'wrap'

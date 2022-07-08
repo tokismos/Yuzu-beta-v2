@@ -3,16 +3,25 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     margin: 0,
-    justifyContent: "space-evenly",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    marginLeft: 20,
     flexDirection: "row",
     width: "100%",
 
   },
-  searchBar__unclicked: {
+  textInput: {
+    flexDirection: 'row',
+    justifyContent: "flex-start",
+    alignItems: 'center',
+    width: '90%'
+  },
+  searchBar: {
     padding: 10,
+    marginRight: 10,
     flexDirection: "row",
-    width: "90%",
+    justifyContent: 'space-between',
+    width: "100%",
     backgroundColor: "#d9dbda",
     borderRadius: 15,
     alignItems: "center",
@@ -31,4 +40,9 @@ export default StyleSheet.create({
     marginLeft: 10,
     width: "100%",
   },
+  cancel: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 18
+  }
 })

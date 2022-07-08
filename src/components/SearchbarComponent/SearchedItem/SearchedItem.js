@@ -24,7 +24,7 @@ const SearchedItem = ({ name, searchedIngredients, ingredients, item, navigation
         style={styles.image} />
       <View style={styles.column}>
         <View style={styles.ingredients_title}>
-          <Text style={styles.title}>{name}</Text>
+          <Text numberOfLines={2} style={styles.title}>{name}</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
           {recipeInfo.map((str, i) => (
@@ -35,7 +35,7 @@ const SearchedItem = ({ name, searchedIngredients, ingredients, item, navigation
         </View>
         <View style={styles.ingredients_list}>
           {searchedIngredients?.map(
-            (ingredient) => <Text style={styles.searchedIngredient}>{`${ingredient.name}, `}</Text>
+            (ingredient, i) => <Text key={`${ingredient.name}_${i}`} style={styles.searchedIngredient}>{`${ingredient.name}, `}</Text>
           )}
           {ingredients?.filter(
             ingredient =>
@@ -43,7 +43,7 @@ const SearchedItem = ({ name, searchedIngredients, ingredients, item, navigation
                 ? searchedIngredients.some(searched => searched.name !== ingredient.name)
                 : ingredient
           ).map(
-            (ingredient, i) => <Text style={styles.ingredient}>{`${ingredient.name}${i <= ingredients.length ? ", " : ""}`}</Text>
+            (ingredient, i) => <Text key={`${ingredient.name}_filtered_${i}`} style={styles.ingredient}>{`${ingredient.name}${i <= ingredients.length ? ", " : ""}`}</Text>
           )
           }
         </View>
