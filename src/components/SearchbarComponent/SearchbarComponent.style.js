@@ -8,7 +8,6 @@ export default StyleSheet.create({
     marginLeft: 20,
     flexDirection: "row",
     width: "100%",
-
   },
   textInput: {
     flexDirection: 'row',
@@ -40,9 +39,4 @@ export default StyleSheet.create({
     marginLeft: 10,
     width: "100%",
   },
-  cancel: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 18
-  }
 })

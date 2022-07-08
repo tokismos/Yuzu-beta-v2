@@ -31,7 +31,6 @@ const SearchRecipesScreen = ({ navigation }) => {
       <SearchbarComponent
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
-        clicked={clicked}
         setClicked={setClicked}
       />
       <List

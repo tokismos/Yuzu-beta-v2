@@ -140,8 +140,7 @@ const TinderScreen = ({ navigation }) => {
 
         dispatch(storeRecipes(filteredRecipes));
         setRecipes(filteredRecipes);
-        console.log({ len: filteredRecipes.length })
-        filteredRecipes.map(recipe => {
+        filteredRecipes?.map(recipe => {
           if (recipe.imgURL) toPreload.push({ uri: recipe.imgURL });
           if (recipe.thumbURL) toPreload.push({ uri: recipe.thumbURL });
         });
