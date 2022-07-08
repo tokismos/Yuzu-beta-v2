@@ -69,7 +69,6 @@ const Header = ({ bottomSheetRef, navigation }) => {
       <View
         style={{
           height: height * 0.06,
-          marginRight: 16,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-end",
@@ -83,7 +82,7 @@ const Header = ({ bottomSheetRef, navigation }) => {
             justifyContent: "center",
             alignItems: "center",
             height: "200%",
-            margin: 10
+            marginRight: 24
           }}
         >
           <FilterIcon height={24} width={24} fill="white" />
@@ -100,7 +99,7 @@ const Header = ({ bottomSheetRef, navigation }) => {
             justifyContent: "center",
             alignItems: "center",
             height: "200%",
-            margin: 10,
+            marginRight: 24,
           }}
         >
           <ProfileIcon height={24} width={24} fill="white" />
