@@ -3,8 +3,7 @@ import {
   TextInput,
   View,
   StatusBar,
-  TouchableHighlight,
-  Keyboard,
+  TouchableOpacity,
 } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +26,6 @@ const SearchbarComponent = ({
   }
 
   const handleBlur = () => {
-    Keyboard.dismiss();
     searchInput.current?.blur?.();
     setIsFocused(false);
   }
@@ -54,15 +52,15 @@ const SearchbarComponent = ({
           />
         </View>
         {isFocused &&
-          <View>
-            <TouchableHighlight onPress={() => setSearchPhrase('')}>
+          <>
+            <TouchableOpacity onPress={() => setSearchPhrase('')}>
               <Ionicons
                 name='close-circle'
                 size={20}
                 color={'grey'}
               />
-            </TouchableHighlight>
-          </View>
+            </TouchableOpacity>
+          </>
         }
       </View>
     </View>

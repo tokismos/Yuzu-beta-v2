@@ -2,6 +2,7 @@ import React from 'react';
 import {
   FlatList,
   SafeAreaView,
+  Keyboard,
   View,
 } from 'react-native';
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
