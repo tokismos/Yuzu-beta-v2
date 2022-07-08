@@ -3,10 +3,8 @@ import {
   TextInput,
   View,
   StatusBar,
-  TouchableWithoutFeedback,
   TouchableHighlight,
   Keyboard,
-  Text
 } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -29,22 +27,21 @@ const SearchbarComponent = ({
   }
 
   const handleBlur = () => {
+    Keyboard.dismiss();
     searchInput.current?.blur?.();
     setIsFocused(false);
   }
 
   return (
-    <View style={{
-      ...styles.container,
-    }}>
+    <View style={styles.container}>
       <StatusBar backgroundColor='black' />
-      <View style={{ ...styles.searchBar, width: isFocused ? '80%' : '95%' }} >
+      <View style={styles.searchBar} >
         <View style={styles.textInput} onTouchEnd={handleFocus}>
           <Feather
             name='search'
             size={20}
             color='black'
-            style={{ marginLeft: 1 }}
+            style={{ marginLeft: 1, marginRight: 5 }}
           />
           <TextInput
             ref={searchInput}
@@ -68,11 +65,6 @@ const SearchbarComponent = ({
           </View>
         }
       </View>
-      {isFocused &&
-        <TouchableHighlight activeOpacity={0.3} style={styles.cancel} onPress={handleBlur}>
-          <Text>{t('cancel')}</Text>
-        </TouchableHighlight>
-      }
     </View>
   )
 }

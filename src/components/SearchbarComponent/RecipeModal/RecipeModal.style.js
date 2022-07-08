@@ -67,6 +67,6 @@ export default StyleSheet.create({
   },
   button: {
     width: '100%',
-    borderRadius: 5
+    borderRadius: 5,
   }
 })

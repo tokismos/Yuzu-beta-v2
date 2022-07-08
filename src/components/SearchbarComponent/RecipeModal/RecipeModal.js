@@ -49,7 +49,7 @@ const RecipeModal = forwardRef((props, ref) => {
       backdrop={true}
       ref={ref}
       isOpen={false}
-      backdropOpacity={0}
+      backdropOpacity={.5}
     >
       <View style={styles.mainContainer}>
         <View>
@@ -88,7 +88,7 @@ const RecipeModal = forwardRef((props, ref) => {
             </View>
           </View>
         </View>
-        <View>
+        <View style={{ marginBottom: 20 }}>
           <Pressable
             style={{ ...styles.moreInfoContainer, ...styles.row }}
             onTouchEnd={() => navigation.navigate('IngredientScreen', { recipe: item })}
@@ -106,6 +106,7 @@ const RecipeModal = forwardRef((props, ref) => {
               onPress={itsAMatch ? handleRemoveMatch : handleAddMatch}
               title={t(`recipeModale_${itsAMatch ? 'remove' : 'add'}Match`)}
               style={{ ...styles.button, backgroundColor: itsAMatch ? COLORS.red : COLORS.primary }}
+              textStyle={{ fontSize: 20 }}
             />
           </View>
         </View>

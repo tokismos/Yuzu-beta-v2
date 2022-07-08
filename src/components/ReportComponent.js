@@ -19,12 +19,12 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
 import TextInputColored from "./TextInputColored";
 import auth from "@react-native-firebase/auth";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("screen");
 
 const ReportItemComponent = ({ title, setReport, report }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <>
       <Pressable
@@ -61,7 +61,7 @@ const ReportItemComponent = ({ title, setReport, report }) => {
 };
 
 const ReportComponent = ({ setShowReport, recipeName }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const [isSelected, setIsSelected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [report, setReport] = useState("");
@@ -77,11 +77,12 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
   const sendEmail = async (fullName, reportTitle, message) => {
     setIsLoading(true);
     try {
-      await api.post("/email", {
+      const body = {
         fullName,
         title: reportTitle,
         message: ` ${fullName} a reporter la recette " ${recipeName} " - ${reportTitle} - ${message}`,
-      });
+      };
+      await api.post("/email", body).catch(err => console.error(err)).then(res => console.log({ res }));
       Alert.alert(t('reportComponent_thankAlert_title'), t('reportComponent_thankAlert_description'));
       ToastAndroid.show(
         t('reportComponent_thanks'),
@@ -111,7 +112,7 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
             textAlign: "center",
           }}
         >
-            {t('reportComponent_askReport')}
+          {t('reportComponent_askReport')}
         </Text>
       </View>
 

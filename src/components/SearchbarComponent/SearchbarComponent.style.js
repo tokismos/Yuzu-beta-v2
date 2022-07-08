@@ -21,7 +21,7 @@ export default StyleSheet.create({
     marginRight: 10,
     flexDirection: "row",
     justifyContent: 'space-between',
-    width: "100%",
+    width: "95%",
     backgroundColor: "#d9dbda",
     borderRadius: 15,
     alignItems: "center",
