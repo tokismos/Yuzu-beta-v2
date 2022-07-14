@@ -34,7 +34,7 @@ const SearchbarComponent = ({
     <View style={styles.container}>
       <StatusBar backgroundColor='black' />
       <View style={styles.searchBar} >
-        <View style={{ ...styles.textInput, width: isFocused ? '90%' : '100%' }} onTouchEnd={handleFocus}>
+        <View style={{ ...styles.textInput, width: isFocused || searchPhrase?.length > 0 ? '90%' : '100%' }} onTouchEnd={handleFocus}>
           <Feather
             name='search'
             size={20}
@@ -51,7 +51,7 @@ const SearchbarComponent = ({
             onChangeText={setSearchPhrase}
           />
         </View>
-        {isFocused &&
+        {(isFocused || searchPhrase?.length > 0) &&
           <>
             <TouchableOpacity onPress={() => setSearchPhrase('')}>
               <Ionicons
