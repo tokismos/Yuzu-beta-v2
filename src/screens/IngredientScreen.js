@@ -5,8 +5,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Dimensions,
-  Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -19,6 +17,7 @@ import {
   MaterialIcons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import FastImage from 'react-native-fast-image';
 import { COLORS } from "../consts/colors";
 import CheckBox from "@react-native-community/checkbox";
 import Dialog, {
@@ -54,7 +53,7 @@ const StepComponent = ({ step, index }) => {
       <TouchableOpacity style={{}} onPress={() => setToggle((p) => !p)}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={{ fontSize: 20, color: "gray", fontWeight: "bold" }}>
-              {t('ingredientScreen_step', { step: index + 1})}
+            {t('ingredientScreen_step', { step: index + 1 })}
           </Text>
           <CheckBox
             style={[
@@ -124,6 +123,31 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
       </TouchableOpacity>
     </View>
   );
+};
+
+const ImageFast = ({ source, thumb, height }) => {
+  const imageStyle = {
+    aspectRatio: 1,
+    background: 'transparent',
+    top: 0,
+    left: 0,
+    position: 'absolute',
+    height,
+    width: '100%'
+  };
+  return (
+    <View style={{ height, backgroundColor: 'lightgrey' }}>
+      <ActivityIndicator
+        style={imageStyle}
+        size={'large'} color={COLORS.primary} />
+      <FastImage
+        source={{ uri: thumb, priority: FastImage.priority.high }}
+        style={imageStyle} />
+      <FastImage
+        source={{ uri: source, priority: FastImage.priority.high }}
+        style={imageStyle} />
+    </View>
+  )
 };
 
 const IngredientScreen = ({ route, navigation }) => {
@@ -196,13 +220,8 @@ const IngredientScreen = ({ route, navigation }) => {
             style={{ backgroundColor: "#E6E6E6", flex: 1 }}
             showsVerticalScrollIndicator={false}
           >
-            <View style={{}}>
-              <Image
-                source={{ uri: recipe?.imgURL }}
-                style={{
-                  aspectRatio: 1,
-                }}
-              />
+            <View>
+              <ImageFast source={recipe?.imgURL} thumb={recipe?.thumbURL} height={400} />
               <View
                 style={{
                   height: height * 0.3,
@@ -277,7 +296,7 @@ const IngredientScreen = ({ route, navigation }) => {
                       fontWeight: "bold",
                     }}
                   >
-                      {t('ingredientScreen_recipe')}
+                    {t('ingredientScreen_recipe')}
                   </Text>
                 </View>
                 <View
@@ -296,7 +315,7 @@ const IngredientScreen = ({ route, navigation }) => {
                       textAlign: "center",
                     }}
                   >
-                      {t('ingredientScreen_difficultyLevel', { difficulty: recipe?.difficulty })}
+                    {t('ingredientScreen_difficultyLevel', { difficulty: recipe?.difficulty })}
                   </Text>
                   <Text
                     style={{
@@ -306,7 +325,7 @@ const IngredientScreen = ({ route, navigation }) => {
                       textAlign: "center",
                     }}
                   >
-                    {t('ingredientScreen_preparationDuration', { duration: recipe?.tempsPreparation})}
+                    {t('ingredientScreen_preparationDuration', { duration: recipe?.tempsPreparation })}
                   </Text>
                   <Text
                     style={{
@@ -316,7 +335,7 @@ const IngredientScreen = ({ route, navigation }) => {
                       textAlign: "center",
                     }}
                   >
-                      {t('ingredientScreen_cookingDuration', { duration: recipe?.tempsCuisson})}
+                    {t('ingredientScreen_cookingDuration', { duration: recipe?.tempsCuisson })}
                   </Text>
                 </View>
               </View>
@@ -392,7 +411,7 @@ const IngredientScreen = ({ route, navigation }) => {
                   }}
                 />
                 <Text style={{ fontSize: 20, margin: 20, fontWeight: "bold" }}>
-                    {t('ingredientScreen_recipeSteps')}
+                  {t('ingredientScreen_recipeSteps')}
                 </Text>
                 <View
                   style={{
@@ -463,7 +482,7 @@ const IngredientScreen = ({ route, navigation }) => {
                           textAlign: "center",
                         }}
                       >
-                          {t('ingredientScreen_didYouLiked')}
+                        {t('ingredientScreen_didYouLiked')}
                       </Text>
                       <View
                         style={{
