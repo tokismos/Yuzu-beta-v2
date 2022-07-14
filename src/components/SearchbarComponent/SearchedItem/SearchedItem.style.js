@@ -7,6 +7,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     maxHeight: 70,
+    maxWidth: '90%'
   },
   image: {
     height: 60,
