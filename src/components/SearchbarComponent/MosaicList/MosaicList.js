@@ -1,9 +1,10 @@
 import React from 'react';
 import {
   View,
-  Pressable,
   FlatList,
   SafeAreaView,
+  Keyboard,
+  Pressable,
   TouchableHighlight
 } from 'react-native';
 import {
@@ -16,7 +17,7 @@ import styles from './MosaicList.style';
 const MosaicList = ({ data, recipeClicked, matches }) => {
   const renderItem = ({ item }) => {
     return (
-      <View style={styles.mosaicItem} onStartShouldSetResponder={() => true}>
+      <Pressable style={styles.mosaicItem} onPress={() => Keyboard.dismiss()}>
         <TouchableHighlight onPress={() => recipeClicked(item)}>
           <>
             {matches?.some?.(i => i._id === item?._id) && (
@@ -28,7 +29,7 @@ const MosaicList = ({ data, recipeClicked, matches }) => {
             <FastImage source={{ uri: item.thumbURL }} style={styles.mosaicThumbnail} resizeMode={FastImage.resizeMode.cover} />
           </>
         </TouchableHighlight>
-      </View>
+      </Pressable>
     )
   }
 

@@ -12,7 +12,7 @@ export default StyleSheet.create({
   mainContainer: {
     height: "100%",
     justifyContent: 'space-between',
-    paddingBottom: 40
+    paddingBottom: 40,
   },
   titleContainer: {
     justifyContent: 'space-between',
@@ -31,7 +31,8 @@ export default StyleSheet.create({
   },
   infoContainer: {
     flexDirection: 'column',
-    marginLeft: 15
+    marginLeft: 15,
+    marginBottom: -60,
   },
   row: {
     flexDirection: 'row'
@@ -67,6 +68,6 @@ export default StyleSheet.create({
   },
   button: {
     width: '100%',
-    borderRadius: 5,
+    borderRadius: 5
   }
 })
