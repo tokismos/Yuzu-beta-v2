@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://yuzu-backend.herokuapp.com/"
+  baseURL: "https://yuzu-backend.herokuapp.com/",
 });
 
 const getAllRecipes = async (item) => {
@@ -20,14 +20,18 @@ const getAllRecipes = async (item) => {
 
   try {
     const res = await api.get(`/recipes${url}`);
-    const data = res.data.filter((item) => item.imgURL !== null && item.thumbURL !== null && item.nbrPersonne !== null);
+    const data = res.data.filter(
+      (item) =>
+        item.imgURL !== null &&
+        item.thumbURL !== null &&
+        item.nbrPersonne !== null
+    );
 
     shuffleArray(data);
     return data;
   } catch (e) {
     console.log("ERROR", e);
   }
-
 };
 
 const getRecipeByName = async (name) => {
@@ -36,9 +40,9 @@ const getRecipeByName = async (name) => {
 
     return data;
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
-}
+};
 
 const getRecipe = async (_id) => {
   try {
@@ -63,4 +67,11 @@ const incrementLeft = async (_id) => {
     console.log("ERROR, Not Incremented", e);
   }
 };
-export { getAllRecipes, getRecipe, api, incrementRight, incrementLeft, getRecipeByName };
+export {
+  getAllRecipes,
+  getRecipe,
+  api,
+  incrementRight,
+  incrementLeft,
+  getRecipeByName,
+};

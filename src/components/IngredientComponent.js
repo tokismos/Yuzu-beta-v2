@@ -9,10 +9,11 @@ import React, { useEffect, useState } from "react";
 import CheckBox from "@react-native-community/checkbox";
 import { COLORS } from "../consts/colors";
 
-const safeNumber = num => {
-  if (typeof num === 'string' || num instanceof String) return parseFloat(num.replace(",", "."))
+const safeNumber = (num) => {
+  if (typeof num === "string" || num instanceof String)
+    return parseFloat(num.replace(",", "."));
   return num;
-}
+};
 
 const IngredientComponent = ({
   ingredient: { name, quantity, unite, newQuantity },
@@ -58,7 +59,7 @@ const IngredientComponent = ({
               textAlign: "center",
               fontSize: 16,
               textDecorationLine: toggle ? "line-through" : null,
-              color: toggle ? COLORS.grey : 'black'
+              color: toggle ? COLORS.grey : "black",
             }}
           >
             {!newQuantity ? safeQuantity : safeNewQuantity}{" "}
@@ -69,10 +70,11 @@ const IngredientComponent = ({
             style={{
               ...styles.textQuantity,
               textDecorationLine: toggle ? "line-through" : null,
-              color: toggle ? COLORS.grey : 'black'
+              color: toggle ? COLORS.grey : "black",
             }}
-          >{`${+((safeQuantity * nbrPersonne) / defaultNbrPersonne).toFixed(1)} ${unite === "unite" ? "" : unite
-            }`}</Text>
+          >{`${+((safeQuantity * nbrPersonne) / defaultNbrPersonne).toFixed(
+            1
+          )} ${unite === "unite" ? "" : unite}`}</Text>
         )}
         <View style={styles.nameContainer}>
           <Text
@@ -81,7 +83,7 @@ const IngredientComponent = ({
               fontSize: 16,
               width: "75%",
               textDecorationLine: toggle ? "line-through" : null,
-              color: toggle ? COLORS.grey : 'black'
+              color: toggle ? COLORS.grey : "black",
             }}
           >
             {name}

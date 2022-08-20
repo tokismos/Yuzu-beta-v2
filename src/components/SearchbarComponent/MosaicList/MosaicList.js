@@ -1,18 +1,16 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   FlatList,
   SafeAreaView,
   Keyboard,
   Pressable,
-  TouchableHighlight
-} from 'react-native';
-import {
-  FontAwesome
-} from 'react-native-vector-icons';
-import FastImage from 'react-native-fast-image';
+  TouchableHighlight,
+} from "react-native";
+import { FontAwesome } from "react-native-vector-icons";
+import FastImage from "react-native-fast-image";
 
-import styles from './MosaicList.style';
+import styles from "./MosaicList.style";
 
 const MosaicList = ({ data, recipeClicked, matches }) => {
   const renderItem = ({ item }) => {
@@ -20,29 +18,34 @@ const MosaicList = ({ data, recipeClicked, matches }) => {
       <Pressable style={styles.mosaicItem} onPress={() => Keyboard.dismiss()}>
         <TouchableHighlight onPress={() => recipeClicked(item)}>
           <>
-            {matches?.some?.(i => i._id === item?._id) && (
+            {(matches?.some?.((i) => i._id === item?._id) && (
               <>
                 <View style={styles.mosaicMatch} />
-                <FontAwesome name='heart' style={styles.mosaicStar} size={20} />
+                <FontAwesome name="heart" style={styles.mosaicStar} size={20} />
               </>
-            ) || null}
-            <FastImage source={{ uri: item.thumbURL }} style={styles.mosaicThumbnail} resizeMode={FastImage.resizeMode.cover} />
+            )) ||
+              null}
+            <FastImage
+              source={{ uri: item.thumbURL }}
+              style={styles.mosaicThumbnail}
+              resizeMode={FastImage.resizeMode.cover}
+            />
           </>
         </TouchableHighlight>
       </Pressable>
-    )
-  }
+    );
+  };
 
   return (
     <SafeAreaView>
       <FlatList
-        data={data.filter(item => item.thumbURL)}
+        data={data.filter((item) => item.thumbURL)}
         renderItem={renderItem}
         numColumns={3}
         keyExtractor={(_, index) => index}
       />
     </SafeAreaView>
   );
-}
+};
 
 export default MosaicList;

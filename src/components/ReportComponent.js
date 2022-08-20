@@ -55,7 +55,9 @@ const ReportItemComponent = ({ title, setReport, report }) => {
           <Ionicons name="checkmark-circle" size={20} color={COLORS.primary} />
         )}
       </Pressable>
-      {title !== t('reportCompenent_field5') && <View style={styles.separator} />}
+      {title !== t("reportCompenent_field5") && (
+        <View style={styles.separator} />
+      )}
     </>
   );
 };
@@ -66,13 +68,9 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [report, setReport] = useState("");
   const [reportDescription, setReportDescription] = useState("");
-  const reportsTab = [
-    "field1",
-    "field2",
-    "field3",
-    "field4",
-    "field5",
-  ].map(report => t(`reportComponent_${report}`));
+  const reportsTab = ["field1", "field2", "field3", "field4", "field5"].map(
+    (report) => t(`reportComponent_${report}`)
+  );
 
   const sendEmail = async (fullName, reportTitle, message) => {
     setIsLoading(true);
@@ -82,16 +80,19 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
         title: reportTitle,
         message: ` ${fullName} a reporter la recette " ${recipeName} " - ${reportTitle} - ${message}`,
       };
-      await api.post("/email", body).catch(err => console.error(err)).then(res => console.log({ res }));
-      Alert.alert(t('reportComponent_thankAlert_title'), t('reportComponent_thankAlert_description'));
-      ToastAndroid.show(
-        t('reportComponent_thanks'),
-        ToastAndroid.LONG
+      await api
+        .post("/email", body)
+        .catch((err) => console.error(err))
+        .then((res) => console.log({ res }));
+      Alert.alert(
+        t("reportComponent_thankAlert_title"),
+        t("reportComponent_thankAlert_description")
       );
+      ToastAndroid.show(t("reportComponent_thanks"), ToastAndroid.LONG);
 
       setShowReport(false);
     } catch (e) {
-      Alert.alert(t('reportComponent_sentError'), e.message);
+      Alert.alert(t("reportComponent_sentError"), e.message);
     }
     setIsLoading(false);
   };
@@ -112,7 +113,7 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
             textAlign: "center",
           }}
         >
-          {t('reportComponent_askReport')}
+          {t("reportComponent_askReport")}
         </Text>
       </View>
 
@@ -131,7 +132,7 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
         multiline
         setChangeText={setReportDescription}
         value={reportDescription}
-        placeholder={t('reportComponent_contactAgain')}
+        placeholder={t("reportComponent_contactAgain")}
       />
 
       <View
@@ -141,15 +142,18 @@ const ReportComponent = ({ setShowReport, recipeName }) => {
           marginTop: 20,
         }}
       >
-        <CustomButton title={t('cancel')} onPress={() => setShowReport(false)} />
+        <CustomButton
+          title={t("cancel")}
+          onPress={() => setShowReport(false)}
+        />
         <CustomButton
           isLoading={isLoading}
           disabled={report === ""}
-          title={t('report')}
+          title={t("report")}
           style={{ backgroundColor: COLORS.red, marginLeft: 10 }}
           onPress={async () => {
             await sendEmail(
-              auth().currentUser?.displayName || t('reportComponent_anonymous'),
+              auth().currentUser?.displayName || t("reportComponent_anonymous"),
               report,
               reportDescription
             );

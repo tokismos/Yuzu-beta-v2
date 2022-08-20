@@ -1,13 +1,20 @@
 //Le tout premier ecran d'acceuil , qui nous donne le choix de sois s'inscrire,sois se connecter ou d'accepter sans insription
 
 import React, { useEffect, useState } from "react";
-import {Image, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { COLORS } from "../consts/colors";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import CustomButton from "../components/CustomButton";
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const IntroScreen = ({ navigation }) => {
   const [isFirstTime, setIsFirstTime] = useState(true);
@@ -24,7 +31,7 @@ const IntroScreen = ({ navigation }) => {
 
   return (
     <View style={{ width: "100%", height: "100%" }}>
-      <StatusBar backgroundColor={'transparent'} />
+      <StatusBar backgroundColor={"transparent"} />
       <Image
         source={require("../assets/intro.jpg")}
         style={{ height: "100%", width: "100%", resizeMode: "cover" }}
@@ -34,7 +41,7 @@ const IntroScreen = ({ navigation }) => {
           source={require("../assets/logo.png")}
           style={styles.logoContainer}
         />
-        <Text style={styles.descriptionText}>{t('introScreen_title')}</Text>
+        <Text style={styles.descriptionText}>{t("introScreen_title")}</Text>
       </View>
       <View style={styles.middleBottomScreen}>
         <View style={styles.bottomContainer}>
@@ -43,7 +50,7 @@ const IntroScreen = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("SignInScreen");
             }}
-            title={t('introScreen_login')}
+            title={t("introScreen_login")}
             style={{ ...styles.button, width: "80%" }}
             textStyle={{ fontSize: 20 }}
           />
@@ -52,7 +59,7 @@ const IntroScreen = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("SignUpScreen");
             }}
-            title={t('introScreen_noob')}
+            title={t("introScreen_noob")}
             style={{
               ...styles.button,
               width: "80%",
@@ -77,7 +84,7 @@ const IntroScreen = ({ navigation }) => {
                 marginTop: "10%",
               }}
             >
-              {t('introScreen_later')}
+              {t("introScreen_later")}
             </Text>
           </TouchableOpacity>
         </View>

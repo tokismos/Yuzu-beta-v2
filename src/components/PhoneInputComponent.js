@@ -1,7 +1,7 @@
 import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { width } = Dimensions.get("window");
 
@@ -11,7 +11,7 @@ const PhoneInputComponent = ({
   error,
   setPhoneNumber,
 }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <View style={[{ width, alignItems: "center" }, { ...style }]}>
       <Text
@@ -22,7 +22,7 @@ const PhoneInputComponent = ({
           textAlign: "center",
         }}
       >
-          {t('phoneInputComponent_enterPhone')}
+        {t("phoneInputComponent_enterPhone")}
       </Text>
       <PhoneInput
         layout="first"
@@ -35,12 +35,12 @@ const PhoneInputComponent = ({
       />
       {error ? (
         <Text style={{ color: "red", marginTop: 10 }}>
-            {t('phoneInputComponent_wrongFormat')}
+          {t("phoneInputComponent_wrongFormat")}
         </Text>
       ) : null}
       <View style={{ margin: 40 }}>
         <Text style={{ textAlign: "left", color: "gray", fontSize: 12 }}>
-            {t('phoneInputComponent_confirmationDescription')}
+          {t("phoneInputComponent_confirmationDescription")}
         </Text>
         <Text
           style={{
@@ -50,7 +50,7 @@ const PhoneInputComponent = ({
             fontSize: 12,
           }}
         >
-            {t('phoneInputComponent_disclaimer')}
+          {t("phoneInputComponent_disclaimer")}
         </Text>
       </View>
     </View>

@@ -20,21 +20,24 @@ import CustomButton from "../../components/CustomButton";
 import { setAdditionalInfo } from "../../helpers/db";
 import { setIsFirstTime } from "../../redux/slicer/userSlicer";
 import { useDispatch } from "react-redux";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const { height, width } = Dimensions.get("screen");
 const EmailComponent = ({ setEmail, refe, email }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <View style={{ width, height }}>
       <View style={{ padding: 20 }}>
         <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-            {t('signupScreen_enterEmail')}
+          {t("signupScreen_enterEmail")}
         </Text>
-        <TextInputColored type='email' keyboardType='email-address' label={t('email')} setChangeText={setEmail} />
-        <Text style={styles.description}>
-            {t('signupScreen_confirmEmail')}
-        </Text>
+        <TextInputColored
+          type="email"
+          keyboardType="email-address"
+          label={t("email")}
+          setChangeText={setEmail}
+        />
+        <Text style={styles.description}>{t("signupScreen_confirmEmail")}</Text>
       </View>
       <NextButton
         disabled={email === ""}
@@ -46,21 +49,21 @@ const EmailComponent = ({ setEmail, refe, email }) => {
   );
 };
 const PasswordComponent = ({ setPassword, refe, password }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <View style={{ width }}>
       <View style={{ padding: 20 }}>
         <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-            {t('signupScreen_createPassword')}
+          {t("signupScreen_createPassword")}
         </Text>
         <TextInputColored
-          label={t('signupScreen_password')}
+          label={t("signupScreen_password")}
           setChangeText={setPassword}
           secured
         />
         {password.length < 8 && (
           <Text style={styles.description}>
-              {t('signupScreen_passwordMinimumLength')}
+            {t("signupScreen_passwordMinimumLength")}
           </Text>
         )}
       </View>
@@ -92,7 +95,7 @@ const PhoneComponent = ({
       />
       <CustomButton
         isLoading={isLoading}
-        title={t('signupScreen_next')}
+        title={t("signupScreen_next")}
         onPress={async () => {
           setIsLoading(true);
           const status = await sendPhoneVerification(fullNumber);
@@ -131,7 +134,7 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
           />
 
           <CustomButton
-            title={t('next')}
+            title={t("next")}
             isLoading={isLoading}
             onPress={async () => {
               setIsLoading(true);
@@ -155,11 +158,11 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
   );
 };
 const NextButton = ({ onPress, disabled }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <CustomButton
       onPress={onPress}
-      title={t('next')}
+      title={t("next")}
       disabled={disabled}
       style={{
         ...styles.nextButton,

@@ -89,7 +89,8 @@ const getFavoris = async (tmp) => {
         snapshot.forEach((item) => favoritesArray.push(item.key));
         tmp(favoritesArray);
       }
-    }).catch(console.error);
+    })
+    .catch(console.error);
 };
 
 const getAllFavoris = async (setCommandes) => {
@@ -112,7 +113,10 @@ const setCommandes = (cart) => {
       _id: item._id,
       name: item.name,
       imgURL: item.imgURL,
-      ingredients: item.ingredients.map(i => ({ ...i, newQuantity: i.newQuantity || 0 })),
+      ingredients: item.ingredients.map((i) => ({
+        ...i,
+        newQuantity: i.newQuantity || 0,
+      })),
       nbrPersonne: item.nbrPersonne,
     });
   });
@@ -148,12 +152,12 @@ const setRating = async (rate, recipeId) => {
       .app()
       .database(firebaseDbURL)
       .ref(`/rate/${recipeId}/${auth().currentUser?.uid}`)
-      .set({ rate, createdAt: firebase.database.ServerValue.TIMESTAMP })
+      .set({ rate, createdAt: firebase.database.ServerValue.TIMESTAMP });
     return true;
   } catch (e) {
     console.error(e);
   }
-}
+};
 
 const logInWithFb = async () => {
   try {

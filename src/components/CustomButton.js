@@ -1,4 +1,4 @@
-//Un boutton  customizable qu'on peut utiliser dans toute l'application  , isLoading quand c'est true
+// Un boutton  customizable qu'on peut utiliser dans toute l'application  , isLoading quand c'est true
 // elle nous permet de voir le Loadingindicator quand on clique sur le bouton ,le colorRipple c'est la couleure de
 // l'effet qu'on voit sur Android lorsqu'on clique sur le bouton,ca donne un effet native
 

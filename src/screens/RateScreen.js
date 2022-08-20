@@ -1,43 +1,37 @@
 //L'ecran qui gere le rating de chaque recette
 
-import {
-  Dimensions,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 
 import React, { useState } from "react";
 import { AirbnbRating } from "react-native-ratings";
 import { AntDesign } from "@expo/vector-icons";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-import { setRating } from '../helpers/db';
+import { setRating } from "../helpers/db";
 import { getRecipeByName } from "../axios";
 import CustomButton from "../components/CustomButton";
 
 const { width, height } = Dimensions.get("screen");
 
 const RateScreen = ({ route, navigation }) => {
-    const [rate, setRate] = useState(0);
+  const [rate, setRate] = useState(0);
   const { imgURL, name } = route?.params;
   const { t } = useTranslation();
 
-  const handleRate = rate => {
-      setRate(rate);
+  const handleRate = (rate) => {
+    setRate(rate);
   };
 
   const handleSubmit = async () => {
-      const recipe = await getRecipeByName(name);
-      const { _id: id } = recipe;
+    const recipe = await getRecipeByName(name);
+    const { _id: id } = recipe;
 
-      if (rate === 0) return;
-      const rated = await setRating(rate, id);
+    if (rate === 0) return;
+    const rated = await setRating(rate, id);
 
-      if (rated) navigation.goBack();
-      else alers.message('Has not rated, error')
-  }
+    if (rated) navigation.goBack();
+    else alers.message("Has not rated, error");
+  };
 
   return (
     <View
@@ -116,19 +110,14 @@ const RateScreen = ({ route, navigation }) => {
           }}
         >
           <Text style={{ fontSize: 26, fontWeight: "bold" }}>
-              {t('rateScreen_title')}
+            {t("rateScreen_title")}
           </Text>
 
           <AirbnbRating
             count="5"
-            reviews={[
-              "rate1",
-                "rate2",
-                "rate3",
-                "rate4",
-                "rate5",
-                "rate6",
-            ].map(review => t(`rateScreen_${review}`))}
+            reviews={["rate1", "rate2", "rate3", "rate4", "rate5", "rate6"].map(
+              (review) => t(`rateScreen_${review}`)
+            )}
             size={40}
             defaultRating={0}
             starContainerStyle={{ marginTop: 10 }}
@@ -136,7 +125,7 @@ const RateScreen = ({ route, navigation }) => {
           />
           <CustomButton title="Valider" onPress={handleSubmit} />
           <Text style={{ textAlign: "center" }}>
-              {t('rateScreen_disclaimer')}
+            {t("rateScreen_disclaimer")}
           </Text>
         </View>
       </View>

@@ -11,7 +11,7 @@ import {
   StatusBar,
   SafeAreaView,
   Image,
-  Alert
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -37,13 +37,14 @@ import FilterScreen from "./FilterScreen";
 
 import { COLORS } from "../consts/colors";
 
-
 const { height } = Dimensions.get("screen");
 
 const Header = ({ bottomSheetRef, navigation }) => {
-  const logo = Image.resolveAssetSource(require('../assets/yuzu.png')).uri
-  const settings = Image.resolveAssetSource(require('../assets/traitB.png')).uri
-  const profile = Image.resolveAssetSource(require('../assets/tocB.png')).uri
+  const logo = Image.resolveAssetSource(require("../assets/yuzu.png")).uri;
+  const settings = Image.resolveAssetSource(
+    require("../assets/traitB.png")
+  ).uri;
+  const profile = Image.resolveAssetSource(require("../assets/tocB.png")).uri;
   return (
     <View
       style={{
@@ -51,16 +52,18 @@ const Header = ({ bottomSheetRef, navigation }) => {
         justifyContent: "space-between",
       }}
     >
-      <View style={{
-        height: height * 0.06,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      <View
+        style={{
+          height: height * 0.06,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <FastImage
           style={{
             marginLeft: 20,
             width: 100,
-            height: 50
+            height: 50,
           }}
           source={{ uri: logo, priority: FastImage.priority.high }}
           resizeMode={FastImage.resizeMode.contain}
@@ -82,7 +85,7 @@ const Header = ({ bottomSheetRef, navigation }) => {
             justifyContent: "center",
             alignItems: "center",
             height: "200%",
-            marginRight: 24
+            marginRight: 24,
           }}
         >
           <FilterIcon height={24} width={24} fill="white" />
@@ -90,9 +93,9 @@ const Header = ({ bottomSheetRef, navigation }) => {
         <Pressable
           onPress={() => {
             if (auth().currentUser) {
-              navigation.navigate('ProfileScreen');
+              navigation.navigate("ProfileScreen");
             } else {
-              navigation.navigate('IntroScreen', { headerShown: false });
+              navigation.navigate("IntroScreen", { headerShown: false });
             }
           }}
           style={{
@@ -135,16 +138,19 @@ const TinderScreen = ({ navigation }) => {
     getAllRecipes(item)
       .then((result) => {
         const toPreload = [];
-        const filteredRecipes = result?.filter(recipe => recipe.imgURL && recipe.thumbURL && recipe.nbrPersonne);
+        const filteredRecipes = result?.filter(
+          (recipe) => recipe.imgURL && recipe.thumbURL && recipe.nbrPersonne
+        );
 
         dispatch(storeRecipes(filteredRecipes));
         setRecipes(filteredRecipes);
-        filteredRecipes?.map(recipe => {
+        filteredRecipes?.map((recipe) => {
           if (recipe.imgURL) toPreload.push({ uri: recipe.imgURL });
           if (recipe.thumbURL) toPreload.push({ uri: recipe.thumbURL });
         });
         FastImage.preload(toPreload);
-      }).catch(console.error)
+      })
+      .catch(console.error);
   };
 
   const getAndSetFavorites = async () => {
@@ -189,7 +195,7 @@ const TinderScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.pageContainer}>
-      <StatusBar translucent backgroundColor='transparent' />
+      <StatusBar translucent backgroundColor="transparent" />
 
       <Header
         bottomSheetRef={bottomSheetRef}
@@ -225,7 +231,12 @@ const TinderScreen = ({ navigation }) => {
               <>
                 <AnimatedStack
                   data={recipes}
-                  renderItem={({ item, onSwipeRight, onSwipeLeft, setIsLoading }) => (
+                  renderItem={({
+                    item,
+                    onSwipeRight,
+                    onSwipeLeft,
+                    setIsLoading,
+                  }) => (
                     <TinderCard
                       height="100%"
                       width="100%"
@@ -234,14 +245,13 @@ const TinderScreen = ({ navigation }) => {
                       onSwipeRight={onSwipeRight}
                       onSwipeLeft={onSwipeLeft}
                     />
-                  )
-                  }
+                  )}
                   onSwipeLeft={onSwipeLeft}
                   onSwipeRight={onSwipeRight}
                 />
               </>
             ) : (
-              <Text>{t('tinderScreen_nothingToShow')}</Text>
+              <Text>{t("tinderScreen_nothingToShow")}</Text>
             )}
           </View>
         </View>
@@ -258,11 +268,13 @@ const TinderScreen = ({ navigation }) => {
             <Pressable
               onPress={() => {
                 Alert.alert(
-                  t('tinderScreen_preserveAlert_title'),
-                  t('tinderScreen_preserveAlert_description', { matches: matches.length }),
+                  t("tinderScreen_preserveAlert_title"),
+                  t("tinderScreen_preserveAlert_description", {
+                    matches: matches.length,
+                  }),
                   [
                     {
-                      text: t('tinderScreen_preserveAlert_delete'),
+                      text: t("tinderScreen_preserveAlert_delete"),
                       onPress: () => {
                         setShowButton(false);
                         dispatch(resetMatches());
@@ -270,7 +282,7 @@ const TinderScreen = ({ navigation }) => {
                       style: "cancel",
                     },
                     {
-                      text: t('tinderScreen_preserveAlert_confirm'),
+                      text: t("tinderScreen_preserveAlert_confirm"),
                       onPress: () => setShowButton(true),
                     },
                   ]
@@ -299,7 +311,9 @@ const TinderScreen = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("PanierScreen");
               }}
-              title={t('tinderScreen_generateList_button', { matches: matches?.length || 0 })}
+              title={t("tinderScreen_generateList_button", {
+                matches: matches?.length || 0,
+              })}
               style={{ width: "90%", height: "90%" }}
               textStyle={{ fontSize: 20, textAlign: "center" }}
             />
@@ -319,7 +333,7 @@ const TinderScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   imageIcon: {
     height: 30,
-    width: 30
+    width: 30,
   },
   pageContainer: {
     flex: 1,

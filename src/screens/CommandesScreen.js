@@ -1,7 +1,7 @@
 //L'ecran qui gere toutes les commandes passées,CommandeItem c'est chaque component de notre liste
 
 import { formatRelative } from "date-fns";
-import { fr } from 'date-fns/locale';
+import { fr } from "date-fns/locale";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {

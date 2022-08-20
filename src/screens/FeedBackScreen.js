@@ -36,12 +36,12 @@ const FeedBackScreen = () => {
     setIsLoading(true);
     try {
       await api.post("/email", { fullName, title, message });
-      Alert.alert(t('feedbackScreen_messageSent'));
+      Alert.alert(t("feedbackScreen_messageSent"));
 
       setTitle("");
       setMessage("");
     } catch (e) {
-      Alert.alert(t('feedbackScreen_messageError'));
+      Alert.alert(t("feedbackScreen_messageError"));
     }
     setIsLoading(false);
   };
@@ -58,24 +58,26 @@ const FeedBackScreen = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.container}>
-          <Text style={styles.titleText}>{t('feedbackScreen_yourFeedback')}</Text>
+          <Text style={styles.titleText}>
+            {t("feedbackScreen_yourFeedback")}
+          </Text>
           <View style={styles.insideContainer}>
             {!auth().currentUser && (
               <TextInputColored
                 value={fullName}
-                label={t('feedbackScreen_nameAndSurname')}
+                label={t("feedbackScreen_nameAndSurname")}
                 setChangeText={setFullName}
               />
             )}
             <TextInputColored
               value={title}
-              label={t('feedbackScreen_messageTitle')}
+              label={t("feedbackScreen_messageTitle")}
               setChangeText={setTitle}
             />
 
             <TextInput
               style={{ height: 200 }}
-              placeholder={t('feedbackScreen_messageDescription')}
+              placeholder={t("feedbackScreen_messageDescription")}
               theme={{ colors: { primary: COLORS.primary } }}
               multiline
               mode="outlined"
@@ -89,7 +91,9 @@ const FeedBackScreen = () => {
               <Text
                 style={{ color: "gray", textAlign: "center", marginTop: 10 }}
               >
-                {t('feedbackScreen_minimumLength', { min: 30 - message.length })}
+                {t("feedbackScreen_minimumLength", {
+                  min: 30 - message.length,
+                })}
               </Text>
             )}
 
@@ -97,7 +101,7 @@ const FeedBackScreen = () => {
               style={{ marginTop: 15 }}
               disabled={message.length < 30}
               isLoading={isLoading}
-              title={t('send')}
+              title={t("send")}
               onPress={() => sendEmail(fullName, title, message)}
             />
           </View>

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
@@ -10,15 +10,15 @@ export default StyleSheet.create({
     width: "100%",
   },
   textInput: {
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: 'center',
+    alignItems: "center",
   },
   searchBar: {
     padding: 10,
     marginRight: 10,
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     width: "95%",
     backgroundColor: "#d9dbda",
     borderRadius: 15,
@@ -38,4 +38,4 @@ export default StyleSheet.create({
     marginLeft: 10,
     width: "100%",
   },
-})
+});

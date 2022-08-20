@@ -12,13 +12,10 @@ import {
 } from "react-native";
 import FastImage from "react-native-fast-image";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  MaterialCommunityIcons,
-  FontAwesome,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import auth from "@react-native-firebase/auth";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 import { COLORS } from "../consts/colors";
 import IngredientScreen from "../screens/IngredientScreen";
@@ -27,7 +24,7 @@ import PanierScreen from "../screens/PanierScreen";
 import IngredientCartScreen from "../screens/IngredientCartScreen";
 import SummarizeScreen from "../screens/SummarizeScreen";
 import IntroScreen from "../screens/IntroScreen";
-import SearchRecipesScreen from "../screens/SearchRecipesScreen/SearchRecipesScreen"
+import SearchRecipesScreen from "../screens/SearchRecipesScreen/SearchRecipesScreen";
 import { setUser } from "../redux/slicer/userSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import SignUpScreen from "../screens/createAccountScreens/SignUpScreen";
@@ -80,7 +77,7 @@ export const MyRecipesTabScreen = () => {
             />
           ),
         }}
-        name={t('myReceipesTabScreen_receipeAdded')}
+        name={t("myReceipesTabScreen_receipeAdded")}
         component={MyRecipesScreen}
       />
 
@@ -94,7 +91,7 @@ export const MyRecipesTabScreen = () => {
             />
           ),
         }}
-        name={t('myReceipesTabScreen_favourites')}
+        name={t("myReceipesTabScreen_favourites")}
         component={MyRecipesScreen}
       />
     </Tab.Navigator>
@@ -118,8 +115,14 @@ const TopTabScreen = () => {
           tabBarLabelStyle: { fontWeight: "bold", fontSize: 14 },
         }}
       >
-        <TopTab.Screen name={t('navigator_myRecipes')} component={MyRecipesScreen} />
-        <TopTab.Screen name={t('navigator_favourites')} component={MyRecipesScreen} />
+        <TopTab.Screen
+          name={t("navigator_myRecipes")}
+          component={MyRecipesScreen}
+        />
+        <TopTab.Screen
+          name={t("navigator_favourites")}
+          component={MyRecipesScreen}
+        />
       </TopTab.Navigator>
     </SafeAreaView>
   );
@@ -141,19 +144,23 @@ const BottomTabScreen = () => {
       <Tab.Screen
         options={{
           tabBarIcon: ({ focused }) => {
-            const iconYellow = Image.resolveAssetSource(require('../assets/platJ.png')).uri;
-            const iconGrey = Image.resolveAssetSource(require('../assets/platN.png')).uri;
+            const iconYellow = Image.resolveAssetSource(
+              require("../assets/platJ.png")
+            ).uri;
+            const iconGrey = Image.resolveAssetSource(
+              require("../assets/platN.png")
+            ).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
               <FastImage
                 source={{
                   uri: icon,
-                  priority: FastImage.priority.high
+                  priority: FastImage.priority.high,
                 }}
                 style={styles.imageIcon}
                 resizeMode={FastImage.resizeMode.contain}
               />
-            )
+            );
           },
           tabBarLabel: ({ focused }) => (
             <Text
@@ -162,7 +169,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              {t('navigator_recipes')}
+              {t("navigator_recipes")}
             </Text>
           ),
         }}
@@ -173,19 +180,23 @@ const BottomTabScreen = () => {
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {
-            const iconYellow = Image.resolveAssetSource(require('../assets/loupeJ.png')).uri;
-            const iconGrey = Image.resolveAssetSource(require('../assets/loupeN.png')).uri;
+            const iconYellow = Image.resolveAssetSource(
+              require("../assets/loupeJ.png")
+            ).uri;
+            const iconGrey = Image.resolveAssetSource(
+              require("../assets/loupeN.png")
+            ).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
               <FastImage
                 source={{
                   uri: icon,
-                  priority: FastImage.priority.high
+                  priority: FastImage.priority.high,
                 }}
                 style={styles.imageIcon}
                 resizeMode={FastImage.resizeMode.contain}
               />
-            )
+            );
           },
           tabBarLabel: ({ focused }) => (
             <Text
@@ -194,7 +205,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              {t('navigator_search')}
+              {t("navigator_search")}
             </Text>
           ),
         }}
@@ -218,21 +229,25 @@ const BottomTabScreen = () => {
             fontSize: 20,
             fontWeight: "bold",
           },
-          title: t('navigator_myShoppingList'),
+          title: t("navigator_myShoppingList"),
           tabBarIcon: ({ focused }) => {
-            const iconYellow = Image.resolveAssetSource(require('../assets/okJ.png')).uri;
-            const iconGrey = Image.resolveAssetSource(require('../assets/okN.png')).uri;
+            const iconYellow = Image.resolveAssetSource(
+              require("../assets/okJ.png")
+            ).uri;
+            const iconGrey = Image.resolveAssetSource(
+              require("../assets/okN.png")
+            ).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
               <FastImage
                 source={{
                   uri: icon,
-                  priority: FastImage.priority.high
+                  priority: FastImage.priority.high,
                 }}
                 style={styles.imageIcon}
                 resizeMode={FastImage.resizeMode.contain}
               />
-            )
+            );
           },
           tabBarLabel: ({ focused }) => (
             <Text
@@ -241,7 +256,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              {t('navigator_list')}
+              {t("navigator_list")}
             </Text>
           ),
         }}
@@ -258,19 +273,23 @@ const BottomTabScreen = () => {
             transform: [{ scale: 0.5 }],
           },
           tabBarIcon: ({ focused }) => {
-            const iconYellow = Image.resolveAssetSource(require('../assets/cutJ.png')).uri;
-            const iconGrey = Image.resolveAssetSource(require('../assets/cutN.png')).uri;
+            const iconYellow = Image.resolveAssetSource(
+              require("../assets/cutJ.png")
+            ).uri;
+            const iconGrey = Image.resolveAssetSource(
+              require("../assets/cutN.png")
+            ).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
               <FastImage
                 source={{
                   uri: icon,
-                  priority: FastImage.priority.high
+                  priority: FastImage.priority.high,
                 }}
                 style={{ ...styles.imageIcon, height: 30, width: 30 }}
                 resizeMode={FastImage.resizeMode.contain}
               />
-            )
+            );
           },
           tabBarLabel: ({ focused }) => (
             <Text
@@ -279,7 +298,7 @@ const BottomTabScreen = () => {
                 fontWeight: focused ? "bold" : null,
               }}
             >
-              {t('navigator_toKitchen')}
+              {t("navigator_toKitchen")}
             </Text>
           ),
         }}
@@ -300,10 +319,10 @@ const horizontalAnimation = {
       }),
       next
         ? next.progress.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-          extrapolate: "clamp",
-        })
+            inputRange: [0, 1],
+            outputRange: [0, 1],
+            extrapolate: "clamp",
+          })
         : 0
     );
     return {
@@ -510,7 +529,7 @@ const LoggedStackScreen = () => {
           // name="SearchRecipesScreen"
           options={{
             headerShown: true,
-            headerTitle: t('searchRecipeScreen_title'),
+            headerTitle: t("searchRecipeScreen_title"),
             headerTitleAlign: "center",
             headerTintColor: "white",
             headerStyle: {
@@ -647,7 +666,7 @@ const LoginStackScreen = () => {
             ...horizontalAnimation,
             headerShown: true,
             headerTitleAlign: "center",
-            title: t('introScreen_login'),
+            title: t("introScreen_login"),
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -665,7 +684,7 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: t('profileScreen_title'),
+            headerTitle: t("profileScreen_title"),
             headerTitleAlign: "center",
             headerTintColor: "white",
 
@@ -692,7 +711,7 @@ const LoginStackScreen = () => {
           name="SearchRecipesScreen"
           options={{
             headerShown: true,
-            headerTitle: t('searchRecipeScreen_title'),
+            headerTitle: t("searchRecipeScreen_title"),
             headerTitleAlign: "center",
             headerTintColor: "white",
             headerStyle: {
@@ -819,11 +838,7 @@ const RootNavigation = () => {
     return sub;
   }, []);
 
-  return (
-    <>
-      {user ? <LoggedStackScreen /> : <LoginStackScreen />}
-    </>
-  );
+  return <>{user ? <LoggedStackScreen /> : <LoginStackScreen />}</>;
 };
 
 export default RootNavigation;
@@ -832,5 +847,5 @@ const styles = StyleSheet.create({
   imageIcon: {
     width: 25,
     height: 25,
-  }
-})
+  },
+});

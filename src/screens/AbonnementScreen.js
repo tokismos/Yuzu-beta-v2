@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Entypo } from "@expo/vector-icons";
-import { useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 import CustomButton from "../components/CustomButton";
 import { useStripe } from "@stripe/stripe-react-native";
@@ -116,23 +116,23 @@ const AbonnementScreen = () => {
               width: width * 0.9,
             }}
           >
-            {t('abonnementScreen_participateDescription')}
+            {t("abonnementScreen_participateDescription")}
           </Text>
           <ItemList
-            title={t('abonnementScreen_1_title')}
-            description={t('abonnementScreen_1_description')}
+            title={t("abonnementScreen_1_title")}
+            description={t("abonnementScreen_1_description")}
           >
             <Entypo name="infinity" size={50} color="black" />
           </ItemList>
           <ItemList
-            title={t('abonnementScreen_2_title')}
-            description={t('abonnementScreen_2_description')}
+            title={t("abonnementScreen_2_title")}
+            description={t("abonnementScreen_2_description")}
           >
             <AvantPremiereSVG height="50" width="50" fill="black" />
           </ItemList>
           <ItemList
-            title={t('abonnementScreen_3_title')}
-            description={t('abonnementScreen_3_description')}
+            title={t("abonnementScreen_3_title")}
+            description={t("abonnementScreen_3_description")}
           >
             <Image
               style={{ height: 50, width: 50 }}
@@ -140,8 +140,8 @@ const AbonnementScreen = () => {
             />
           </ItemList>
           <ItemList
-            title={t('abonnementScreen_4_title')}
-            description={t('abonnementScreen_4_description')}
+            title={t("abonnementScreen_4_title")}
+            description={t("abonnementScreen_4_description")}
           >
             <PeopleSVG height="50" width="50" fill="black" />
           </ItemList>
@@ -165,16 +165,16 @@ const AbonnementScreen = () => {
               marginVertical: 20,
             }}
           >
-            {t('abonnementScreen_support')}
+            {t("abonnementScreen_support")}
           </Text>
           <Text style={{ textAlign: "center", width: width * 0.9 }}>
-            {t('abonnementScreen_support_description')}
+            {t("abonnementScreen_support_description")}
           </Text>
         </View>
       </View>
 
       <CustomButton
-        title={t('abonnementScreen_buttom')}
+        title={t("abonnementScreen_buttom")}
         onPress={() => navigation.navigate("AbonnementSecondScreen")}
         style={{
           width: width * 0.7,

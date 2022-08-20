@@ -37,7 +37,13 @@ const IngredientItemComponent = ({ ingredient, title, onPress }) => {
         alignItems: "center",
       }}
     >
-      <Text style={{ marginLeft: 20, width: "80%", color: toggle ? COLORS.grey : 'black' }}>
+      <Text
+        style={{
+          marginLeft: 20,
+          width: "80%",
+          color: toggle ? COLORS.grey : "black",
+        }}
+      >
         <Text style={{ fontWeight: "bold" }}>
           {" "}
           {!ingredient.newQuantity
@@ -75,11 +81,19 @@ const CartItemComponent = ({ item, onPress }) => {
           marginVertical: 10,
         }}
       >
-        <View style={{ width: "15%", height: "20%", paddingLeft: 5, position: "relative" }}>
+        <View
+          style={{
+            width: "15%",
+            height: "20%",
+            paddingLeft: 5,
+            position: "relative",
+          }}
+        >
           <FastImage
             style={styles.imageStyle}
             source={{
-              uri: Image.resolveAssetSource(require('../assets/default.jpg')).uri,
+              uri: Image.resolveAssetSource(require("../assets/default.jpg"))
+                .uri,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
@@ -156,33 +170,33 @@ const IngredientCartScreen = ({ route, navigation }) => {
   };
 
   const handleCreateList = () => {
-    console.log('1', { condition: Object.keys(finalCart), finalCart });
+    console.log("1", { condition: Object.keys(finalCart), finalCart });
     if (Object.keys(finalCart).length === 0) return;
-    console.log('2');
+    console.log("2");
     if (!auth().currentUser) return navigation.navigate("SignInScreen");
 
-    console.log('3');
+    console.log("3");
     const arr = [];
     Object.entries(finalCart).forEach(([key, value]) => {
       arr.push({ ...value, _id: key });
     });
-    console.log('4', { arr });
+    console.log("4", { arr });
     setCommandes(arr);
 
-    console.log('5');
+    console.log("5");
     dispatch(setCuisineNotification(true));
-    console.log('6');
+    console.log("6");
     dispatch(setListNotification(true));
-    console.log('7');
+    console.log("7");
     dispatch(resetMatches());
-    console.log('8');
+    console.log("8");
 
     navigation.reset({
       index: 0,
       routes: [{ name: "TinderScreen" }],
     });
-    console.log('9');
-  }
+    console.log("9");
+  };
 
   return (
     <SafeAreaView
@@ -209,7 +223,7 @@ const IngredientCartScreen = ({ route, navigation }) => {
       >
         <CustomButton
           onPress={handleCreateList}
-          title={t('ingredientCartScreen_createMyShoppingList')}
+          title={t("ingredientCartScreen_createMyShoppingList")}
           style={{ ...styles.buttonContainer, backgroundColor: COLORS.primary }}
           textStyle={{ fontWeight: "bold", color: "white", fontSize: 18 }}
         />
@@ -228,7 +242,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 10,
     width: 50,
-    height: 50
+    height: 50,
   },
   buttonContainer: {
     backgroundColor: "#E3E3E3",

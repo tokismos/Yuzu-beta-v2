@@ -1,28 +1,32 @@
-import React from 'react';
-import { Image, View, Pressable, Dimensions } from 'react-native';
+import React from "react";
+import { Image, View, Pressable, Dimensions } from "react-native";
 import FastImage from "react-native-fast-image";
 
-import { COLORS } from '../../../../consts/colors'
+import { COLORS } from "../../../../consts/colors";
 
 const { height } = Dimensions.get("screen");
 
 const Header = ({ bottomSheetRef, navigation }) => {
-  const logo = Image.resolveAssetSource(require('../../../../assets/logo.png')).uri
+  const logo = Image.resolveAssetSource(
+    require("../../../../assets/logo.png")
+  ).uri;
   return (
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
       }}
     >
-      <View style={{
-        height: height * 0.06,
-      }}>
+      <View
+        style={{
+          height: height * 0.06,
+        }}
+      >
         <FastImage
           style={{
             marginLeft: 20,
             width: 100,
-            height: 55
+            height: 55,
           }}
           source={{ uri: logo, priority: FastImage.priority.high }}
           resizeMode={FastImage.resizeMode.contain}
@@ -46,16 +50,15 @@ const Header = ({ bottomSheetRef, navigation }) => {
             justifyContent: "center",
             alignItems: "center",
             height: "200%",
-            margin: 10
+            margin: 10,
           }}
-        >
-        </Pressable>
+        ></Pressable>
         <Pressable
           onPress={() => {
             if (auth().currentUser) {
-              navigation.navigate('ProfileScreen');
+              navigation.navigate("ProfileScreen");
             } else {
-              navigation.navigate('IntroScreen', { headerShown: false });
+              navigation.navigate("IntroScreen", { headerShown: false });
             }
           }}
           style={{
@@ -67,7 +70,12 @@ const Header = ({ bottomSheetRef, navigation }) => {
         >
           <FastImage
             style={{ width: 50, height: 50 }}
-            source={{ uri: Image.resolveAssetSource(require('../../../../assets/traitb.png')) }} />
+            source={{
+              uri: Image.resolveAssetSource(
+                require("../../../../assets/traitb.png")
+              ),
+            }}
+          />
         </Pressable>
       </View>
     </View>

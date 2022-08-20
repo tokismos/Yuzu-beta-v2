@@ -15,7 +15,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
 import { useNavigation } from "@react-navigation/core";
 import FastImage from "react-native-fast-image";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -54,7 +54,7 @@ const LoginHeaderScreen = ({ index, innerRef }) => {
             color: "black",
           }}
         >
-            {t('loginHeaderScreen_create')}
+          {t("loginHeaderScreen_create")}
         </Text>
       </View>
     </View>

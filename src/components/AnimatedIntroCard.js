@@ -1,10 +1,9 @@
-import { StyleSheet, useWindowDimensions, View } from "react-native";
-import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import LottieView from "lottie-react-native";
+import React from "react";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 
-import { COLORS } from "../consts/colors";
 import Animated, {
   interpolate,
   runOnJS,
@@ -12,10 +11,11 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withSpring,
+  withSpring
 } from "react-native-reanimated";
-import Nope from "../assets/nope.png";
 import Like from "../assets/LIKE.png";
+import Nope from "../assets/nope.png";
+import { COLORS } from "../consts/colors";
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -41,6 +41,7 @@ const AnimatedIntroCard = ({ swiped, right }) => {
       },
     ],
   }));
+  
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, context) => {
       context.startX = translateX.value;

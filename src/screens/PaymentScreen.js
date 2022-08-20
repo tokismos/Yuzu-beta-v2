@@ -1,10 +1,11 @@
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
 import { useStripe } from "@stripe/stripe-react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, Button, StyleSheet, Text, View } from "react-native";
 
 const PaymentScreen = () => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
+
   const fetchPaymentSheetParams = async () => {
     const response = await fetch(`http://b7b3-50-100-167-5.ngrok.io/pay`, {
       method: "POST",
@@ -20,6 +21,7 @@ const PaymentScreen = () => {
       customer,
     };
   };
+  
   const initializePaymentSheet = async () => {
     const { paymentIntent, ephemeralKey, customer, publishableKey } =
       await fetchPaymentSheetParams();
@@ -36,6 +38,7 @@ const PaymentScreen = () => {
       setLoading(true);
     }
   };
+  
   const openPaymentSheet = async () => {
     const { error } = await presentPaymentSheet();
 
@@ -49,6 +52,7 @@ const PaymentScreen = () => {
   useEffect(() => {
     initializePaymentSheet();
   }, []);
+
   return (
     <View style={{ flex: 1, justifyContent: "center" }}>
       <Text>HOLE</Text>

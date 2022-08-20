@@ -14,7 +14,7 @@ import CheckBox from "@react-native-community/checkbox";
 import FastImage from "react-native-fast-image";
 import { COLORS } from "../consts/colors";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import LazyLoadImage from "./LazyLoadImage";
 
 const { height } = Dimensions.get("screen");
@@ -71,7 +71,7 @@ const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
 };
 
 const CartComponent = ({ item, onPress, setFinalCart, index }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
   const [toggle, setToggle] = useState(true);
 
@@ -86,9 +86,7 @@ const CartComponent = ({ item, onPress, setFinalCart, index }) => {
         }}
       >
         <View style={styles.imgContainer}>
-
-            <LazyLoadImage thumbURL={item.thumbURL} style={styles.imageStyle} />
-
+          <LazyLoadImage thumbURL={item.thumbURL} style={styles.imageStyle} />
         </View>
         <View style={styles.midContainer}>
           <View
@@ -118,10 +116,14 @@ const CartComponent = ({ item, onPress, setFinalCart, index }) => {
               >
                 <View>
                   <Text style={{ color: "gray" }}>
-                      {t('cartComponent_preparationMinimumDuration', { duration: item.tempsPreparation })}
+                    {t("cartComponent_preparationMinimumDuration", {
+                      duration: item.tempsPreparation,
+                    })}
                   </Text>
                   <Text style={{ color: "gray", fontSize: 14 }}>
-                      {t('cartComponent_ingredientsLength', { len: item.ingredients.length })}
+                    {t("cartComponent_ingredientsLength", {
+                      len: item.ingredients.length,
+                    })}
                   </Text>
                 </View>
 
@@ -161,14 +163,14 @@ const CartComponent = ({ item, onPress, setFinalCart, index }) => {
 export default CartComponent;
 
 const styles = StyleSheet.create({
-    imageStyle: {
-        height: 70,
-        width: 70,
-        top: 5,
-        left: 5,
-        borderRadius: 10,
-        position: "absolute",
-    },
+  imageStyle: {
+    height: 70,
+    width: 70,
+    top: 5,
+    left: 5,
+    borderRadius: 10,
+    position: "absolute",
+  },
   container: {
     flexDirection: "row",
     height: height * 0.1,

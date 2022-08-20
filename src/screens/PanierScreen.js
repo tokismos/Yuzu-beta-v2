@@ -23,7 +23,9 @@ import { useTranslation } from "react-i18next";
 
 const PanierScreen = ({ navigation }) => {
   const { matches } = useSelector((state) => state.matchStore);
-  const [finalCart, setFinalCart] = useState([...matches.map(i => ({ ...i, isChecked: true}))]);
+  const [finalCart, setFinalCart] = useState([
+    ...matches.map((i) => ({ ...i, isChecked: true })),
+  ]);
   const { t } = useTranslation();
 
   const validate = () => {
@@ -43,7 +45,7 @@ const PanierScreen = ({ navigation }) => {
       item.ingredients = newQuantity;
     });
     if (checkedCart.length === 0) {
-      return Toast.show(t('panierScreen_atLeastOneRecipe'), Toast.LONG);
+      return Toast.show(t("panierScreen_atLeastOneRecipe"), Toast.LONG);
     }
     navigation.navigate("IngredientsCartScreen", { cart: checkedCart });
   };
@@ -59,7 +61,7 @@ const PanierScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <Text style={styles.title}>{t('panierScreen_selectedRecipes')}</Text>
+      <Text style={styles.title}>{t("panierScreen_selectedRecipes")}</Text>
       <ScrollView>
         <View style={{ width: "100%" }}>
           <View style={{}}>
@@ -80,7 +82,7 @@ const PanierScreen = ({ navigation }) => {
       <View style={styles.bottomContainer}>
         <CustomButton
           onPress={() => navigation.goBack()}
-          title={t('panierScreen_addRecipes')}
+          title={t("panierScreen_addRecipes")}
           style={{
             ...styles.buttonContainer,
             backgroundColor: "#E3e3e3",
@@ -91,7 +93,7 @@ const PanierScreen = ({ navigation }) => {
         <CustomButton
           disabled={finalCart.length === 0}
           onPress={validate}
-          title={t('panierScreen_validate')}
+          title={t("panierScreen_validate")}
           style={{
             ...styles.buttonContainer,
             backgroundColor: COLORS.primary,

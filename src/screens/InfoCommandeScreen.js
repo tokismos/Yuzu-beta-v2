@@ -4,7 +4,7 @@
 // setSelectedIngredient we find here every selected ing que ca soit produits or from cart
 
 import { format, formatRelative } from "date-fns";
-import { fr } from 'date-fns/locale';
+import { fr } from "date-fns/locale";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
@@ -28,11 +28,9 @@ import LazyLoadImage from "../components/LazyLoadImage";
 import CheckBox from "@react-native-community/checkbox";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const { height, width } = Dimensions.get("screen");
-
-
 
 // Each recipe which contain ingredients
 const CartComponent = ({
@@ -45,15 +43,23 @@ const CartComponent = ({
   index,
 }) => {
   const { t } = useTranslation();
-  const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
+  const defaultImage = Image.resolveAssetSource(
+    require("../assets/default.jpg")
+  ).uri;
 
   return (
     <>
       <View>
-        {index === 0 && <Text style={styles.title}>{t('infoCommandeScreen_recipe')}</Text>}
+        {index === 0 && (
+          <Text style={styles.title}>{t("infoCommandeScreen_recipe")}</Text>
+        )}
       </View>
       <View style={styles.cartComponent}>
-        <LazyLoadImage thumbURL={thumbURL} imgURL={imgURL} styles={styles.recipeImg} />
+        <LazyLoadImage
+          thumbURL={thumbURL}
+          imgURL={imgURL}
+          styles={styles.recipeImg}
+        />
 
         <View style={styles.titleComponent}>
           <Text
@@ -64,7 +70,7 @@ const CartComponent = ({
               width: "80%",
               marginBottom: 50,
               marginLeft: 140,
-              top: 27
+              top: 27,
             }}
           >
             {name}
@@ -97,13 +103,13 @@ const AddProductComponent = ({ setProducts, products }) => {
     <View style={styles.addProductComponent}>
       <TextInputColored
         style={{ width: "50%", height: 40, marginBottom: 10 }}
-        label={t('infoCommandeScreen_addArticle')}
+        label={t("infoCommandeScreen_addArticle")}
         setChangeText={setProductText}
         value={productText}
       />
 
       <CustomButton
-        title={t('infoCommandeScreen_add')}
+        title={t("infoCommandeScreen_add")}
         style={{ height: 40 }}
         onPress={() => {
           if (!productText) {
@@ -111,7 +117,7 @@ const AddProductComponent = ({ setProducts, products }) => {
           }
 
           if (products.indexOf(productText) > -1) {
-            return Alert.alert(t('infoCommandeScreen_alreadyAdded'));
+            return Alert.alert(t("infoCommandeScreen_alreadyAdded"));
           }
           setProducts((p) => [...p, productText]);
         }}
@@ -164,7 +170,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
               ...styles.productItemText,
               textDecorationLine: toggle ? "line-through" : null,
               textDecorationStyle: "solid",
-              color: toggle ? COLORS.grey : 'black',
+              color: toggle ? COLORS.grey : "black",
               width: "65%",
             }}
           >
@@ -215,7 +221,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
     return (
       <View style={styles.productsComponent}>
-        <Text style={styles.title}>{t('infoCommandeScreen_addedArticle')}</Text>
+        <Text style={styles.title}>{t("infoCommandeScreen_addedArticle")}</Text>
 
         {products.map((item, i) => {
           return (
@@ -235,7 +241,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
     const time = new Date(params.historyDetail.dateTime);
 
     navigation.setOptions({
-      title: formatRelative(time, new Date(), { locale: fr })
+      title: formatRelative(time, new Date(), { locale: fr }),
     });
   }, []);
   const isFocused = useIsFocused();
@@ -301,7 +307,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     position: "absolute",
     top: 15,
-    left: 15
+    left: 15,
   },
   separator: {
     height: 0.4,

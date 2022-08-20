@@ -1,13 +1,7 @@
 // Notre component qui affiche les tinder Swipe c'est  ici qu'on regle le design est tous ses composants
 
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import { COLORS } from "../consts/colors";
 import { useNavigation } from "@react-navigation/native";
 import FastImage from "react-native-fast-image";
@@ -16,11 +10,12 @@ import { Avatar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
 const ImageFast = ({ uri, thumb }) => {
-  const defaultImage = Image.resolveAssetSource(require('../assets/default.jpg')).uri;
+  const defaultImage = Image.resolveAssetSource(
+    require("../assets/default.jpg")
+  ).uri;
 
   return (
     <>
-
       <FastImage
         style={styles.image}
         source={{ uri: thumb, priority: FastImage.priority.normal }}
@@ -54,7 +49,7 @@ const HeadComponent = ({ name, like }) => {
             {name}
           </Text>
           <Text style={{ color: "gray", marginLeft: 5, fontSize: 12 }}>
-            {t('tinderScreen_createdByYuzu')}
+            {t("tinderScreen_createdByYuzu")}
           </Text>
         </View>
       </View>
@@ -65,7 +60,7 @@ const HeadComponent = ({ name, like }) => {
         </View>
         <View style={{ alignItems: "center" }}>
           <FontAwesome name="star" size={25} color={COLORS.primary} />
-          <Text style={styles.nbrHeader}>{t('tinderScreen_new')}</Text>
+          <Text style={styles.nbrHeader}>{t("tinderScreen_new")}</Text>
         </View>
       </View>
     </View>
@@ -93,10 +88,12 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text style={{ color: "white" }}>
-                {t('tinderScreen_preparationDuration')}
+                {t("tinderScreen_preparationDuration")}
                 <Text style={{ fontWeight: "bold" }}>
                   {" "}
-                  {t('tinderScreen_minutes', { duration: recipe.tempsPreparation })}
+                  {t("tinderScreen_minutes", {
+                    duration: recipe.tempsPreparation,
+                  })}
                 </Text>
               </Text>
               <Text style={{ color: "white", fontWeight: "bold" }}>
@@ -107,10 +104,12 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft }) => {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text style={{ color: "white" }}>
-                {t('tinderScreen_totalDuration')}
+                {t("tinderScreen_totalDuration")}
                 <Text style={{ fontWeight: "bold" }}>
                   {" "}
-                  {t('tinderScreen_minutes', { duration: recipe.tempsPreparation + recipe.tempsCuisson })}
+                  {t("tinderScreen_minutes", {
+                    duration: recipe.tempsPreparation + recipe.tempsCuisson,
+                  })}
                 </Text>
               </Text>
               <Text style={{ color: "white" }}>
@@ -162,15 +161,14 @@ export default TinderCard;
 
 const styles = StyleSheet.create({
   image: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: "lightgrey",
     aspectRatio: 1,
     opacity: 1,
-    position: 'absolute',
+    position: "absolute",
     top: 60,
     left: 0,
-    height: '50%',
-    width: "100%"
-
+    height: "50%",
+    width: "100%",
   },
   hideImage: {
     opacity: 0,

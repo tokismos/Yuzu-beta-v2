@@ -15,16 +15,32 @@ export const recipeSlice = createSlice({
     setFilters: (state, { payload }) => {
       return { ...state, activeFilters: payload };
     },
-    removeFilter: (state, { payload }) => ({ ...state, activeFilters: state.activeFilters.filter(i => Object.values(i)?.[0] !== payload) }),
+    removeFilter: (state, { payload }) => ({
+      ...state,
+      activeFilters: state.activeFilters.filter(
+        (i) => Object.values(i)?.[0] !== payload
+      ),
+    }),
     resetFilters: (state) => ({ ...state, activeFilters: [] }),
     changeTime: (state, { payload }) => {
-      const filteredState = state.activeFilters.filter(i => !Object.keys(i).includes("tempsCuisson"));
+      const filteredState = state.activeFilters.filter(
+        (i) => !Object.keys(i).includes("tempsCuisson")
+      );
 
       if (payload === 0) return { ...state, activeFilters: [...filteredState] };
-      return { ...state, activeFilters: [...filteredState, { tempsCuisson: payload }] }
+      return {
+        ...state,
+        activeFilters: [...filteredState, { tempsCuisson: payload }],
+      };
     },
     storeRecipes: (state, { payload }) => ({ ...state, recipes: payload }),
-    addFilter: (state, action) => ({ ...state, activeFilters: [...state.activeFilters, { [action.payload.type]: action.payload.name }] })
+    addFilter: (state, action) => ({
+      ...state,
+      activeFilters: [
+        ...state.activeFilters,
+        { [action.payload.type]: action.payload.name },
+      ],
+    }),
   },
 });
 

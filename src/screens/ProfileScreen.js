@@ -26,7 +26,7 @@ import { KeyboardAvoidingView } from "react-native";
 import { setUser } from "../redux/slicer/userSlicer";
 import { ToastAndroid } from "react-native";
 import { useTranslation } from "react-i18next";
-import useAuth from '../hooks/useAuth';
+import useAuth from "../hooks/useAuth";
 
 const { width, height } = Dimensions.get("screen");
 const ProfileScreen = () => {
@@ -59,9 +59,9 @@ const ProfileScreen = () => {
       setIsLoading(false);
       sheetRef.current.snapTo(1);
       setName("");
-      ToastAndroid.show(t('profileScreen_nameChanged'), ToastAndroid.SHORT);
+      ToastAndroid.show(t("profileScreen_nameChanged"), ToastAndroid.SHORT);
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   };
   return (
@@ -131,7 +131,7 @@ const ProfileScreen = () => {
                 marginHorizontal: "3%",
               }}
             >
-              <Text>{t('profileScreen_nameAndLastName')}</Text>
+              <Text>{t("profileScreen_nameAndLastName")}</Text>
               <Text
                 style={{
                   textAlign: "center",
@@ -146,8 +146,7 @@ const ProfileScreen = () => {
                 onPress={() => {
                   sheetRef.current.snapTo(0);
                 }}
-              >
-              </TouchableOpacity>
+              ></TouchableOpacity>
             </View>
           </View>
           {user?.phoneNumber && (
@@ -166,7 +165,7 @@ const ProfileScreen = () => {
                   marginHorizontal: "3%",
                 }}
               >
-                <Text style={{}}>{t('profileScreen_phoneNumber')}</Text>
+                <Text style={{}}>{t("profileScreen_phoneNumber")}</Text>
                 <Text
                   style={{
                     textAlign: "center",
@@ -181,8 +180,7 @@ const ProfileScreen = () => {
                   onPress={() => {
                     sheetRef.current.snapTo(0);
                   }}
-                >
-                </TouchableOpacity>
+                ></TouchableOpacity>
               </View>
             </View>
           )}
@@ -205,7 +203,9 @@ const ProfileScreen = () => {
                 color="black"
                 style={{ marginRight: 20 }}
               />
-              <Text style={{ fontSize: 18, flex: 1 }}>{t('profileScreen_addNumber')}</Text>
+              <Text style={{ fontSize: 18, flex: 1 }}>
+                {t("profileScreen_addNumber")}
+              </Text>
 
               <AntDesign name="exclamationcircle" size={16} color="red" />
               <MaterialIcons
@@ -230,7 +230,9 @@ const ProfileScreen = () => {
               color="black"
               style={{ marginRight: 20 }}
             />
-            <Text style={{ fontSize: 18, flex: 1 }}>{t('profileScreen_addAddress')}</Text>
+            <Text style={{ fontSize: 18, flex: 1 }}>
+              {t("profileScreen_addAddress")}
+            </Text>
             <AntDesign name="exclamationcircle" size={16} color="red" />
             <MaterialIcons
               name="keyboard-arrow-right"
@@ -254,7 +256,9 @@ const ProfileScreen = () => {
               color="black"
               style={{ marginRight: 20 }}
             />
-            <Text style={{ fontSize: 18, flex: 1 }}>{t('profileScreen_modifyName')}</Text>
+            <Text style={{ fontSize: 18, flex: 1 }}>
+              {t("profileScreen_modifyName")}
+            </Text>
             <MaterialIcons
               name="keyboard-arrow-right"
               size={20}
@@ -278,7 +282,9 @@ const ProfileScreen = () => {
                 color="black"
                 style={{ marginRight: 20 }}
               />
-              <Text style={{ fontSize: 18, flex: 1 }}>{t('profileScreen_modifyNumber')}</Text>
+              <Text style={{ fontSize: 18, flex: 1 }}>
+                {t("profileScreen_modifyNumber")}
+              </Text>
               <MaterialIcons
                 name="keyboard-arrow-right"
                 size={20}
@@ -303,7 +309,7 @@ const ProfileScreen = () => {
               style={{ marginRight: 20 }}
             />
             <Text style={{ fontSize: 18, flex: 1, color: "red" }}>
-              {t('disconnect')}
+              {t("disconnect")}
             </Text>
             <MaterialIcons name="keyboard-arrow-right" size={20} color="red" />
           </TouchableOpacity>

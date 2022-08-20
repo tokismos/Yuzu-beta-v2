@@ -47,36 +47,38 @@ const AvantagesScreen = ({ refe }) => {
     <>
       <View style={styles.avantagesContainer}>
         <Text style={styles.titleAvantage}>
-          {t('abonnementSecondScreen_avantage_title')}
+          {t("abonnementSecondScreen_avantage_title")}
         </Text>
         <View style={{ width: width * 0.9 }}>
           <View style={{ width: "100%", flexDirection: "row" }}>
             <View style={{ width: "50%" }}></View>
-            <Text style={styles.titleColumn}>{t('abonnementSecondScreen_freeYuzer')}</Text>
+            <Text style={styles.titleColumn}>
+              {t("abonnementSecondScreen_freeYuzer")}
+            </Text>
             <View style={styles.coloredBackgroundColor}>
               <Text style={{ ...styles.titleColumn, width: "100%" }}>
-                {t('abonnementSecondScreen_superYuzer')}
+                {t("abonnementSecondScreen_superYuzer")}
               </Text>
             </View>
           </View>
-          <Row title={t('abonnementSecondScreen_avantage1')} first />
-          <Row title={t('abonnementSecondScreen_avantage2')} />
-          <Row title={t('abonnementSecondScreen_avantage3')} />
-          <Row title={t('abonnementSecondScreen_avantage4')} />
-          <Row title={t('abonnementSecondScreen_avantage5')} />
-          <Row title={t('abonnementSecondScreen_avantage6')} last />
+          <Row title={t("abonnementSecondScreen_avantage1")} first />
+          <Row title={t("abonnementSecondScreen_avantage2")} />
+          <Row title={t("abonnementSecondScreen_avantage3")} />
+          <Row title={t("abonnementSecondScreen_avantage4")} />
+          <Row title={t("abonnementSecondScreen_avantage5")} />
+          <Row title={t("abonnementSecondScreen_avantage6")} last />
         </View>
       </View>
       <View style={styles.bottomContainer}>
         <CustomButton
-          title={t('abonnementScreen_button')}
+          title={t("abonnementScreen_button")}
           onPress={() => refe.current.setPage(1)}
           style={styles.button}
           textStyle={{ fontSize: 20 }}
         />
         <Pressable onPress={() => navigation.pop(2)}>
           <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 70 }}>
-            {t('no_thanks')}
+            {t("no_thanks")}
           </Text>
         </Pressable>
       </View>
@@ -114,26 +116,28 @@ const AbonnementList = ({
 };
 
 const OffreAbonnement = ({ onPress }) => {
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState("");
   const navigation = useNavigation();
   const { t } = useTranslation();
 
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
       <View style={styles.firstContainer}>
-        <Text style={styles.titleText}>{t('abonnementSecondScreen_startOffer_title')}</Text>
+        <Text style={styles.titleText}>
+          {t("abonnementSecondScreen_startOffer_title")}
+        </Text>
         <View style={styles.listView}>
           <AbonnementList
-            title={t('abonnementSecondScreen_startOffer_period1')}
-            secondLine={t('abonnementSecondScreen_startOffer_price1')}
-            thirdLine={t('abonnementSecondScreen_startOffer_initialPrice1')}
+            title={t("abonnementSecondScreen_startOffer_period1")}
+            secondLine={t("abonnementSecondScreen_startOffer_price1")}
+            thirdLine={t("abonnementSecondScreen_startOffer_initialPrice1")}
             selected={selected}
             onPress={() => setSelected("Mensuel")}
           />
           <AbonnementList
-            title={t('abonnementSecondScreen_startOffer_period2')}
-            secondLine={t('abonnementSecondScreen_startOffer_price2')}
-            thirdLine={t('abonnementSecondScreen_startOffer_initialPrice2')}
+            title={t("abonnementSecondScreen_startOffer_period2")}
+            secondLine={t("abonnementSecondScreen_startOffer_price2")}
+            thirdLine={t("abonnementSecondScreen_startOffer_initialPrice2")}
             selected={selected}
             onPress={() => setSelected("6 Mois")}
           />
@@ -141,16 +145,18 @@ const OffreAbonnement = ({ onPress }) => {
       </View>
 
       <View style={styles.bottomView}>
-        <Text>{t('abonnementSecondScreen_startOffer_cancel')}</Text>
+        <Text>{t("abonnementSecondScreen_startOffer_cancel")}</Text>
 
         <CustomButton
-          title={t('abonnementSecondScreen_startOffer_startTrial')}
+          title={t("abonnementSecondScreen_startOffer_startTrial")}
           onPress={onPress}
           style={styles.button}
           textStyle={{ fontSize: 18, textAlign: "center" }}
         />
         <Pressable onPress={() => navigation.pop(2)}>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>{t('no_thanks')}</Text>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+            {t("no_thanks")}
+          </Text>
         </Pressable>
       </View>
     </View>

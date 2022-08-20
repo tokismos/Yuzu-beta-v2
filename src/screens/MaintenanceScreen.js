@@ -4,7 +4,7 @@ import { COLORS } from "../consts/colors";
 import { useTranslation } from "react-i18next";
 
 const MaintenanceScreen = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <View
       style={{
@@ -32,7 +32,7 @@ const MaintenanceScreen = () => {
           style={{ height: 100, width: 100 }}
         />
         <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
-            {t('maintenanceScreen_sorry')}
+          {t("maintenanceScreen_sorry")}
         </Text>
       </View>
     </View>

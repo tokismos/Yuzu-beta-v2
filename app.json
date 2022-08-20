@@ -17,9 +17,7 @@
       "enabled": true,
       "checkAutomatically": "ON_LOAD"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "buildNumber": "9",
       "supportsTablet": true,
@@ -35,9 +33,7 @@
         "backgroundColor": "#ffc700"
       }
     },
-    "plugins": [
-      "@react-native-firebase/app"
-    ],
+    "plugins": ["@react-native-firebase/app"],
     "web": {
       "favicon": "./assets/favicon.png"
     },

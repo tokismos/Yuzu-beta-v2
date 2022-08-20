@@ -2,16 +2,11 @@
 // Ce screen n'est pas actif pour le moment
 
 import React, { createRef, useState } from "react";
-import {
-  Dimensions,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import LottieView from "lottie-react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 import PaginationDot from "react-native-animated-pagination-dot";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -94,7 +89,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-              {t('onboardingScreen_swipeLeft')}
+              {t("onboardingScreen_swipeLeft")}
             </Text>
           </View>
         </View>
@@ -130,7 +125,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-              {t('onboardingScreen_swipeRight')}
+              {t("onboardingScreen_swipeRight")}
             </Text>
           </View>
         </View>
@@ -194,7 +189,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 fontWeight: "bold",
               }}
             >
-              {t('onboardingScreen_clickInfo')}
+              {t("onboardingScreen_clickInfo")}
             </Text>
           </View>
         </View>
@@ -221,21 +216,18 @@ const OnBoardingScreen = ({ navigation }) => {
                 textAlign: "center",
               }}
             >
-              {t('onboardingScreen_howTo')}
+              {t("onboardingScreen_howTo")}
             </Text>
           </View>
           <View style={{ height: "50%", width: "90%" }}>
-            <Row title={t('onboardingScreen_howTo1')} num="1" />
-            <Row title={t('onboardingScreen_howTo2')} num="2" />
-            <Row title={t('onboardingScreen_howTo3')} num="3" />
-            <Row
-              title={t('onboardingScreen_howTo4')}
-              num="4"
-            />
+            <Row title={t("onboardingScreen_howTo1")} num="1" />
+            <Row title={t("onboardingScreen_howTo2")} num="2" />
+            <Row title={t("onboardingScreen_howTo3")} num="3" />
+            <Row title={t("onboardingScreen_howTo4")} num="4" />
           </View>
           <View style={{ height: "20%", width: "90%" }}>
             <CustomButton
-              title={t('next')}
+              title={t("next")}
               style={{
                 width: "70%",
               }}
@@ -269,7 +261,7 @@ const OnBoardingScreen = ({ navigation }) => {
                 marginBottom: 50,
               }}
             >
-              {t('onboardingScreen_justAWord')}
+              {t("onboardingScreen_justAWord")}
             </Text>
             <YoutubePlayer
               height={"100%"}
@@ -278,7 +270,7 @@ const OnBoardingScreen = ({ navigation }) => {
             />
           </View>
           <CustomButton
-            title={t('onboardingScreen_start')}
+            title={t("onboardingScreen_start")}
             style={{
               width: "70%",
             }}
@@ -309,4 +301,3 @@ const OnBoardingScreen = ({ navigation }) => {
 };
 
 export default OnBoardingScreen;
-

@@ -12,7 +12,7 @@ import PhoneInputComponent from "../components/PhoneInputComponent";
 import { setAdditionalInfo } from "../helpers/db";
 import useAuth from "../hooks/useAuth";
 import { setUser } from "../redux/slicer/userSlicer";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const PhoneScreen = ({ navigation }) => {
   const { user } = useSelector((state) => state.userStore);
@@ -46,7 +46,7 @@ const PhoneScreen = ({ navigation }) => {
           setPhoneNumber={setPhoneNumber}
         />
         <CustomButton
-          title={t('next')}
+          title={t("next")}
           isLoading={isLoading}
           onPress={async () => {
             setIsLoading(true);
@@ -67,7 +67,7 @@ const PhoneScreen = ({ navigation }) => {
           goBack={() => ref.current.setPage(0)}
         />
         <CustomButton
-          title={t('next')}
+          title={t("next")}
           isLoading={isLoading}
           onPress={async () => {
             setIsLoading(true);
@@ -80,7 +80,7 @@ const PhoneScreen = ({ navigation }) => {
               dispatch(setUser({ ...user, phoneNumber: fullNumber }));
               navigation.pop();
               ToastAndroid.show(
-                t('phoneScreen_phoneChanged'),
+                t("phoneScreen_phoneChanged"),
                 ToastAndroid.SHORT
               );
               setIsLoading(false);

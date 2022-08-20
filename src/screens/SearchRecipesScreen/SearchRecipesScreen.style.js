@@ -1,4 +1,4 @@
-import { StyleSheet, NativeModules } from 'react-native';
+import { StyleSheet, NativeModules } from "react-native";
 const { StatusBarManager } = NativeModules;
 
 const statusHeight = StatusBarManager.HEIGHT;
@@ -7,7 +7,7 @@ export default StyleSheet.create({
   root: {
     justifyContent: "center",
     alignItems: "center",
-    top: statusHeight
+    top: statusHeight,
   },
   title: {
     width: "100%",
@@ -16,4 +16,4 @@ export default StyleSheet.create({
     fontWeight: "bold",
     marginLeft: "10%",
   },
-})
+});

@@ -13,12 +13,12 @@ import LottieView from "lottie-react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../consts/colors";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { width, height } = Dimensions.get("window");
 
 const CodeVerificationComponent = ({ fullNumber, setCode, goBack }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const [refresh, setRefresh] = useState(false);
 
   const ref = createRef(null);
@@ -47,12 +47,12 @@ const CodeVerificationComponent = ({ fullNumber, setCode, goBack }) => {
           fontSize: 18,
         }}
       >
-          {t('codeVerificationComponent_enterCode')}
+        {t("codeVerificationComponent_enterCode")}
       </Text>
       <Text
         style={{ color: "gray", textAlign: "center", marginHorizontal: 20 }}
       >
-          {t('codeVerificationComponent_codeSent_description')}
+        {t("codeVerificationComponent_codeSent_description")}
         <Text style={{ fontWeight: "bold" }}>{fullNumber}</Text>
       </Text>
       <TouchableOpacity onPress={goBack}>
@@ -85,7 +85,9 @@ const CodeVerificationComponent = ({ fullNumber, setCode, goBack }) => {
       />
 
       <TouchableOpacity disabled={!refresh} style={styles.resendButton}>
-        <Text style={styles.text}>{t('codeVerificationComponent_resendCode')}</Text>
+        <Text style={styles.text}>
+          {t("codeVerificationComponent_resendCode")}
+        </Text>
         {refresh ? (
           <FontAwesome name="refresh" size={29} color={COLORS.primary} />
         ) : (

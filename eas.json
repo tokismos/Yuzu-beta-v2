@@ -23,8 +23,7 @@
   },
   "submit": {
     "production": {
-      "ios":{"ascAppId":"1604076492",
-      "bundleIdentifier":"com.yuzu.itten"}
+      "ios": { "ascAppId": "1604076492", "bundleIdentifier": "com.yuzu.itten" }
     }
   }
 }

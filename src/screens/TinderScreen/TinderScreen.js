@@ -11,12 +11,12 @@ import {
   StatusBar,
   SafeAreaView,
   ActivityIndicator,
-  Alert
+  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import Animated, { FadeInDown } from "react-native-reanimated";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 import { getAllRecipes, incrementLeft, incrementRight } from "../../axios";
 
@@ -31,13 +31,12 @@ import CustomButton from "../../components/CustomButton";
 import AnimatedStack from "../../components/AnimatedStack";
 
 import TinderCard from "./components/TinderCard";
-import Header from './components/Header/Header';
+import Header from "./components/Header/Header";
 import FilterScreen from "../FilterScreen";
 
 import { COLORS } from "../../consts/colors";
 
 const { height } = Dimensions.get("screen");
-
 
 const TinderScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -54,11 +53,8 @@ const TinderScreen = ({ navigation }) => {
   const { activeFilters } = useSelector((state) => state.recipeStore);
   const { isFirstTime } = useSelector((state) => state.userStore);
 
-
-
   const bottomSheetRef = useRef();
   const [count, setCount] = useState();
-
 
   useEffect(() => {
     if (isFirstTime) {
@@ -75,12 +71,11 @@ const TinderScreen = ({ navigation }) => {
 
   const loadData = async (item) => {
     setIsLoading(true);
-    getAllRecipes(item)
-      .then((result) => {
-        dispatch(storeRecipes(result));
-        setRecipes(result);
-        setIsLoading(false);
-      })
+    getAllRecipes(item).then((result) => {
+      dispatch(storeRecipes(result));
+      setRecipes(result);
+      setIsLoading(false);
+    });
   };
 
   const getAndSetFavorites = async () => {
@@ -125,7 +120,7 @@ const TinderScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.pageContainer}>
-      <StatusBar translucent backgroundColor='transparent' />
+      <StatusBar translucent backgroundColor="transparent" />
 
       <Header
         bottomSheetRef={bottomSheetRef}
@@ -175,7 +170,7 @@ const TinderScreen = ({ navigation }) => {
                 onSwipeRight={onSwipeRight}
               />
             ) : (
-              <Text>{t('tinderScreen_nothingToShow')}</Text>
+              <Text>{t("tinderScreen_nothingToShow")}</Text>
             )}
           </View>
         </View>
@@ -192,11 +187,13 @@ const TinderScreen = ({ navigation }) => {
             <Pressable
               onPress={() => {
                 Alert.alert(
-                  t('tinderScreen_preserveAlert_title'),
-                  t('tinderScreen_preserveAlert_description', { matches: matches.length }),
+                  t("tinderScreen_preserveAlert_title"),
+                  t("tinderScreen_preserveAlert_description", {
+                    matches: matches.length,
+                  }),
                   [
                     {
-                      text: t('tinderScreen_preserveAlert_delete'),
+                      text: t("tinderScreen_preserveAlert_delete"),
                       onPress: () => {
                         setShowButton(false);
                         dispatch(resetMatches());
@@ -204,7 +201,7 @@ const TinderScreen = ({ navigation }) => {
                       style: "cancel",
                     },
                     {
-                      text: t('tinderScreen_preserveAlert_confirm'),
+                      text: t("tinderScreen_preserveAlert_confirm"),
                       onPress: () => setShowButton(true),
                     },
                   ]
@@ -233,7 +230,9 @@ const TinderScreen = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("PanierScreen");
               }}
-              title={t('tinderScreen_generateList_button', { matches: matches?.length || 0 })}
+              title={t("tinderScreen_generateList_button", {
+                matches: matches?.length || 0,
+              })}
               style={{ width: "90%", height: "90%" }}
               textStyle={{ fontSize: 20, textAlign: "center" }}
             />

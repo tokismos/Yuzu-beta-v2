@@ -7,7 +7,7 @@ import RootNavigation from "./src/navigation/Navigator";
 import SplashScreen from "react-native-splash-screen";
 import { StripeProvider } from "@stripe/stripe-react-native";
 
-import './services/i18n';
+import "./services/i18n";
 
 export default function App() {
   useEffect(() => {
@@ -27,4 +27,3 @@ export default function App() {
     </StripeProvider>
   );
 }
-

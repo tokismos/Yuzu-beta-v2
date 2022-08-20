@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { COLORS } from "../consts/colors";
 import { setCommandes } from "../helpers/db";
 import { resetMatches } from "../redux/slicer/MatchSlicer";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const SummarizeScreen = ({ route, navigation }) => {
   const [cartArray, setCartArray] = useState([]);
@@ -78,13 +78,19 @@ const SummarizeScreen = ({ route, navigation }) => {
     <>
       <View style={{ height: "80%", backgroundColor: "white" }}>
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>{t('summarizeScreen_orderSummarize')}</Text>
+          <Text style={styles.title}>
+            {t("summarizeScreen_orderSummarize")}
+          </Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 16 }}>{t('summarizeScreen_selectedSupermarket')}</Text>
+            <Text style={{ fontSize: 16 }}>
+              {t("summarizeScreen_selectedSupermarket")}
+            </Text>
             <Text style={{ fontSize: 22, marginLeft: 10 }}>Manor Food</Text>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 16 }}>{t('summarizeScreen_deliveryAddress')}</Text>
+            <Text style={{ fontSize: 16 }}>
+              {t("summarizeScreen_deliveryAddress")}
+            </Text>
             <View>
               <Text style={{ fontSize: 16, marginLeft: 10 }}>Tim ITTEN </Text>
               <Text style={{ fontSize: 16, marginLeft: 10 }}>
@@ -120,9 +126,7 @@ const SummarizeScreen = ({ route, navigation }) => {
 
       <View style={styles.bottomComponent}>
         <View style={styles.bottomContainer}>
-          <Text style={styles.text}>
-            {t('summarizeScreen_redirect')}
-          </Text>
+          <Text style={styles.text}>{t("summarizeScreen_redirect")}</Text>
           <TouchableOpacity
             onPress={() => {
               setCommandes(cartArray);
@@ -135,7 +139,7 @@ const SummarizeScreen = ({ route, navigation }) => {
             style={styles.button}
           >
             <Text style={styles.textButton}>
-              {t('summarizeScreen_saveAndContinue')}
+              {t("summarizeScreen_saveAndContinue")}
             </Text>
           </TouchableOpacity>
         </View>

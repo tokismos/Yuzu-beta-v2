@@ -18,7 +18,7 @@ import FastImage from "react-native-fast-image";
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 import { useNavigation } from "@react-navigation/native";
 import { formatRelative } from "date-fns";
-import { fr } from 'date-fns/locale';
+import { fr } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
 import { setCuisineNotification } from "../redux/slicer/notificationSlicer";
 import { COLORS } from "../consts/colors";
@@ -70,7 +70,9 @@ const CommandeItem = ({ recipe }) => {
   return (
     <Pressable
       android_ripple={{ color: "#d3d3d3", foreground: true }}
-      onPress={() => navigation.navigate("IngredientScreen", { _id: recipe._id })}
+      onPress={() =>
+        navigation.navigate("IngredientScreen", { _id: recipe._id })
+      }
       style={{
         width: "90%",
         marginVertical: 10,
@@ -116,7 +118,7 @@ const CommandeItem = ({ recipe }) => {
       >
         <MaterialIcons name="keyboard-arrow-right" size={20} color="black" />
       </View>
-    </Pressable >
+    </Pressable>
   );
 };
 
@@ -172,7 +174,7 @@ const MyRecipesScreen = ({ route }) => {
   };
   return (
     <>
-      <StatusBar backgroundColor='transparent' />
+      <StatusBar backgroundColor="transparent" />
 
       {isLoading ? (
         <View style={{}}>
@@ -186,7 +188,9 @@ const MyRecipesScreen = ({ route }) => {
         <>
           {route.name != "Recettes favories" ? (
             <ScrollView style={{ flex: 1 }}>
-              <View style={{ alignItems: "center", height: "90%", marginTop: 10 }}>
+              <View
+                style={{ alignItems: "center", height: "90%", marginTop: 10 }}
+              >
                 {recipes.map((item, i) => {
                   return (
                     <CommandeComponent
@@ -216,7 +220,7 @@ const MyRecipesScreen = ({ route }) => {
                 alignItems: "center",
               }}
             >
-              <Text>{t('myRecipesScreen_noFavorite')}</Text>
+              <Text>{t("myRecipesScreen_noFavorite")}</Text>
             </View>
           )}
         </>

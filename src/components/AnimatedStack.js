@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator } from "react-native-paper";
 
-import { COLORS } from '../consts/colors';
+import { COLORS } from "../consts/colors";
 
 const ROTATION = 60;
 const SWIPE_VELOCITY = 800;
@@ -163,10 +163,10 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
           marginTop: 150,
         }}
       >
-        {t('animatedStack_filters_description')}
+        {t("animatedStack_filters_description")}
       </Text>
       <CustomButton
-        title={t('animatedStack_filters_reset')}
+        title={t("animatedStack_filters_reset")}
         textStyle={{ textAlign: "center" }}
         style={{ padding: 5, marginTop: 10 }}
         onPress={() => {
@@ -176,19 +176,27 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
     </View>
   ) : (
     <>
-      <View style={{
-        display: 'flex',
-        transform: [{ scale: isLoading ? 1 : 0 }],
-        flex: 1,
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 200,
-        marginBottom: -200
-      }}>
-        <ActivityIndicator size={'large'} color={COLORS.primary} />
+      <View
+        style={{
+          display: "flex",
+          transform: [{ scale: isLoading ? 1 : 0 }],
+          flex: 1,
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 200,
+          marginBottom: -200,
+        }}
+      >
+        <ActivityIndicator size={"large"} color={COLORS.primary} />
       </View>
-      <View style={{ ...styles.root, display: 'flex', transform: [{ scale: isLoading ? 0 : 1 }] }}>
+      <View
+        style={{
+          ...styles.root,
+          display: "flex",
+          transform: [{ scale: isLoading ? 0 : 1 }],
+        }}
+      >
         {nextProfile && (
           <View style={styles.nextCardContainer}>
             <Animated.View style={[styles.animatedCard, nextCardStyle]}>

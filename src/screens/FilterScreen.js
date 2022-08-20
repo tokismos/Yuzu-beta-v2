@@ -26,45 +26,30 @@ const useCategories = () => {
   const { t } = useTranslation();
 
   const mealTypes = [
-    'starter',
-    'main',
-    'sauce',
-    'dessert',
-    'breakfast',
-    'sweet',
-    'salty'
+    "starter",
+    "main",
+    "sauce",
+    "dessert",
+    "breakfast",
+    "sweet",
+    "salty",
   ];
 
-  const regime = [
-    'meat',
-    'vegan',
-    'vegetarian',
-    'fish'
-  ];
+  const regime = ["meat", "vegan", "vegetarian", "fish"];
 
-  const equipment = [
-    'oven',
-    'microWave',
-    'blender',
-    'foodProcessor',
-    'beater'
-  ];
+  const equipment = ["oven", "microWave", "blender", "foodProcessor", "beater"];
 
-  const difficulty = [
-    'easy',
-    'medium',
-    'hard'
-  ];
+  const difficulty = ["easy", "medium", "hard"];
 
-  const getTranslation = arr => arr.map(type => t(`filterScreen_${type}`));
+  const getTranslation = (arr) => arr.map((type) => t(`filterScreen_${type}`));
 
   return {
     mealTypes: getTranslation(mealTypes),
     regime: getTranslation(regime),
     equipment: getTranslation(equipment),
-    difficulty: getTranslation(difficulty)
-  }
-}
+    difficulty: getTranslation(difficulty),
+  };
+};
 
 const TypePlatsComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
@@ -93,7 +78,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t('filterScreen_mealType')}
+          {t("filterScreen_mealType")}
         </Text>
         <Livre height={40} width={40} fill="black" />
       </View>
@@ -109,7 +94,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
             <Pressable
               key={i}
               onPress={() => {
-                console.log({ activeFilters, item })
+                console.log({ activeFilters, item });
                 if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
@@ -133,7 +118,9 @@ const TypePlatsComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
+                  color: activeFilters.some(
+                    (i) => Object.values(i)?.[0] === item
+                  )
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
@@ -175,7 +162,7 @@ const RegimeComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t('filterScreen_regime')}
+          {t("filterScreen_regime")}
         </Text>
         <MaterialCommunityIcons name="fish-off" size={40} color="black" />
       </View>
@@ -189,8 +176,14 @@ const RegimeComponent = ({ activeFilters }) => {
         {regime.map((item, i) => {
           const [selected, setSelected] = useState(
             activeFilters.some((i) => {
-              const filter = item?.normalize?.('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
-              const toCheck = Object.values(i)?.[0]?.normalize?.('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+              const filter = item
+                ?.normalize?.("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase();
+              const toCheck = Object.values(i)?.[0]
+                ?.normalize?.("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase();
 
               return toCheck === filter;
             })
@@ -200,14 +193,16 @@ const RegimeComponent = ({ activeFilters }) => {
             <Pressable
               key={i}
               onPress={() => {
-                const filter = item?.normalize?.('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const filter = item
+                  ?.normalize?.("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .toLowerCase();
 
-                if (selected) dispatch(removeFilter(filter))
-                else dispatch(addFilter({ type: 'category', name: filter }))
+                if (selected) dispatch(removeFilter(filter));
+                else dispatch(addFilter({ type: "category", name: filter }));
 
                 setSelected(!selected);
-              }
-              }
+              }}
               style={{
                 backgroundColor: selected ? COLORS.primary : "white",
                 borderWidth: 3,
@@ -262,7 +257,7 @@ const MaterielsComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t('filterScreen_equipment')}
+          {t("filterScreen_equipment")}
         </Text>
         <Oven height={40} width={40} fill="black" />
       </View>
@@ -302,7 +297,9 @@ const MaterielsComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
+                  color: activeFilters.some(
+                    (i) => Object.values(i)?.[0] === item
+                  )
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
@@ -345,7 +342,7 @@ const DifficultyComponent = ({ activeFilters }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t('filterScreen_difficulty')}
+          {t("filterScreen_difficulty")}
         </Text>
         <Feather name="bar-chart" size={35} color="black" />
       </View>
@@ -385,7 +382,9 @@ const DifficultyComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
+                  color: activeFilters.some(
+                    (i) => Object.values(i)?.[0] === item
+                  )
                     ? "white"
                     : COLORS.primary,
                   fontWeight: "bold",
@@ -404,7 +403,9 @@ const DifficultyComponent = ({ activeFilters }) => {
 };
 
 const TempsComponent = ({ setTempsHeader }) => {
-  const stateTemps = useSelector(state => state.recipeStore.activeFilters[0]?.tempsCuisson);
+  const stateTemps = useSelector(
+    (state) => state.recipeStore.activeFilters[0]?.tempsCuisson
+  );
 
   const [temps, setTemps] = useState(stateTemps || 0);
   const dispatch = useDispatch();
@@ -430,7 +431,7 @@ const TempsComponent = ({ setTempsHeader }) => {
         }}
       >
         <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t('filterScreen_maxDuration')}
+          {t("filterScreen_maxDuration")}
         </Text>
         {temps !== 0 && (
           <Text
@@ -440,7 +441,7 @@ const TempsComponent = ({ setTempsHeader }) => {
               color: COLORS.primary,
             }}
           >
-            {t('filterScreen_minDuration', { duration: temps })}
+            {t("filterScreen_minDuration", { duration: temps })}
           </Text>
         )}
         <Time height={40} width={40} fill="black" />
@@ -484,7 +485,6 @@ const FilterScreen = forwardRef(
       <TempsComponent key={4} activeFilters={activeFilters} />,
       <MaterielsComponent key={3} activeFilters={activeFilters} />,
     ]);
-
 
     useEffect(() => {
       if (pressedFilter === "types") {

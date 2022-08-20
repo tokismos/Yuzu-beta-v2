@@ -1,13 +1,14 @@
 //La possibilite de se connecter avec email ou avec google,ici on fait appel aux fonctions crees dans useAuth , pour gerer la connexion
 import React, { useState } from "react";
 import {
-    Dimensions,
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    Pressable,
-    Button, Alert,
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Pressable,
+  Button,
+  Alert,
 } from "react-native";
 import CustomButton from "../components/CustomButton";
 import TextInputColored from "../components/TextInputColored";
@@ -16,7 +17,7 @@ import useAuth from "../hooks/useAuth";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
 import GoogleIcon from "../assets/GoogleIcon.svg";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { height, width } = Dimensions.get("screen");
 
@@ -25,21 +26,17 @@ const SignInScreen = ({ route }) => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
   const { t } = useTranslation();
-  const {
-    signIn,
-    signInWithGoogle,
-      validateEmail
-  } = useAuth();
+  const { signIn, signInWithGoogle, validateEmail } = useAuth();
 
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2].name;
 
   const handleSignin = async () => {
-      const toCheck = validateEmail(email);
+    const toCheck = validateEmail(email);
 
-      if (toCheck) await signIn(email, password);
-      else Alert.alert(t('email_badFormat'));
-  }
+    if (toCheck) await signIn(email, password);
+    else Alert.alert(t("email_badFormat"));
+  };
 
   return (
     <>
@@ -60,18 +57,23 @@ const SignInScreen = ({ route }) => {
             }}
           >
             {prevRoute === "IngredientsCartScreen"
-              ? t('signinScreen_connectFor')
-              : t('signinScreen_connectTo')}
+              ? t("signinScreen_connectFor")
+              : t("signinScreen_connectTo")}
           </Text>
-          <TextInputColored type='email' keyboardType='email-address' label={t('email')} setChangeText={setEmail} />
           <TextInputColored
-            label={t('password')}
+            type="email"
+            keyboardType="email-address"
+            label={t("email")}
+            setChangeText={setEmail}
+          />
+          <TextInputColored
+            label={t("password")}
             setChangeText={setPassword}
             secured
           />
           <CustomButton
             onPress={handleSignin}
-            title={t('connect')}
+            title={t("connect")}
             style={{ alignSelf: "center", marginTop: 20 }}
             disabled={password.length === 0}
           />
@@ -86,7 +88,7 @@ const SignInScreen = ({ route }) => {
                 textDecorationLine: "underline",
               }}
             >
-                {t('signinScreen_forgotPassword')}
+              {t("signinScreen_forgotPassword")}
             </Text>
           </Pressable>
         </View>
@@ -117,7 +119,7 @@ const SignInScreen = ({ route }) => {
                 fontWeight: "bold",
               }}
             >
-                {t('signinScree_or')}
+              {t("signinScree_or")}
             </Text>
             <View
               style={{ flexGrow: 1, height: 0.4, backgroundColor: "gray" }}
@@ -139,7 +141,7 @@ const SignInScreen = ({ route }) => {
               <GoogleIcon width={"40"} height={"40"} />
               <View style={{ width: "85%" }}>
                 <Text style={{ ...styles.socialText, color: "#757575" }}>
-                    {t('signinScreen_googleConnect')}
+                  {t("signinScreen_googleConnect")}
                 </Text>
               </View>
             </View>
@@ -157,7 +159,7 @@ const SignInScreen = ({ route }) => {
                   textAlign: "center",
                 }}
               >
-                  {t('signinScreen_noAccount')}
+                {t("signinScreen_noAccount")}
               </Text>
             )}
           </Pressable>

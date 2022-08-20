@@ -11,7 +11,9 @@ export const matchSlice = createSlice({
   initialState,
   reducers: {
     removeMatch: (state, action) => {
-      state.matches = [...state.matches.filter(i => i._id !== action.payload._id)]
+      state.matches = [
+        ...state.matches.filter((i) => i._id !== action.payload._id),
+      ];
     },
     addMatch: (state, action) => {
       console.log("added");
