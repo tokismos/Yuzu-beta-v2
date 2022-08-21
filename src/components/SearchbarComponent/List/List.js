@@ -1,15 +1,15 @@
-import React from "react";
-import { FlatList, SafeAreaView, View } from "react-native";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { FlatList, SafeAreaView, View } from 'react-native';
 
-import SearchedItem from "../SearchedItem/SearchedItem";
-import MosaicList from "../MosaicList/MosaicList";
+import MosaicList from '../MosaicList/MosaicList';
+import SearchedItem from '../SearchedItem/SearchedItem';
 
-import styles from "./List.style";
+import styles from './List.style';
 
 const normalize = (str) =>
-  typeof str === "string" || str instanceof String
-    ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  typeof str === 'string' || str instanceof String
+    ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     : str;
 
 const searchStr = (item, str) =>

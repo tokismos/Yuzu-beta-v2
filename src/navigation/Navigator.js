@@ -1,48 +1,48 @@
 // Tout simplement c'est ici ou on gere tous les screens de la navigation
 
-import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect } from "react";
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import auth from '@react-native-firebase/auth';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Animated,
-  SafeAreaView,
   Image,
+  SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
-  StatusBar,
-} from "react-native";
-import FastImage from "react-native-fast-image";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
-import auth from "@react-native-firebase/auth";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useTranslation } from "react-i18next";
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
-import { COLORS } from "../consts/colors";
-import IngredientScreen from "../screens/IngredientScreen";
-import TinderScreen from "../screens/TinderScreen";
-import PanierScreen from "../screens/PanierScreen";
-import IngredientCartScreen from "../screens/IngredientCartScreen";
-import SummarizeScreen from "../screens/SummarizeScreen";
-import IntroScreen from "../screens/IntroScreen";
-import SearchRecipesScreen from "../screens/SearchRecipesScreen/SearchRecipesScreen";
-import { setUser } from "../redux/slicer/userSlicer";
-import { useDispatch, useSelector } from "react-redux";
-import SignUpScreen from "../screens/createAccountScreens/SignUpScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import { NavigationContainer } from "@react-navigation/native";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import FeedBackScreen from "../screens/FeedBackScreen";
-import SignInScreen from "../screens/SignInScreen";
-import PhoneScreen from "../screens/PhoneScreen";
-import MyRecipesScreen from "../screens/MyRecipesScreen";
-import CommandesScreen from "../screens/CommandesScreen";
-import InfoCommandeScreen from "../screens/InfoCommandeScreen";
-import FilterScreen from "../screens/FilterScreen";
-import RateScreen from "../screens/RateScreen";
-import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
-import OnBoardingScreen from "../screens/OnBoardingScreen";
-import AbonnementScreen from "../screens/AbonnementScreen";
-import AbonnementSecondScreen from "../screens/AbonnementSecondScreen";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { NavigationContainer } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { COLORS } from '../consts/colors';
+import { setUser } from '../redux/slicer/userSlicer';
+import AbonnementScreen from '../screens/AbonnementScreen';
+import AbonnementSecondScreen from '../screens/AbonnementSecondScreen';
+import CommandesScreen from '../screens/CommandesScreen';
+import SignUpScreen from '../screens/createAccountScreens/SignUpScreen';
+import FeedBackScreen from '../screens/FeedBackScreen';
+import FilterScreen from '../screens/FilterScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import InfoCommandeScreen from '../screens/InfoCommandeScreen';
+import IngredientCartScreen from '../screens/IngredientCartScreen';
+import IngredientScreen from '../screens/IngredientScreen';
+import IntroScreen from '../screens/IntroScreen';
+import MyRecipesScreen from '../screens/MyRecipesScreen';
+import OnBoardingScreen from '../screens/OnBoardingScreen';
+import PanierScreen from '../screens/PanierScreen';
+import PhoneScreen from '../screens/PhoneScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import RateScreen from '../screens/RateScreen';
+import SearchRecipesScreen from '../screens/SearchRecipesScreen/SearchRecipesScreen';
+import SignInScreen from '../screens/SignInScreen';
+import SummarizeScreen from '../screens/SummarizeScreen';
+import TinderScreen from '../screens/TinderScreen';
 
 const TopTab = createMaterialTopTabNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,7 +55,7 @@ export const MyRecipesTabScreen = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "white",
+        tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: COLORS.secondary,
 
         tabBarStyle: {
@@ -63,7 +63,7 @@ export const MyRecipesTabScreen = () => {
         },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: "bold",
+          fontWeight: 'bold',
         },
       }}
     >
@@ -71,13 +71,13 @@ export const MyRecipesTabScreen = () => {
         options={{
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
-              color={focused ? "white" : COLORS.secondary}
+              color={focused ? 'white' : COLORS.secondary}
               name="format-list-bulleted-square"
               size={30}
             />
           ),
         }}
-        name={t("myReceipesTabScreen_receipeAdded")}
+        name={t('myReceipesTabScreen_receipeAdded')}
         component={MyRecipesScreen}
       />
 
@@ -87,11 +87,11 @@ export const MyRecipesTabScreen = () => {
             <FontAwesome
               name="heart"
               size={24}
-              color={focused ? "white" : COLORS.secondary}
+              color={focused ? 'white' : COLORS.secondary}
             />
           ),
         }}
-        name={t("myReceipesTabScreen_favourites")}
+        name={t('myReceipesTabScreen_favourites')}
         component={MyRecipesScreen}
       />
     </Tab.Navigator>
@@ -111,16 +111,13 @@ const TopTabScreen = () => {
             marginTop: StatusBar.currentHeight,
           },
           tabBarPressOpacity: 0.1,
-          tabBarIndicatorStyle: { backgroundColor: "white" },
-          tabBarLabelStyle: { fontWeight: "bold", fontSize: 14 },
+          tabBarIndicatorStyle: { backgroundColor: 'white' },
+          tabBarLabelStyle: { fontWeight: 'bold', fontSize: 14 },
         }}
       >
+        <TopTab.Screen name={t('navigator_myRecipes')} component={MyRecipesScreen} />
         <TopTab.Screen
-          name={t("navigator_myRecipes")}
-          component={MyRecipesScreen}
-        />
-        <TopTab.Screen
-          name={t("navigator_favourites")}
+          name={t('navigator_favourites')}
           component={MyRecipesScreen}
         />
       </TopTab.Navigator>
@@ -138,17 +135,17 @@ const BottomTabScreen = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarHideOnKeyboard: "true",
+        tabBarHideOnKeyboard: 'true',
       }}
     >
       <Tab.Screen
         options={{
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(
-              require("../assets/platJ.png")
+              require('../assets/platJ.png')
             ).uri;
             const iconGrey = Image.resolveAssetSource(
-              require("../assets/platN.png")
+              require('../assets/platN.png')
             ).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
@@ -165,11 +162,11 @@ const BottomTabScreen = () => {
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
-                color: focused ? COLORS.primary : "black",
-                fontWeight: focused ? "bold" : null,
+                color: focused ? COLORS.primary : 'black',
+                fontWeight: focused ? 'bold' : null,
               }}
             >
-              {t("navigator_recipes")}
+              {t('navigator_recipes')}
             </Text>
           ),
         }}
@@ -181,10 +178,10 @@ const BottomTabScreen = () => {
           headerShown: false,
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(
-              require("../assets/loupeJ.png")
+              require('../assets/loupeJ.png')
             ).uri;
             const iconGrey = Image.resolveAssetSource(
-              require("../assets/loupeN.png")
+              require('../assets/loupeN.png')
             ).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
@@ -201,11 +198,11 @@ const BottomTabScreen = () => {
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
-                color: focused ? COLORS.primary : "black",
-                fontWeight: focused ? "bold" : null,
+                color: focused ? COLORS.primary : 'black',
+                fontWeight: focused ? 'bold' : null,
               }}
             >
-              {t("navigator_search")}
+              {t('navigator_search')}
             </Text>
           ),
         }}
@@ -224,18 +221,18 @@ const BottomTabScreen = () => {
           headerStyle: {
             backgroundColor: COLORS.primary,
           },
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           headerTitleStyle: {
             fontSize: 20,
-            fontWeight: "bold",
+            fontWeight: 'bold',
           },
-          title: t("navigator_myShoppingList"),
+          title: t('navigator_myShoppingList'),
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(
-              require("../assets/okJ.png")
+              require('../assets/okJ.png')
             ).uri;
             const iconGrey = Image.resolveAssetSource(
-              require("../assets/okN.png")
+              require('../assets/okN.png')
             ).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
@@ -252,11 +249,11 @@ const BottomTabScreen = () => {
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
-                color: focused ? COLORS.primary : "black",
-                fontWeight: focused ? "bold" : null,
+                color: focused ? COLORS.primary : 'black',
+                fontWeight: focused ? 'bold' : null,
               }}
             >
-              {t("navigator_list")}
+              {t('navigator_list')}
             </Text>
           ),
         }}
@@ -274,10 +271,10 @@ const BottomTabScreen = () => {
           },
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(
-              require("../assets/cutJ.png")
+              require('../assets/cutJ.png')
             ).uri;
             const iconGrey = Image.resolveAssetSource(
-              require("../assets/cutN.png")
+              require('../assets/cutN.png')
             ).uri;
             const icon = focused ? iconYellow : iconGrey;
             return (
@@ -294,11 +291,11 @@ const BottomTabScreen = () => {
           tabBarLabel: ({ focused }) => (
             <Text
               style={{
-                color: focused ? COLORS.primary : "black",
-                fontWeight: focused ? "bold" : null,
+                color: focused ? COLORS.primary : 'black',
+                fontWeight: focused ? 'bold' : null,
               }}
             >
-              {t("navigator_toKitchen")}
+              {t('navigator_toKitchen')}
             </Text>
           ),
         }}
@@ -315,13 +312,13 @@ const horizontalAnimation = {
       current.progress.interpolate({
         inputRange: [0, 1],
         outputRange: [0, 1],
-        extrapolate: "clamp",
+        extrapolate: 'clamp',
       }),
       next
         ? next.progress.interpolate({
             inputRange: [0, 1],
             outputRange: [0, 1],
-            extrapolate: "clamp",
+            extrapolate: 'clamp',
           })
         : 0
     );
@@ -337,7 +334,7 @@ const horizontalAnimation = {
                   0, // Fully focused
                   -screen.width, // Fully unfocused
                 ],
-                extrapolate: "clamp",
+                extrapolate: 'clamp',
               }),
               inverted
             ),
@@ -392,8 +389,8 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
 
             headerStyle: {
               backgroundColor: COLORS.primary,
@@ -408,9 +405,9 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Mes recettes",
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: 'Mes recettes',
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
 
             headerStyle: {
               backgroundColor: COLORS.primary,
@@ -425,9 +422,9 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Liste de courses",
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: 'Liste de courses',
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
 
             headerStyle: {
               backgroundColor: COLORS.primary,
@@ -447,10 +444,10 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             ...horizontalAnimation,
-            title: "Les Ingredients",
-            headerTitleAlign: "center",
-            headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
-            headerBackTitle: "Back",
+            title: 'Les Ingredients',
+            headerTitleAlign: 'center',
+            headerTitleStyle: { fontWeight: 'bold', fontSize: 22 },
+            headerBackTitle: 'Back',
           }}
           name="IngredientsCartScreen"
           component={IngredientCartScreen}
@@ -493,9 +490,9 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Modifier mon numéro",
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: 'Modifier mon numéro',
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
 
             headerStyle: {
               backgroundColor: COLORS.primary,
@@ -510,9 +507,9 @@ const LoggedStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: t("profileScreen_title"),
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: t('profileScreen_title'),
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
 
             headerStyle: {
               backgroundColor: COLORS.primary,
@@ -529,9 +526,9 @@ const LoggedStackScreen = () => {
           // name="SearchRecipesScreen"
           options={{
             headerShown: true,
-            headerTitle: t("searchRecipeScreen_title"),
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: t('searchRecipeScreen_title'),
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -592,16 +589,16 @@ const LoginStackScreen = () => {
           options={{
             ...horizontalAnimation,
             headerShown: true,
-            headerTitleAlign: "center",
-            title: "Reinitialiser mot de passe",
+            headerTitleAlign: 'center',
+            title: 'Reinitialiser mot de passe',
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
-            headerTintColor: "white",
+            headerTintColor: 'white',
             headerBackTitle: null,
             headerTitleStyle: {
               fontSize: 18,
-              color: "white",
+              color: 'white',
             },
           }}
           name="ForgotPasswordScreen"
@@ -610,9 +607,9 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Modifier mon numéro",
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: 'Modifier mon numéro',
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -633,8 +630,8 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -648,9 +645,9 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Mes recettes",
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: 'Mes recettes',
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -665,16 +662,16 @@ const LoginStackScreen = () => {
           options={{
             ...horizontalAnimation,
             headerShown: true,
-            headerTitleAlign: "center",
-            title: t("introScreen_login"),
+            headerTitleAlign: 'center',
+            title: t('introScreen_login'),
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
-            headerTintColor: "white",
+            headerTintColor: 'white',
             headerBackTitle: null,
             headerTitleStyle: {
               fontSize: 22,
-              color: "white",
+              color: 'white',
             },
           }}
           name="SignInScreen"
@@ -684,9 +681,9 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: t("profileScreen_title"),
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: t('profileScreen_title'),
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
 
             headerStyle: {
               backgroundColor: COLORS.primary,
@@ -711,9 +708,9 @@ const LoginStackScreen = () => {
           name="SearchRecipesScreen"
           options={{
             headerShown: true,
-            headerTitle: t("searchRecipeScreen_title"),
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: t('searchRecipeScreen_title'),
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -752,10 +749,10 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             ...horizontalAnimation,
-            title: "Les Ingredients",
-            headerTitleAlign: "center",
-            headerTitleStyle: { fontWeight: "bold", fontSize: 22 },
-            headerBackTitle: "Back",
+            title: 'Les Ingredients',
+            headerTitleAlign: 'center',
+            headerTitleStyle: { fontWeight: 'bold', fontSize: 22 },
+            headerBackTitle: 'Back',
             headerShown: true,
           }}
           name="IngredientsCartScreen"
@@ -778,9 +775,9 @@ const LoginStackScreen = () => {
         <Stack.Screen
           options={{
             headerShown: true,
-            headerTitle: "Liste de courses",
-            headerTitleAlign: "center",
-            headerTintColor: "white",
+            headerTitle: 'Liste de courses',
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
 
             headerStyle: {
               backgroundColor: COLORS.primary,
@@ -811,10 +808,10 @@ const RootNavigation = () => {
 
   const config = {
     webClientId:
-      "246034960415-88hrrb30cvbficqm01le7hh121juj8jl.apps.googleusercontent.com",
+      '246034960415-88hrrb30cvbficqm01le7hh121juj8jl.apps.googleusercontent.com',
 
-    scopes: ["profile", "email"],
-    permissions: ["public_profile", "location", "email"],
+    scopes: ['profile', 'email'],
+    permissions: ['public_profile', 'location', 'email'],
     offlineAccess: true,
   };
 

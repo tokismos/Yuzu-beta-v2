@@ -1,24 +1,25 @@
-import CheckBox from "@react-native-community/checkbox";
-import React, { useEffect, useState } from "react";
+import CheckBox from '@react-native-community/checkbox';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  Platform,
-  SafeAreaView,
   Image,
-  StatusBar,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-} from "react-native";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import FastImage from "react-native-fast-image";
-import { useDispatch } from "react-redux";
-import CustomButton from "../components/CustomButton";
-import { COLORS } from "../consts/colors";
-import { auth, setCommandes } from "../helpers/db";
-import { resetMatches } from "../redux/slicer/MatchSlicer";
+  View,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { useDispatch } from 'react-redux';
+import CustomButton from '../components/CustomButton';
+import { COLORS } from '../consts/colors';
+import { auth, setCommandes } from '../helpers/db';
+import { resetMatches } from '../redux/slicer/MatchSlicer';
 import {
   setCuisineNotification,
   setListNotification,
-} from "../redux/slicer/notificationSlicer";
-import { useTranslation } from "react-i18next";
+} from '../redux/slicer/notificationSlicer';
 
 const IngredientItemComponent = ({ ingredient, title, onPress }) => {
   const [toggle, setToggle] = useState(true);
@@ -30,26 +31,26 @@ const IngredientItemComponent = ({ ingredient, title, onPress }) => {
         setToggle((prev) => !prev);
       }}
       style={{
-        flexDirection: "row",
-        width: "95%",
-        justifyContent: "space-between",
-        alignSelf: "center",
-        alignItems: "center",
+        flexDirection: 'row',
+        width: '95%',
+        justifyContent: 'space-between',
+        alignSelf: 'center',
+        alignItems: 'center',
       }}
     >
       <Text
         style={{
           marginLeft: 20,
-          width: "80%",
-          color: toggle ? COLORS.grey : "black",
+          width: '80%',
+          color: toggle ? COLORS.grey : 'black',
         }}
       >
-        <Text style={{ fontWeight: "bold" }}>
-          {" "}
+        <Text style={{ fontWeight: 'bold' }}>
+          {' '}
           {!ingredient.newQuantity
             ? ingredient.quantity
-            : ingredient.newQuantity}{" "}
-          {ingredient.unite == "unite" ? "" : ingredient.unite}{" "}
+            : ingredient.newQuantity}{' '}
+          {ingredient.unite == 'unite' ? '' : ingredient.unite}{' '}
         </Text>
         {ingredient.name}
       </Text>
@@ -61,13 +62,13 @@ const IngredientItemComponent = ({ ingredient, title, onPress }) => {
         ]}
         onTintColor={COLORS.primary}
         onFillColor={COLORS.primary}
-        onCheckColor={"white"}
+        onCheckColor={'white'}
         onAnimationType="fill"
         offAnimationType="fade"
         boxType="square"
         disabled
         value={toggle}
-        tintColors={{ true: COLORS.primary, false: "gray" }}
+        tintColors={{ true: COLORS.primary, false: 'gray' }}
       />
     </TouchableOpacity>
   );
@@ -77,23 +78,22 @@ const CartItemComponent = ({ item, onPress }) => {
     <>
       <View
         style={{
-          flexDirection: "row",
+          flexDirection: 'row',
           marginVertical: 10,
         }}
       >
         <View
           style={{
-            width: "15%",
-            height: "20%",
+            width: '15%',
+            height: '20%',
             paddingLeft: 5,
-            position: "relative",
+            position: 'relative',
           }}
         >
           <FastImage
             style={styles.imageStyle}
             source={{
-              uri: Image.resolveAssetSource(require("../assets/default.jpg"))
-                .uri,
+              uri: Image.resolveAssetSource(require('../assets/default.jpg')).uri,
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover}
@@ -115,12 +115,12 @@ const CartItemComponent = ({ item, onPress }) => {
             resizeMode={FastImage.resizeMode.cover}
           />
         </View>
-        <View style={{ width: "85%" }}>
+        <View style={{ width: '85%' }}>
           <Text
             style={{
               margin: 10,
               fontSize: 16,
-              fontWeight: "bold",
+              fontWeight: 'bold',
             }}
           >
             {item.name}
@@ -170,44 +170,44 @@ const IngredientCartScreen = ({ route, navigation }) => {
   };
 
   const handleCreateList = () => {
-    console.log("1", { condition: Object.keys(finalCart), finalCart });
+    console.log('1', { condition: Object.keys(finalCart), finalCart });
     if (Object.keys(finalCart).length === 0) return;
-    console.log("2");
-    if (!auth().currentUser) return navigation.navigate("SignInScreen");
+    console.log('2');
+    if (!auth().currentUser) return navigation.navigate('SignInScreen');
 
-    console.log("3");
+    console.log('3');
     const arr = [];
     Object.entries(finalCart).forEach(([key, value]) => {
       arr.push({ ...value, _id: key });
     });
-    console.log("4", { arr });
+    console.log('4', { arr });
     setCommandes(arr);
 
-    console.log("5");
+    console.log('5');
     dispatch(setCuisineNotification(true));
-    console.log("6");
+    console.log('6');
     dispatch(setListNotification(true));
-    console.log("7");
+    console.log('7');
     dispatch(resetMatches());
-    console.log("8");
+    console.log('8');
 
     navigation.reset({
       index: 0,
-      routes: [{ name: "TinderScreen" }],
+      routes: [{ name: 'TinderScreen' }],
     });
-    console.log("9");
+    console.log('9');
   };
 
   return (
     <SafeAreaView
       style={{
-        alignItems: "center",
+        alignItems: 'center',
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: 'white',
       }}
     >
       <ScrollView style={{ flex: 1 }}>
-        <View style={{ width: "100%" }}>
+        <View style={{ width: '100%' }}>
           {cart.map((item, index) => (
             <CartItemComponent item={item} key={index} onPress={onPress} />
           ))}
@@ -215,17 +215,17 @@ const IngredientCartScreen = ({ route, navigation }) => {
       </ScrollView>
       <View
         style={{
-          height: "10%",
-          width: "100%",
-          justifyContent: "space-evenly",
-          alignItems: "center",
+          height: '10%',
+          width: '100%',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
         }}
       >
         <CustomButton
           onPress={handleCreateList}
-          title={t("ingredientCartScreen_createMyShoppingList")}
+          title={t('ingredientCartScreen_createMyShoppingList')}
           style={{ ...styles.buttonContainer, backgroundColor: COLORS.primary }}
-          textStyle={{ fontWeight: "bold", color: "white", fontSize: 18 }}
+          textStyle={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}
         />
       </View>
     </SafeAreaView>
@@ -238,24 +238,24 @@ const styles = StyleSheet.create({
   imageStyle: {
     aspectRatio: 1,
     borderRadius: 10,
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 10,
     width: 50,
     height: 50,
   },
   buttonContainer: {
-    backgroundColor: "#E3E3E3",
+    backgroundColor: '#E3E3E3',
 
-    height: "80%",
-    width: "80%",
-    justifyContent: "center",
-    alignItems: "center",
+    height: '80%',
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   separator: {
-    width: "90%",
+    width: '90%',
     height: 0.4,
-    backgroundColor: "gray",
-    alignSelf: "center",
+    backgroundColor: 'gray',
+    alignSelf: 'center',
   },
 });

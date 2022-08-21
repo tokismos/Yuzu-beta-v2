@@ -1,6 +1,6 @@
 //On a un user comme state General et c'est la où s'enregistre les differentes informations
 // a propos de l'utilisateur
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   user: null,
@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -18,7 +18,7 @@ export const userSlice = createSlice({
     setAccessToken: (state, action) => {
       state.accessTokenFb = action.payload;
     },
-    setIsFirstTime: (state, action) => {
+    setIsFirstTime: (state) => {
       state.isFirstTime = true;
     },
   },

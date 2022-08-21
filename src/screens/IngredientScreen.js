@@ -2,38 +2,35 @@
 //Avant le chargement de cette page, on recupere les favoris a partir de notre redux store, et si l'id de ce dernier existe
 //on montre le bouton supprimer des favoris,sinon ajouter aux favoris.
 
-import React, { useEffect, useState } from "react";
 import {
+  AntDesign,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from '@expo/vector-icons';
+import CheckBox from '@react-native-community/checkbox';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  ActivityIndicator,
   Dimensions,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
-import Animated, { FadeInLeft } from "react-native-reanimated";
-import {
-  AntDesign,
-  MaterialIcons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import FastImage from "react-native-fast-image";
-import { COLORS } from "../consts/colors";
-import CheckBox from "@react-native-community/checkbox";
-import Dialog, {
-  DialogContent,
-  SlideAnimation,
-} from "react-native-popup-dialog";
-import CustomButton from "../components/CustomButton";
-import ReportComponent from "../components/ReportComponent";
-import { getRecipe } from "../axios";
-import { addToFav, deleteFav } from "../helpers/db";
-import { useDispatch, useSelector } from "react-redux";
-import { addFavorite, deleteFavorite } from "../redux/slicer/favoritesSlicer";
-import IngredientComponent from "../components/IngredientComponent";
-import { useTranslation } from "react-i18next";
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import Dialog, { DialogContent, SlideAnimation } from 'react-native-popup-dialog';
+import Animated, { FadeInLeft } from 'react-native-reanimated';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRecipe } from '../axios';
+import CustomButton from '../components/CustomButton';
+import IngredientComponent from '../components/IngredientComponent';
+import ReportComponent from '../components/ReportComponent';
+import { COLORS } from '../consts/colors';
+import { addToFav, deleteFav } from '../helpers/db';
+import { addFavorite, deleteFavorite } from '../redux/slicer/favoritesSlicer';
 
-const { height, width } = Dimensions.get("screen");
+const { height, width } = Dimensions.get('screen');
 
 const StepComponent = ({ step, index }) => {
   const [toggle, setToggle] = useState(false);
@@ -43,17 +40,17 @@ const StepComponent = ({ step, index }) => {
     <View
       style={{
         width: width * 0.9,
-        backgroundColor: "white",
-        justifyContent: "space-between",
+        backgroundColor: 'white',
+        justifyContent: 'space-between',
         padding: 5,
         marginVertical: 10,
         borderRadius: 5,
       }}
     >
       <TouchableOpacity style={{}} onPress={() => setToggle((p) => !p)}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={{ fontSize: 20, color: "gray", fontWeight: "bold" }}>
-            {t("ingredientScreen_step", { step: index + 1 })}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ fontSize: 20, color: 'gray', fontWeight: 'bold' }}>
+            {t('ingredientScreen_step', { step: index + 1 })}
           </Text>
           <CheckBox
             style={[
@@ -63,19 +60,19 @@ const StepComponent = ({ step, index }) => {
             ]}
             onTintColor={COLORS.primary}
             onFillColor={COLORS.primary}
-            onCheckColor={"white"}
+            onCheckColor={'white'}
             onAnimationType="fill"
             offAnimationType="fade"
             boxType="square"
             disabled
             value={toggle}
-            tintColors={{ true: COLORS.primary, false: "gray" }}
+            tintColors={{ true: COLORS.primary, false: 'gray' }}
           />
         </View>
 
         {!toggle && (
           <Animated.View entering={FadeInLeft}>
-            <Text style={{ marginLeft: "5%" }}>{step}</Text>
+            <Text style={{ marginLeft: '5%' }}>{step}</Text>
           </Animated.View>
         )}
       </TouchableOpacity>
@@ -87,14 +84,14 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
   return (
     <View
       style={{
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginLeft: "10%",
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: '10%',
       }}
     >
       <TouchableOpacity
-        style={{ padding: 10, marginRight: "-15%" }}
+        style={{ padding: 10, marginRight: '-15%' }}
         onPress={() => {
           if (nbrPersonne == 2) return;
 
@@ -103,7 +100,7 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
       >
         <AntDesign name="minuscircleo" size={24} color={COLORS.primary} />
       </TouchableOpacity>
-      <Text style={{ fontWeight: "bold", color: "black", marginLeft: 5 }}>
+      <Text style={{ fontWeight: 'bold', color: 'black', marginLeft: 5 }}>
         {nbrPersonne}
       </Text>
       <MaterialCommunityIcons
@@ -113,7 +110,7 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
         style={{ marginRight: 5 }}
       />
       <TouchableOpacity
-        style={{ padding: 10, marginLeft: "-15%" }}
+        style={{ padding: 10, marginLeft: '-15%' }}
         onPress={() => {
           if (nbrPersonne == 8) return;
           setNbrPersonne((p) => p + 1);
@@ -128,20 +125,16 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
 const ImageFast = ({ source, thumb, height }) => {
   const imageStyle = {
     aspectRatio: 1,
-    background: "transparent",
+    background: 'transparent',
     top: 0,
     left: 0,
-    position: "absolute",
+    position: 'absolute',
     height,
-    width: "100%",
+    width: '100%',
   };
   return (
-    <View style={{ height, backgroundColor: "lightgrey" }}>
-      <ActivityIndicator
-        style={imageStyle}
-        size={"large"}
-        color={COLORS.primary}
-      />
+    <View style={{ height, backgroundColor: 'lightgrey' }}>
+      <ActivityIndicator style={imageStyle} size={'large'} color={COLORS.primary} />
       <FastImage
         source={{ uri: thumb, priority: FastImage.priority.high }}
         style={imageStyle}
@@ -180,9 +173,7 @@ const IngredientScreen = ({ route, navigation }) => {
   return (
     <>
       {isLoading ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
@@ -190,11 +181,11 @@ const IngredientScreen = ({ route, navigation }) => {
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 40,
               left: 20,
               zIndex: 99,
-              backgroundColor: "white",
+              backgroundColor: 'white',
               borderRadius: 30,
             }}
           >
@@ -207,7 +198,7 @@ const IngredientScreen = ({ route, navigation }) => {
             }}
             dialogAnimation={
               new SlideAnimation({
-                slideFrom: "bottom",
+                slideFrom: 'bottom',
               })
             }
             onHardwareBackPress={() => true}
@@ -221,7 +212,7 @@ const IngredientScreen = ({ route, navigation }) => {
           </Dialog>
           <ScrollView
             overScrollMode="never"
-            style={{ backgroundColor: "#E6E6E6", flex: 1 }}
+            style={{ backgroundColor: '#E6E6E6', flex: 1 }}
             showsVerticalScrollIndicator={false}
           >
             <View>
@@ -234,24 +225,24 @@ const IngredientScreen = ({ route, navigation }) => {
                 style={{
                   height: height * 0.3,
                   marginBottom: 20,
-                  backgroundColor: "black",
+                  backgroundColor: 'black',
                 }}
               >
                 <View
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Text
                     numberOfLines={2}
                     style={{
                       fontSize: 24,
-                      fontWeight: "bold",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      textAlign: 'center',
                       margin: 10,
-                      color: "white",
+                      color: 'white',
                       flex: 1,
                     }}
                   >
@@ -260,28 +251,24 @@ const IngredientScreen = ({ route, navigation }) => {
                 </View>
                 <View
                   style={{
-                    flexDirection: "row",
-                    width: "80%",
-                    alignSelf: "center",
-                    justifyContent: "space-between",
+                    flexDirection: 'row',
+                    width: '80%',
+                    alignSelf: 'center',
+                    justifyContent: 'space-between',
                     marginBottom: 20,
                   }}
                 >
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text
-                      style={{ fontSize: 18, color: "white", marginRight: 5 }}
-                    >
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 18, color: 'white', marginRight: 5 }}>
                       {recipe.stats?.nbrRight}
                     </Text>
                     <AntDesign name="heart" size={14} color={COLORS.primary} />
                   </View>
-                  <Text style={{ fontSize: 18, color: "white" }}>
+                  <Text style={{ fontSize: 18, color: 'white' }}>
                     {recipe?.tempsPreparation + recipe?.tempsCuisson} min
                   </Text>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text
-                      style={{ fontSize: 18, color: "white", marginRight: 5 }}
-                    >
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 18, color: 'white', marginRight: 5 }}>
                       N/A
                     </Text>
                     <AntDesign name="star" size={15} color={COLORS.primary} />
@@ -292,38 +279,38 @@ const IngredientScreen = ({ route, navigation }) => {
                   style={{
                     backgroundColor: COLORS.primary,
                     height: height * 0.08,
-                    justifyContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     borderRadius: 10,
                   }}
                 >
                   <Text
                     style={{
-                      color: "white",
+                      color: 'white',
                       fontSize: 20,
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                     }}
                   >
-                    {t("ingredientScreen_recipe")}
+                    {t('ingredientScreen_recipe')}
                   </Text>
                 </View>
                 <View
                   style={{
-                    flexDirection: "row",
+                    flexDirection: 'row',
                     marginVertical: 10,
-                    justifyContent: "space-evenly",
-                    backgroundColor: "black",
+                    justifyContent: 'space-evenly',
+                    backgroundColor: 'black',
                   }}
                 >
                   <Text
                     style={{
                       fontSize: 18,
 
-                      color: "white",
-                      textAlign: "center",
+                      color: 'white',
+                      textAlign: 'center',
                     }}
                   >
-                    {t("ingredientScreen_difficultyLevel", {
+                    {t('ingredientScreen_difficultyLevel', {
                       difficulty: recipe?.difficulty,
                     })}
                   </Text>
@@ -331,11 +318,11 @@ const IngredientScreen = ({ route, navigation }) => {
                     style={{
                       fontSize: 18,
 
-                      color: "white",
-                      textAlign: "center",
+                      color: 'white',
+                      textAlign: 'center',
                     }}
                   >
-                    {t("ingredientScreen_preparationDuration", {
+                    {t('ingredientScreen_preparationDuration', {
                       duration: recipe?.tempsPreparation,
                     })}
                   </Text>
@@ -343,11 +330,11 @@ const IngredientScreen = ({ route, navigation }) => {
                     style={{
                       fontSize: 18,
 
-                      color: "white",
-                      textAlign: "center",
+                      color: 'white',
+                      textAlign: 'center',
                     }}
                   >
-                    {t("ingredientScreen_cookingDuration", {
+                    {t('ingredientScreen_cookingDuration', {
                       duration: recipe?.tempsCuisson,
                     })}
                   </Text>
@@ -357,16 +344,16 @@ const IngredientScreen = ({ route, navigation }) => {
 
             <View
               style={{
-                alignItems: "center",
+                alignItems: 'center',
                 paddingVertical: 10,
               }}
             >
               <View
                 style={{
-                  flexDirection: "row",
-                  width: "95%",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  width: '95%',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                   marginBottom: 20,
                 }}
               >
@@ -381,26 +368,21 @@ const IngredientScreen = ({ route, navigation }) => {
                 <Text
                   style={{
                     fontSize: 20,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    marginLeft: "7%",
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    marginLeft: '7%',
                   }}
                 >
                   Ingrédients
                 </Text>
-                <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
-                >
-                  <NbrPersonneComponent
-                    nbrPersonne={nbr}
-                    setNbrPersonne={setNbr}
-                  />
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <NbrPersonneComponent nbrPersonne={nbr} setNbrPersonne={setNbr} />
                 </View>
               </View>
               <View
                 style={{
-                  backgroundColor: "white",
-                  width: "80%",
+                  backgroundColor: 'white',
+                  width: '80%',
                   borderRadius: 5,
                   padding: 10,
                 }}
@@ -416,7 +398,7 @@ const IngredientScreen = ({ route, navigation }) => {
                   );
                 })}
               </View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View
                   style={{
                     backgroundColor: COLORS.primary,
@@ -424,8 +406,8 @@ const IngredientScreen = ({ route, navigation }) => {
                     flex: 1,
                   }}
                 />
-                <Text style={{ fontSize: 20, margin: 20, fontWeight: "bold" }}>
-                  {t("ingredientScreen_recipeSteps")}
+                <Text style={{ fontSize: 20, margin: 20, fontWeight: 'bold' }}>
+                  {t('ingredientScreen_recipeSteps')}
                 </Text>
                 <View
                   style={{
@@ -439,18 +421,16 @@ const IngredientScreen = ({ route, navigation }) => {
                 return <StepComponent step={item} index={index} key={index} />;
               })}
 
-              {favorites.includes(
-                route.params._id ?? route.params.recipe._id
-              ) ? (
+              {favorites.includes(route.params._id ?? route.params.recipe._id) ? (
                 <CustomButton
                   style={{
-                    width: "60%",
+                    width: '60%',
                     marginBottom: 5,
                     marginTop: 10,
                     backgroundColor: COLORS.red,
                   }}
                   textStyle={{ fontSize: 18 }}
-                  title={t("ingredientScreen_deleteToFavorites")}
+                  title={t('ingredientScreen_deleteToFavorites')}
                   onPress={() => {
                     deleteFav(recipe._id);
                     dispatch(deleteFavorite(recipe._id));
@@ -458,9 +438,9 @@ const IngredientScreen = ({ route, navigation }) => {
                 />
               ) : (
                 <CustomButton
-                  style={{ width: "60%", marginBottom: 5, marginTop: 10 }}
+                  style={{ width: '60%', marginBottom: 5, marginTop: 10 }}
                   textStyle={{ fontSize: 18 }}
-                  title={t("ingredientScreen_addToFavorites")}
+                  title={t('ingredientScreen_addToFavorites')}
                   onPress={() => {
                     addToFav(
                       recipe._id,
@@ -482,7 +462,7 @@ const IngredientScreen = ({ route, navigation }) => {
                   }}
                   dialogAnimation={
                     new SlideAnimation({
-                      slideFrom: "bottom",
+                      slideFrom: 'bottom',
                     })
                   }
                   onHardwareBackPress={() => true}
@@ -491,19 +471,19 @@ const IngredientScreen = ({ route, navigation }) => {
                     <View style={{ padding: 20 }}>
                       <Text
                         style={{
-                          fontWeight: "bold",
+                          fontWeight: 'bold',
                           fontSize: 20,
-                          textAlign: "center",
+                          textAlign: 'center',
                         }}
                       >
-                        {t("ingredientScreen_didYouLiked")}
+                        {t('ingredientScreen_didYouLiked')}
                       </Text>
                       <View
                         style={{
-                          flexDirection: "row",
+                          flexDirection: 'row',
                           height: height * 0.1,
-                          justifyContent: "space-evenly",
-                          alignItems: "center",
+                          justifyContent: 'space-evenly',
+                          alignItems: 'center',
                         }}
                       >
                         <TouchableOpacity onPress={() => setShowVote(false)}>
@@ -517,11 +497,11 @@ const IngredientScreen = ({ route, navigation }) => {
                   </DialogContent>
                 </Dialog>
                 <CustomButton
-                  style={{ width: "60%", marginBottom: 20 }}
+                  style={{ width: '60%', marginBottom: 20 }}
                   textStyle={{ fontSize: 18 }}
-                  title={t("ingredientScreen_haveCooked")}
+                  title={t('ingredientScreen_haveCooked')}
                   onPress={() =>
-                    navigation.navigate("RateScreen", {
+                    navigation.navigate('RateScreen', {
                       imgURL: recipe?.imgURL,
                       id: recipe?._id,
                       name: recipe?.name,

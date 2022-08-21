@@ -1,19 +1,15 @@
-import { Alert } from "react-native";
-
-import database from "@react-native-firebase/database";
-
-import firebase from "@react-native-firebase/app";
-import auth from "@react-native-firebase/auth";
-const firebaseDbURL = "https://yuzu-5720e-default-rtdb.firebaseio.com";
+import firebase from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
+const firebaseDbURL = 'https://yuzu-5720e-default-rtdb.firebaseio.com';
 const firebaseConfig = {
-  apiKey: "AIzaSyDp2NnsdP0i01XwJMmSynmmSrC_R23MUiQ",
-  authDomain: "yuzu-5720e.firebaseapp.com",
-  databaseURL: "https://yuzu-5720e-default-rtdb.firebaseio.com",
-  projectId: "yuzu-5720e",
-  storageBucket: "yuzu-5720e.appspot.com",
-  messagingSenderId: "246034960415",
-  appId: "1:246034960415:web:c4aa304ce2a2bc379bc52a",
-  measurementId: "G-N0G4M012VE",
+  apiKey: 'AIzaSyDp2NnsdP0i01XwJMmSynmmSrC_R23MUiQ',
+  authDomain: 'yuzu-5720e.firebaseapp.com',
+  databaseURL: 'https://yuzu-5720e-default-rtdb.firebaseio.com',
+  projectId: 'yuzu-5720e',
+  storageBucket: 'yuzu-5720e.appspot.com',
+  messagingSenderId: '246034960415',
+  appId: '1:246034960415:web:c4aa304ce2a2bc379bc52a',
+  measurementId: 'G-N0G4M012VE',
 };
 
 if (!firebase.apps.length) {
@@ -29,9 +25,9 @@ const setAdditionalInfo = async (info) => {
       .database(firebaseDbURL)
       .ref(`/users/${auth().currentUser?.uid}`)
       .update(info)
-      .then((i) => console.log("Additional info added", i));
+      .then((i) => console.log('Additional info added', i));
   } catch (e) {
-    console.log("Additional informations not added !");
+    console.log('Additional informations not added !');
   }
 };
 
@@ -41,10 +37,12 @@ const getAdditionalInfo = async () => {
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}`)
-    .once("value");
+    .once('value');
+
   if (snapshot.exists()) {
     return snapshot.val();
   }
+
   return false;
 };
 
@@ -62,7 +60,7 @@ const addToFav = async (id, imgURL, name) => {
         dateTime: firebase.database.ServerValue.TIMESTAMP,
       });
   } catch (e) {
-    console.log("Erreur,recette non ajoutée aux favoris !");
+    console.log('Erreur,recette non ajoutée aux favoris !');
   }
 };
 
@@ -74,7 +72,7 @@ const deleteFav = async (id) => {
       .ref(`/users/${auth().currentUser?.uid}/favoris/${id}`)
       .remove();
   } catch (e) {
-    console.log("Recette ajoutées aux favoris .");
+    console.log('Recette ajoutées aux favoris .');
   }
 };
 
@@ -84,7 +82,7 @@ const getFavoris = async (tmp) => {
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/favoris`)
-    .once("value", (snapshot) => {
+    .once('value', (snapshot) => {
       if (snapshot.exists()) {
         snapshot.forEach((item) => favoritesArray.push(item.key));
         tmp(favoritesArray);
@@ -98,8 +96,8 @@ const getAllFavoris = async (setCommandes) => {
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/favoris`)
-    .orderByChild("dateTime")
-    .on("value", (snapshot) => {
+    .orderByChild('dateTime')
+    .on('value', (snapshot) => {
       if (snapshot.exists()) {
         setCommandes(Object?.values(snapshot.val()));
       }
@@ -129,7 +127,7 @@ const setCommandes = (cart) => {
         recipes: { ...obj },
         dateTime: firebase.database.ServerValue.TIMESTAMP,
       })
-      .then((i) => console.log("cartadded", i));
+      .then((i) => console.log('cartadded', i));
   } catch (e) {
     console.error(e);
   }
@@ -140,8 +138,8 @@ const getCommandes = async (setCommandes) => {
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/commandes`)
-    .orderByChild("dateTime")
-    .on("value", (snapshot) => {
+    .orderByChild('dateTime')
+    .on('value', (snapshot) => {
       setCommandes(snapshot.exists() ? Object?.values(snapshot.val()) : []);
     });
 };
@@ -159,28 +157,29 @@ const setRating = async (rate, recipeId) => {
   }
 };
 
-const logInWithFb = async () => {
-  try {
-    await Facebook.initializeAsync({
-      appId: "593620908653647",
-    });
-    const { type, token, expirationDate, permissions, declinedPermissions } =
-      await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"],
-      });
-    if (type === "success") {
-      // Get the user's name using Facebook's Graph API
-      const response = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}`
-      );
-      Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
-    } else {
-      // type === 'cancel'
-    }
-  } catch ({ message }) {
-    alert(`Facebook Login Error: ${message}`);
-  }
-};
+// TODO : see if we login with FaceBook
+// const logInWithFb = async () => {
+//   try {
+//     await Facebook.initializeAsync({
+//       appId: '593620908653647',
+//     });
+//     const { type, token, expirationDate, permissions, declinedPermissions } =
+//       await Facebook.logInWithReadPermissionsAsync({
+//         permissions: ['public_profile'],
+//       });
+//     if (type === 'success') {
+//       // Get the user's name using Facebook's Graph API
+//       const response = await fetch(
+//         `https://graph.facebook.com/me?access_token=${token}`
+//       );
+//       Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+//     } else {
+//       // type === 'cancel'
+//     }
+//   } catch ({ message }) {
+//     alert(`Facebook Login Error: ${message}`);
+//   }
+// };
 
 export {
   setAdditionalInfo,

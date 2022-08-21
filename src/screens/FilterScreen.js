@@ -1,45 +1,41 @@
 //C'est un modale qui affiche tous les differents components des filtres, et cela il s'active
 // apres clique sur chaqun des filtres
 
-import { Dimensions, Pressable, Text, View } from "react-native";
-import React, { forwardRef, useEffect, useState } from "react";
-import { COLORS } from "../consts/colors";
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { forwardRef, useState } from 'react';
+import { Dimensions, Pressable, Text, View } from 'react-native';
+import { COLORS } from '../consts/colors';
 
-import Oven from "../assets/oven.svg";
-import Time from "../assets/time.svg";
-import Livre from "../assets/livre.svg";
-import Slider from "@react-native-community/slider";
-import { ScrollView } from "react-native";
-import Modal from "react-native-modalbox";
-import {
-  addFilter,
-  changeTime,
-  removeFilter,
-} from "../redux/slicer/recipeSlicer";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import Slider from '@react-native-community/slider';
+import { useTranslation } from 'react-i18next';
+import { ScrollView } from 'react-native';
+import Modal from 'react-native-modalbox';
+import { useDispatch, useSelector } from 'react-redux';
+import Livre from '../assets/livre.svg';
+import Oven from '../assets/oven.svg';
+import Time from '../assets/time.svg';
+import { addFilter, changeTime, removeFilter } from '../redux/slicer/recipeSlicer';
 
-const { height } = Dimensions.get("screen");
+const { height } = Dimensions.get('screen');
 
 const useCategories = () => {
   const { t } = useTranslation();
 
   const mealTypes = [
-    "starter",
-    "main",
-    "sauce",
-    "dessert",
-    "breakfast",
-    "sweet",
-    "salty",
+    'starter',
+    'main',
+    'sauce',
+    'dessert',
+    'breakfast',
+    'sweet',
+    'salty',
   ];
 
-  const regime = ["meat", "vegan", "vegetarian", "fish"];
+  const regime = ['meat', 'vegan', 'vegetarian', 'fish'];
 
-  const equipment = ["oven", "microWave", "blender", "foodProcessor", "beater"];
+  const equipment = ['oven', 'microWave', 'blender', 'foodProcessor', 'beater'];
 
-  const difficulty = ["easy", "medium", "hard"];
+  const difficulty = ['easy', 'medium', 'hard'];
 
   const getTranslation = (arr) => arr.map((type) => t(`filterScreen_${type}`));
 
@@ -59,11 +55,11 @@ const TypePlatsComponent = ({ activeFilters }) => {
   return (
     <View
       style={{
-        backgroundColor: "white",
-        width: "90%",
+        backgroundColor: 'white',
+        width: '90%',
 
         borderRadius: 10,
-        alignItems: "center",
+        alignItems: 'center',
 
         paddingBottom: 20,
         marginVertical: 10,
@@ -71,22 +67,22 @@ const TypePlatsComponent = ({ activeFilters }) => {
     >
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "95%",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '95%',
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t("filterScreen_mealType")}
+        <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
+          {t('filterScreen_mealType')}
         </Text>
         <Livre height={40} width={40} fill="black" />
       </View>
       <View
         style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "center",
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
         {mealTypes.map((item, i) => {
@@ -98,7 +94,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
                 if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
-                  dispatch(addFilter({ type: "typePlat", name: item }));
+                  dispatch(addFilter({ type: 'typePlat', name: item }));
                 }
               }}
               style={{
@@ -106,11 +102,11 @@ const TypePlatsComponent = ({ activeFilters }) => {
                   (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
-                  : "white",
+                  : 'white',
                 borderWidth: 3,
                 borderColor: COLORS.primary,
                 borderRadius: 5,
-                width: "45%",
+                width: '45%',
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
@@ -118,14 +114,12 @@ const TypePlatsComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: activeFilters.some(
-                    (i) => Object.values(i)?.[0] === item
-                  )
-                    ? "white"
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
+                    ? 'white'
                     : COLORS.primary,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   fontSize: 18,
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
                 {item}
@@ -145,44 +139,44 @@ const RegimeComponent = ({ activeFilters }) => {
   return (
     <View
       style={{
-        backgroundColor: "white",
-        width: "90%",
+        backgroundColor: 'white',
+        width: '90%',
         borderRadius: 10,
-        alignItems: "center",
+        alignItems: 'center',
         paddingBottom: 20,
         marginVertical: 10,
       }}
     >
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "95%",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '95%',
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t("filterScreen_regime")}
+        <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
+          {t('filterScreen_regime')}
         </Text>
         <MaterialCommunityIcons name="fish-off" size={40} color="black" />
       </View>
       <View
         style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "center",
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
         {regime.map((item, i) => {
           const [selected, setSelected] = useState(
             activeFilters.some((i) => {
               const filter = item
-                ?.normalize?.("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
+                ?.normalize?.('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
                 .toLowerCase();
               const toCheck = Object.values(i)?.[0]
-                ?.normalize?.("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
+                ?.normalize?.('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
                 .toLowerCase();
 
               return toCheck === filter;
@@ -194,21 +188,21 @@ const RegimeComponent = ({ activeFilters }) => {
               key={i}
               onPress={() => {
                 const filter = item
-                  ?.normalize?.("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
+                  ?.normalize?.('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
                   .toLowerCase();
 
                 if (selected) dispatch(removeFilter(filter));
-                else dispatch(addFilter({ type: "category", name: filter }));
+                else dispatch(addFilter({ type: 'category', name: filter }));
 
                 setSelected(!selected);
               }}
               style={{
-                backgroundColor: selected ? COLORS.primary : "white",
+                backgroundColor: selected ? COLORS.primary : 'white',
                 borderWidth: 3,
                 borderColor: COLORS.primary,
                 borderRadius: 5,
-                width: "45%",
+                width: '45%',
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
@@ -216,10 +210,10 @@ const RegimeComponent = ({ activeFilters }) => {
             >
               <Text
                 style={{
-                  color: selected ? "white" : COLORS.primary,
-                  fontWeight: "bold",
+                  color: selected ? 'white' : COLORS.primary,
+                  fontWeight: 'bold',
                   fontSize: 18,
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
                 {item}
@@ -240,32 +234,32 @@ const MaterielsComponent = ({ activeFilters }) => {
   return (
     <View
       style={{
-        backgroundColor: "white",
-        width: "90%",
+        backgroundColor: 'white',
+        width: '90%',
         borderRadius: 10,
-        alignItems: "center",
+        alignItems: 'center',
         paddingBottom: 20,
         marginVertical: 10,
       }}
     >
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "95%",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '95%',
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t("filterScreen_equipment")}
+        <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
+          {t('filterScreen_equipment')}
         </Text>
         <Oven height={40} width={40} fill="black" />
       </View>
       <View
         style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "center",
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
         {equipment.map((item, i) => {
@@ -276,7 +270,7 @@ const MaterielsComponent = ({ activeFilters }) => {
                 if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
-                  dispatch(addFilter({ type: "material", name: item }));
+                  dispatch(addFilter({ type: 'material', name: item }));
                 }
               }}
               style={{
@@ -284,27 +278,25 @@ const MaterielsComponent = ({ activeFilters }) => {
                   (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
-                  : "white",
+                  : 'white',
                 borderWidth: 3,
                 borderColor: COLORS.primary,
                 borderRadius: 5,
-                width: "45%",
+                width: '45%',
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
-                justifyContent: "center",
+                justifyContent: 'center',
               }}
             >
               <Text
                 style={{
-                  color: activeFilters.some(
-                    (i) => Object.values(i)?.[0] === item
-                  )
-                    ? "white"
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
+                    ? 'white'
                     : COLORS.primary,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   fontSize: 18,
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
                 {item}
@@ -325,32 +317,32 @@ const DifficultyComponent = ({ activeFilters }) => {
   return (
     <View
       style={{
-        backgroundColor: "white",
-        width: "90%",
+        backgroundColor: 'white',
+        width: '90%',
         borderRadius: 10,
-        alignItems: "center",
+        alignItems: 'center',
         paddingBottom: 20,
         marginVertical: 10,
       }}
     >
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "95%",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          width: '95%',
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t("filterScreen_difficulty")}
+        <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
+          {t('filterScreen_difficulty')}
         </Text>
         <Feather name="bar-chart" size={35} color="black" />
       </View>
       <View
         style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "center",
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
         {difficulty.map((item, i) => {
@@ -361,7 +353,7 @@ const DifficultyComponent = ({ activeFilters }) => {
                 if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
                   dispatch(removeFilter(item));
                 } else {
-                  dispatch(addFilter({ type: "difficulty", name: item }));
+                  dispatch(addFilter({ type: 'difficulty', name: item }));
                 }
               }}
               style={{
@@ -369,27 +361,25 @@ const DifficultyComponent = ({ activeFilters }) => {
                   (i) => Object.values(i)?.[0] === item
                 )
                   ? COLORS.primary
-                  : "white",
+                  : 'white',
                 borderWidth: 3,
                 borderColor: COLORS.primary,
                 borderRadius: 5,
-                width: "45%",
+                width: '45%',
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
-                justifyContent: "center",
+                justifyContent: 'center',
               }}
             >
               <Text
                 style={{
-                  color: activeFilters.some(
-                    (i) => Object.values(i)?.[0] === item
-                  )
-                    ? "white"
+                  color: activeFilters.some((i) => Object.values(i)?.[0] === item)
+                    ? 'white'
                     : COLORS.primary,
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   fontSize: 18,
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
                 {item}
@@ -414,34 +404,34 @@ const TempsComponent = ({ setTempsHeader }) => {
   return (
     <View
       style={{
-        backgroundColor: "white",
-        width: "90%",
+        backgroundColor: 'white',
+        width: '90%',
         borderRadius: 10,
-        alignItems: "center",
+        alignItems: 'center',
         paddingBottom: 20,
         marginVertical: 10,
       }}
     >
       <View
         style={{
-          flexDirection: "row",
-          width: "90%",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          width: '90%',
+          justifyContent: 'space-between',
           margin: 10,
         }}
       >
-        <Text style={{ fontWeight: "bold", fontSize: 24 }}>
-          {t("filterScreen_maxDuration")}
+        <Text style={{ fontWeight: 'bold', fontSize: 24 }}>
+          {t('filterScreen_maxDuration')}
         </Text>
         {temps !== 0 && (
           <Text
             style={{
-              fontWeight: "bold",
+              fontWeight: 'bold',
               fontSize: 24,
               color: COLORS.primary,
             }}
           >
-            {t("filterScreen_minDuration", { duration: temps })}
+            {t('filterScreen_minDuration', { duration: temps })}
           </Text>
         )}
         <Time height={40} width={40} fill="black" />
@@ -462,7 +452,7 @@ const TempsComponent = ({ setTempsHeader }) => {
           dispatch(changeTime(i));
         }}
         style={{
-          width: "90%",
+          width: '90%',
           height: 40,
         }}
         minimumValue={0}
@@ -476,100 +466,100 @@ const TempsComponent = ({ setTempsHeader }) => {
   );
 };
 
-const FilterScreen = forwardRef(
-  ({ pressedFilter, setTemps, setCount }, ref) => {
-    const { activeFilters } = useSelector((state) => state.recipeStore);
-    const [array, setArray] = useState([
-      <TypePlatsComponent key={1} activeFilters={activeFilters} />,
-      <RegimeComponent key={2} activeFilters={activeFilters} />,
-      <TempsComponent key={4} activeFilters={activeFilters} />,
-      <MaterielsComponent key={3} activeFilters={activeFilters} />,
-    ]);
+const FilterScreen = ({ /*pressedFilter, */ setTemps }, ref) => {
+  const { activeFilters } = useSelector((state) => state.recipeStore);
 
-    useEffect(() => {
-      if (pressedFilter === "types") {
-        setArray([
-          <TypePlatsComponent key={1} activeFilters={activeFilters} />,
-          <RegimeComponent key={2} activeFilters={activeFilters} />,
-          <TempsComponent key={4} activeFilters={activeFilters} />,
-          <MaterielsComponent key={3} activeFilters={activeFilters} />,
-        ]);
-      } else if (pressedFilter === "temps") {
-        setArray([
-          <TempsComponent key={4} activeFilters={activeFilters} />,
-          <TypePlatsComponent key={1} activeFilters={activeFilters} />,
-          <RegimeComponent key={2} activeFilters={activeFilters} />,
-          <MaterielsComponent key={3} activeFilters={activeFilters} />,
-        ]);
-      } else if (pressedFilter === "regimes") {
-        setArray([
-          <RegimeComponent key={2} activeFilters={activeFilters} />,
-          <TempsComponent key={4} activeFilters={activeFilters} />,
-          <TypePlatsComponent key={1} activeFilters={activeFilters} />,
-          <MaterielsComponent key={3} activeFilters={activeFilters} />,
-        ]);
-      } else if (pressedFilter === "materiel") {
-        setArray([
-          <MaterielsComponent key={3} activeFilters={activeFilters} />,
-          <RegimeComponent key={2} activeFilters={activeFilters} />,
-          <TempsComponent key={4} activeFilters={activeFilters} />,
-          <TypePlatsComponent key={1} activeFilters={activeFilters} />,
-        ]);
-      }
-    }, [pressedFilter]);
-    return (
-      <Modal
-        swipeThreshold={1}
+  // TODO : test is all this is necessary
+  // const [array, setArray] = useState([
+  //   <TypePlatsComponent key={1} activeFilters={activeFilters} />,
+  //   <RegimeComponent key={2} activeFilters={activeFilters} />,
+  //   <TempsComponent key={4} activeFilters={activeFilters} />,
+  //   <MaterielsComponent key={3} activeFilters={activeFilters} />,
+  // ]);
+
+  // useEffect(() => {
+  //   if (pressedFilter === 'types') {
+  //     setArray([
+  //       <TypePlatsComponent key={1} activeFilters={activeFilters} />,
+  //       <RegimeComponent key={2} activeFilters={activeFilters} />,
+  //       <TempsComponent key={4} activeFilters={activeFilters} />,
+  //       <MaterielsComponent key={3} activeFilters={activeFilters} />,
+  //     ]);
+  //   } else if (pressedFilter === 'temps') {
+  //     setArray([
+  //       <TempsComponent key={4} activeFilters={activeFilters} />,
+  //       <TypePlatsComponent key={1} activeFilters={activeFilters} />,
+  //       <RegimeComponent key={2} activeFilters={activeFilters} />,
+  //       <MaterielsComponent key={3} activeFilters={activeFilters} />,
+  //     ]);
+  //   } else if (pressedFilter === 'regimes') {
+  //     setArray([
+  //       <RegimeComponent key={2} activeFilters={activeFilters} />,
+  //       <TempsComponent key={4} activeFilters={activeFilters} />,
+  //       <TypePlatsComponent key={1} activeFilters={activeFilters} />,
+  //       <MaterielsComponent key={3} activeFilters={activeFilters} />,
+  //     ]);
+  //   } else if (pressedFilter === 'materiel') {
+  //     setArray([
+  //       <MaterielsComponent key={3} activeFilters={activeFilters} />,
+  //       <RegimeComponent key={2} activeFilters={activeFilters} />,
+  //       <TempsComponent key={4} activeFilters={activeFilters} />,
+  //       <TypePlatsComponent key={1} activeFilters={activeFilters} />,
+  //     ]);
+  //   }
+  // }, [pressedFilter]);
+  return (
+    <Modal
+      swipeThreshold={1}
+      style={{
+        width: '100%',
+        height: Platform.OS === 'ios' ? height * 0.74 : height * 0.78,
+        justifyContent: 'center',
+
+        borderTopRightRadius: 15,
+        borderTopLeftRadius: 15,
+      }}
+      position="bottom"
+      backdrop={true}
+      ref={ref}
+      isOpen={false}
+      backdropOpacity={0}
+    >
+      <View
         style={{
-          width: "100%",
-          height: Platform.OS === "ios" ? height * 0.74 : height * 0.78,
-          justifyContent: "center",
-
+          backgroundColor: COLORS.primary,
+          height: 40,
           borderTopRightRadius: 15,
           borderTopLeftRadius: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
-        position="bottom"
-        backdrop={true}
-        ref={ref}
-        isOpen={false}
-        backdropOpacity={0}
       >
         <View
           style={{
-            backgroundColor: COLORS.primary,
-            height: 40,
-            borderTopRightRadius: 15,
-            borderTopLeftRadius: 15,
-            justifyContent: "center",
-            alignItems: "center",
+            backgroundColor: 'white',
+            height: 5,
+            width: 50,
+            borderRadius: 10,
           }}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              height: 5,
-              width: 50,
-              borderRadius: 10,
-            }}
-          />
-        </View>
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: COLORS.lightGrey,
-          }}
-        >
-          <DifficultyComponent activeFilters={activeFilters} />
-          <RegimeComponent activeFilters={activeFilters} />
-          <TempsComponent setTempsHeader={setTemps} />
-          <MaterielsComponent activeFilters={activeFilters} />
-          <TypePlatsComponent activeFilters={activeFilters} />
-        </ScrollView>
-      </Modal>
-    );
-  }
-);
+        />
+      </View>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: COLORS.lightGrey,
+        }}
+      >
+        <DifficultyComponent activeFilters={activeFilters} />
+        <RegimeComponent activeFilters={activeFilters} />
+        <TempsComponent setTempsHeader={setTemps} />
+        <MaterielsComponent activeFilters={activeFilters} />
+        <TypePlatsComponent activeFilters={activeFilters} />
+      </ScrollView>
+    </Modal>
+  );
+};
 
-export default FilterScreen;
+export default forwardRef(FilterScreen);

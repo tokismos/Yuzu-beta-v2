@@ -1,46 +1,46 @@
 //The first screen where you sign up ,where there's four components Email,p
 
-import React, { createRef, useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from 'react';
 import {
+  Dimensions,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
   View,
-  Dimensions,
-} from "react-native";
-import PagerView from "react-native-pager-view";
+} from 'react-native';
+import PagerView from 'react-native-pager-view';
 
-import LoginHeaderScreen from "../../components/LoginHeaderScreen";
-import TextInputColored from "../../components/TextInputColored";
-import useAuth from "../../hooks/useAuth";
-import PhoneInputComponent from "../../components/PhoneInputComponent";
-import CodeVerificationComponent from "../../components/CodeVerificationComponent";
-import CustomButton from "../../components/CustomButton";
-import { setAdditionalInfo } from "../../helpers/db";
-import { setIsFirstTime } from "../../redux/slicer/userSlicer";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import CodeVerificationComponent from '../../components/CodeVerificationComponent';
+import CustomButton from '../../components/CustomButton';
+import LoginHeaderScreen from '../../components/LoginHeaderScreen';
+import PhoneInputComponent from '../../components/PhoneInputComponent';
+import TextInputColored from '../../components/TextInputColored';
+import { setAdditionalInfo } from '../../helpers/db';
+import useAuth from '../../hooks/useAuth';
+import { setIsFirstTime } from '../../redux/slicer/userSlicer';
 
-const { height, width } = Dimensions.get("screen");
+const { height, width } = Dimensions.get('screen');
 const EmailComponent = ({ setEmail, refe, email }) => {
   const { t } = useTranslation();
   return (
     <View style={{ width, height }}>
       <View style={{ padding: 20 }}>
-        <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-          {t("signupScreen_enterEmail")}
+        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
+          {t('signupScreen_enterEmail')}
         </Text>
         <TextInputColored
           type="email"
           keyboardType="email-address"
-          label={t("email")}
+          label={t('email')}
           setChangeText={setEmail}
         />
-        <Text style={styles.description}>{t("signupScreen_confirmEmail")}</Text>
+        <Text style={styles.description}>{t('signupScreen_confirmEmail')}</Text>
       </View>
       <NextButton
-        disabled={email === ""}
+        disabled={email === ''}
         onPress={() => {
           refe.current.setPage(1);
         }}
@@ -53,17 +53,17 @@ const PasswordComponent = ({ setPassword, refe, password }) => {
   return (
     <View style={{ width }}>
       <View style={{ padding: 20 }}>
-        <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-          {t("signupScreen_createPassword")}
+        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
+          {t('signupScreen_createPassword')}
         </Text>
         <TextInputColored
-          label={t("signupScreen_password")}
+          label={t('signupScreen_password')}
           setChangeText={setPassword}
           secured
         />
         {password.length < 8 && (
           <Text style={styles.description}>
-            {t("signupScreen_passwordMinimumLength")}
+            {t('signupScreen_passwordMinimumLength')}
           </Text>
         )}
       </View>
@@ -77,12 +77,7 @@ const PasswordComponent = ({ setPassword, refe, password }) => {
   );
 };
 
-const PhoneComponent = ({
-  refe,
-  setPhoneNumber,
-  setCountryCode,
-  fullNumber,
-}) => {
+const PhoneComponent = ({ refe, setPhoneNumber, setCountryCode, fullNumber }) => {
   const { sendPhoneVerification } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
@@ -95,7 +90,7 @@ const PhoneComponent = ({
       />
       <CustomButton
         isLoading={isLoading}
-        title={t("signupScreen_next")}
+        title={t('signupScreen_next')}
         onPress={async () => {
           setIsLoading(true);
           const status = await sendPhoneVerification(fullNumber);
@@ -123,7 +118,7 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
       style={{ flex: 1 }}
       behavior="height"
       keyboardVerticalOffset={100}
-      contentContainerStyle={{ backgroundColor: "pink" }}
+      contentContainerStyle={{ backgroundColor: 'pink' }}
     >
       <ScrollView style={{}}>
         <View style={{ width }}>
@@ -134,7 +129,7 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
           />
 
           <CustomButton
-            title={t("next")}
+            title={t('next')}
             isLoading={isLoading}
             onPress={async () => {
               setIsLoading(true);
@@ -162,36 +157,36 @@ const NextButton = ({ onPress, disabled }) => {
   return (
     <CustomButton
       onPress={onPress}
-      title={t("next")}
+      title={t('next')}
       disabled={disabled}
       style={{
         ...styles.nextButton,
       }}
-      textStyle={{ fontWeight: "bold", color: "white" }}
+      textStyle={{ fontWeight: 'bold', color: 'white' }}
     />
   );
 };
 
-const SignUpScreen = ({}) => {
+const SignUpScreen = () => {
   const ref = createRef();
   const [ind, setIndex] = useState(0);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [countryCode, setCountryCode] = useState("1");
-  const [fullNumber, setFullNumber] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('1');
+  const [fullNumber, setFullNumber] = useState('');
 
   useEffect(() => {
     setFullNumber(`+${countryCode}${phoneNumber}`);
   }, [phoneNumber, countryCode]);
 
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <View style={{ backgroundColor: 'white' }}>
       {/* innerRef to pass the ref of flatList to the component */}
       <LoginHeaderScreen innerRef={ref} index={ind} />
       <PagerView
         scrollEnabled={false}
-        style={{ height: "100%" }}
+        style={{ height: '100%' }}
         initialPage={0}
         ref={ref}
         onPageScroll={(ev) => setIndex(ev.nativeEvent.position)}
@@ -237,16 +232,16 @@ export default SignUpScreen;
 const styles = StyleSheet.create({
   nextButton: {
     width: 120,
-    justifyContent: "center",
+    justifyContent: 'center',
     height: 50,
-    alignItems: "center",
-    alignSelf: "center",
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   description: {
-    marginTop: "5%",
-    width: "90%",
-    alignSelf: "center",
+    marginTop: '5%',
+    width: '90%',
+    alignSelf: 'center',
     fontSize: 12,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

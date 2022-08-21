@@ -1,5 +1,5 @@
 //Quand on swipe a droite c'Est dans ce state qu'on enregistre toutes les recettes likées.
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   nbrOfRecipes: 3,
@@ -7,19 +7,17 @@ const initialState = {
 };
 
 export const matchSlice = createSlice({
-  name: "matches",
+  name: 'matches',
   initialState,
   reducers: {
     removeMatch: (state, action) => {
-      state.matches = [
-        ...state.matches.filter((i) => i._id !== action.payload._id),
-      ];
+      state.matches = [...state.matches.filter((i) => i._id !== action.payload._id)];
     },
     addMatch: (state, action) => {
-      console.log("added");
+      console.log('added');
       state.matches = [...state.matches, action.payload];
     },
-    resetMatches: (state, action) => {
+    resetMatches: (state) => {
       state.matches = [];
     },
   },

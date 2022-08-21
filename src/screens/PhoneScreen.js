@@ -1,27 +1,25 @@
 //Un page Viewer qui nour permets d'Afficher les diffecrent components de l'envoi de sms au numero de tel.Ici on ne fait qu'appel
 // à l'API pour envoyer un code de verification et puis pour verifier le code saisit par l'utilisateur
 
-import React, { useRef, useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, ToastAndroid, View } from "react-native";
-import PagerView from "react-native-pager-view";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import CodeVerificationComponent from "../components/CodeVerificationComponent";
-import CustomButton from "../components/CustomButton";
-import PhoneInputComponent from "../components/PhoneInputComponent";
-import { setAdditionalInfo } from "../helpers/db";
-import useAuth from "../hooks/useAuth";
-import { setUser } from "../redux/slicer/userSlicer";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ToastAndroid, View } from 'react-native';
+import PagerView from 'react-native-pager-view';
+import { useDispatch, useSelector } from 'react-redux';
+import CodeVerificationComponent from '../components/CodeVerificationComponent';
+import CustomButton from '../components/CustomButton';
+import PhoneInputComponent from '../components/PhoneInputComponent';
+import { setAdditionalInfo } from '../helpers/db';
+import useAuth from '../hooks/useAuth';
+import { setUser } from '../redux/slicer/userSlicer';
 
 const PhoneScreen = ({ navigation }) => {
   const { user } = useSelector((state) => state.userStore);
   const [fullNumber, setFullNumber] = useState();
-  const [countryCode, setCountryCode] = useState("1");
+  const [countryCode, setCountryCode] = useState('1');
   const [phoneNumber, setPhoneNumber] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [code, setCode] = useState("");
-  const [index, setIndex] = useState("");
+  const [code, setCode] = useState('');
   const ref = useRef();
   const dispatch = useDispatch();
   const { sendPhoneVerification, verifyCode } = useAuth();
@@ -35,9 +33,8 @@ const PhoneScreen = ({ navigation }) => {
     <PagerView
       ref={ref}
       scrollEnabled={false}
-      style={{ height: "100%" }}
+      style={{ height: '100%' }}
       initialPage={0}
-      onPageScroll={(ev) => setIndex(ev.nativeEvent.position)}
     >
       <View key="1">
         <PhoneInputComponent
@@ -46,7 +43,7 @@ const PhoneScreen = ({ navigation }) => {
           setPhoneNumber={setPhoneNumber}
         />
         <CustomButton
-          title={t("next")}
+          title={t('next')}
           isLoading={isLoading}
           onPress={async () => {
             setIsLoading(true);
@@ -67,7 +64,7 @@ const PhoneScreen = ({ navigation }) => {
           goBack={() => ref.current.setPage(0)}
         />
         <CustomButton
-          title={t("next")}
+          title={t('next')}
           isLoading={isLoading}
           onPress={async () => {
             setIsLoading(true);
@@ -79,10 +76,7 @@ const PhoneScreen = ({ navigation }) => {
               });
               dispatch(setUser({ ...user, phoneNumber: fullNumber }));
               navigation.pop();
-              ToastAndroid.show(
-                t("phoneScreen_phoneChanged"),
-                ToastAndroid.SHORT
-              );
+              ToastAndroid.show(t('phoneScreen_phoneChanged'), ToastAndroid.SHORT);
               setIsLoading(false);
             } else {
               setIsLoading(false);

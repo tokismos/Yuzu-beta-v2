@@ -3,34 +3,32 @@
 
 // setSelectedIngredient we find here every selected ing que ca soit produits or from cart
 
-import { format, formatRelative } from "date-fns";
-import { fr } from "date-fns/locale";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-community/async-storage';
+import CheckBox from '@react-native-community/checkbox';
+import { useIsFocused } from '@react-navigation/native';
+import { formatRelative } from 'date-fns';
+import { fr } from 'date-fns/locale';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Dimensions,
   Platform,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
-import FastImage from "react-native-fast-image";
-import { COLORS } from "../consts/colors";
-import TextInputColored from "../components/TextInputColored";
-import CustomButton from "../components/CustomButton";
-import { AntDesign } from "@expo/vector-icons";
-import IngredientComponent from "../components/IngredientComponent";
-import LazyLoadImage from "../components/LazyLoadImage";
-import CheckBox from "@react-native-community/checkbox";
-import { useIsFocused } from "@react-navigation/native";
-import AsyncStorage from "@react-native-community/async-storage";
-import { useTranslation } from "react-i18next";
+} from 'react-native';
+import CustomButton from '../components/CustomButton';
+import IngredientComponent from '../components/IngredientComponent';
+import LazyLoadImage from '../components/LazyLoadImage';
+import TextInputColored from '../components/TextInputColored';
+import { COLORS } from '../consts/colors';
 
-const { height, width } = Dimensions.get("screen");
+const { height, width } = Dimensions.get('screen');
 
 // Each recipe which contain ingredients
 const CartComponent = ({
@@ -43,15 +41,12 @@ const CartComponent = ({
   index,
 }) => {
   const { t } = useTranslation();
-  const defaultImage = Image.resolveAssetSource(
-    require("../assets/default.jpg")
-  ).uri;
 
   return (
     <>
       <View>
         {index === 0 && (
-          <Text style={styles.title}>{t("infoCommandeScreen_recipe")}</Text>
+          <Text style={styles.title}>{t('infoCommandeScreen_recipe')}</Text>
         )}
       </View>
       <View style={styles.cartComponent}>
@@ -65,9 +60,9 @@ const CartComponent = ({
           <Text
             style={{
               fontSize: 18,
-              fontWeight: "bold",
-              textAlign: "left",
-              width: "80%",
+              fontWeight: 'bold',
+              textAlign: 'left',
+              width: '80%',
               marginBottom: 50,
               marginLeft: 140,
               top: 27,
@@ -76,7 +71,7 @@ const CartComponent = ({
             {name}
           </Text>
         </View>
-        <View style={{ width: "100%", alignSelf: "center" }}>
+        <View style={{ width: '100%', alignSelf: 'center' }}>
           {ingredients?.map((item, index) => (
             <IngredientComponent
               setSelectedIngredients={setSelectedIngredients}
@@ -102,14 +97,14 @@ const AddProductComponent = ({ setProducts, products }) => {
   return (
     <View style={styles.addProductComponent}>
       <TextInputColored
-        style={{ width: "50%", height: 40, marginBottom: 10 }}
-        label={t("infoCommandeScreen_addArticle")}
+        style={{ width: '50%', height: 40, marginBottom: 10 }}
+        label={t('infoCommandeScreen_addArticle')}
         setChangeText={setProductText}
         value={productText}
       />
 
       <CustomButton
-        title={t("infoCommandeScreen_add")}
+        title={t('infoCommandeScreen_add')}
         style={{ height: 40 }}
         onPress={() => {
           if (!productText) {
@@ -117,7 +112,7 @@ const AddProductComponent = ({ setProducts, products }) => {
           }
 
           if (products.indexOf(productText) > -1) {
-            return Alert.alert(t("infoCommandeScreen_alreadyAdded"));
+            return Alert.alert(t('infoCommandeScreen_alreadyAdded'));
           }
           setProducts((p) => [...p, productText]);
         }}
@@ -144,21 +139,19 @@ const InfoCommandeScreen = ({ navigation, route }) => {
     return (
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          width: "100%",
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-evenly',
+          width: '100%',
         }}
       >
         <Pressable
           onPress={() => {
             if (!toggle) {
-              console.log("slct ing", selectedIngredients);
+              console.log('slct ing', selectedIngredients);
               setSelectedIngredients((p) => [...p, product]);
             } else {
-              setSelectedIngredients((p) =>
-                p.filter((item) => item !== product)
-              );
+              setSelectedIngredients((p) => p.filter((item) => item !== product));
             }
 
             setToggle((p) => !p);
@@ -168,10 +161,10 @@ const InfoCommandeScreen = ({ navigation, route }) => {
           <Text
             style={{
               ...styles.productItemText,
-              textDecorationLine: toggle ? "line-through" : null,
-              textDecorationStyle: "solid",
-              color: toggle ? COLORS.grey : "black",
-              width: "65%",
+              textDecorationLine: toggle ? 'line-through' : null,
+              textDecorationStyle: 'solid',
+              color: toggle ? COLORS.grey : 'black',
+              width: '65%',
             }}
           >
             {product}
@@ -183,15 +176,15 @@ const InfoCommandeScreen = ({ navigation, route }) => {
             style={{
               padding: 5,
               borderRadius: 5,
-              width: "10%",
-              alignItems: "center",
+              width: '10%',
+              alignItems: 'center',
             }}
           >
             <AntDesign name="delete" size={24} color={COLORS.red} />
           </TouchableOpacity>
           <View
             style={{
-              width: "10%",
+              width: '10%',
               left: 5,
               top: 2,
             }}
@@ -199,18 +192,18 @@ const InfoCommandeScreen = ({ navigation, route }) => {
             <CheckBox
               style={[
                 {
-                  transform: [{ scale: Platform.OS === "ios" ? 0.8 : 1.2 }],
+                  transform: [{ scale: Platform.OS === 'ios' ? 0.8 : 1.2 }],
                 },
               ]}
               onTintColor={COLORS.primary}
               onFillColor={COLORS.primary}
-              onCheckColor={"white"}
+              onCheckColor={'white'}
               onAnimationType="fill"
               offAnimationType="fade"
               boxType="square"
               disabled
               value={isSaved}
-              tintColors={{ true: COLORS.primary, false: "gray" }}
+              tintColors={{ true: COLORS.primary, false: 'gray' }}
             />
           </View>
         </Pressable>
@@ -221,7 +214,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
     const { t } = useTranslation();
     return (
       <View style={styles.productsComponent}>
-        <Text style={styles.title}>{t("infoCommandeScreen_addedArticle")}</Text>
+        <Text style={styles.title}>{t('infoCommandeScreen_addedArticle')}</Text>
 
         {products.map((item, i) => {
           return (
@@ -249,7 +242,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
     (async () => {
       if (!isFocused) {
         await AsyncStorage.setItem(
-          "selectedIngredients",
+          'selectedIngredients',
           JSON.stringify(selectedIngredients)
         );
         await AsyncStorage.setItem(idTime.toString(), JSON.stringify(products));
@@ -260,7 +253,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
   useEffect(() => {
     (async () => {
       const selectedIngredientsResult = await AsyncStorage.getItem(
-        "selectedIngredients"
+        'selectedIngredients'
       );
       if (selectedIngredientsResult != null) {
         setSelectedIngredients(JSON.parse(selectedIngredientsResult));
@@ -273,7 +266,7 @@ const InfoCommandeScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <ScrollView style={{ backgroundColor: "#cecece" }}>
+    <ScrollView style={{ backgroundColor: '#cecece' }}>
       <AddProductComponent setProducts={setProducts} products={products} />
 
       {products.length != 0 && <AllProductsComponent products={products} />}
@@ -305,111 +298,111 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 10,
     aspectRatio: 1,
-    position: "absolute",
+    position: 'absolute',
     top: 15,
     left: 15,
   },
   separator: {
     height: 0.4,
-    width: "80%",
-    alignSelf: "center",
-    backgroundColor: "white",
+    width: '80%',
+    alignSelf: 'center',
+    backgroundColor: 'white',
   },
   headerContainer: {
-    width: "100%",
-    height: "25%",
+    width: '100%',
+    height: '25%',
     padding: 20,
 
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   bottomComponent: {
-    width: "100%",
-    height: "20%",
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '100%',
+    height: '20%',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   bottomContainer: {
-    width: "90%",
-    height: "90%",
-    alignSelf: "center",
-    justifyContent: "space-between",
-    backgroundColor: "white",
+    width: '90%',
+    height: '90%',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
   },
   text: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 16,
-    color: "gray",
-    width: "100%",
+    color: 'gray',
+    width: '100%',
   },
   button: {
-    width: "90%",
-    height: "50%",
+    width: '90%',
+    height: '50%',
     backgroundColor: COLORS.primary,
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textButton: {
     fontSize: 16,
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   cartComponent: {
     marginVertical: 5,
 
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 10,
-    width: "90%",
-    alignSelf: "center",
+    width: '90%',
+    alignSelf: 'center',
   },
   imageContainer: {
     height: 60,
     width: 60,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     height: 60,
     aspectRatio: 1.5,
   },
   productsComponent: {
-    backgroundColor: "white",
-    width: "90%",
-    alignSelf: "center",
+    backgroundColor: 'white',
+    width: '90%',
+    alignSelf: 'center',
     borderRadius: 10,
     padding: 10,
     marginBottom: 20,
   },
   productsTitle: {
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
     fontSize: 20,
-    color: "gray",
+    color: 'gray',
   },
   titleComponent: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'center',
   },
   productItemComponent: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-around",
-    alignSelf: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
+    alignSelf: 'center',
+    alignItems: 'center',
     marginVertical: 5,
   },
   addProductComponent: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     height: height * 0.1,
-    flexDirection: "row",
+    flexDirection: 'row',
     width,
-    justifyContent: "space-around",
-    alignItems: "center",
+    justifyContent: 'space-around',
+    alignItems: 'center',
     padding: 10,
     marginBottom: 20,
   },
@@ -418,9 +411,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     paddingVertical: 10,
     marginLeft: 5,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

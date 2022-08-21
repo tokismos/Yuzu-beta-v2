@@ -2,22 +2,14 @@
 // nous permet de savoir ce que la touche precedent fait , si l'index est egal a 0 il retourne vers l'ecran precedent
 // sinon il change le pageViewer
 
-import React from "react";
-import {
-  Dimensions,
-  NativeModules,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { COLORS } from "../consts/colors";
-import { useNavigation } from "@react-navigation/core";
-import FastImage from "react-native-fast-image";
-import { useTranslation } from "react-i18next";
+import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/core';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
+import { COLORS } from '../consts/colors';
 
-const { height, width } = Dimensions.get("screen");
+const { height, width } = Dimensions.get('screen');
 
 const LoginHeaderScreen = ({ index, innerRef }) => {
   const navigation = useNavigation();
@@ -29,18 +21,14 @@ const LoginHeaderScreen = ({ index, innerRef }) => {
         backgroundColor: COLORS.secondary,
         height: height * 0.1,
         width,
-        justifyContent: "flex-end",
-        alignItems: "center",
+        justifyContent: 'flex-end',
+        alignItems: 'center',
       }}
     >
-      <View
-        style={{ flexDirection: "row", width: "100%", alignItems: "center" }}
-      >
+      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center' }}>
         <TouchableOpacity
           onPress={() => {
-            index >= 1
-              ? innerRef?.current.setPage(index - 1)
-              : navigation.goBack();
+            index >= 1 ? innerRef?.current.setPage(index - 1) : navigation.goBack();
           }}
           style={{ padding: 10 }}
         >
@@ -48,13 +36,13 @@ const LoginHeaderScreen = ({ index, innerRef }) => {
         </TouchableOpacity>
         <Text
           style={{
-            width: "100%",
+            width: '100%',
             fontSize: 20,
-            fontWeight: "bold",
-            color: "black",
+            fontWeight: 'bold',
+            color: 'black',
           }}
         >
-          {t("loginHeaderScreen_create")}
+          {t('loginHeaderScreen_create')}
         </Text>
       </View>
     </View>

@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 import {
-  View,
   FlatList,
-  SafeAreaView,
   Keyboard,
   Pressable,
+  SafeAreaView,
   TouchableHighlight,
-} from "react-native";
-import { FontAwesome } from "react-native-vector-icons";
-import FastImage from "react-native-fast-image";
+  View,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { FontAwesome } from 'react-native-vector-icons';
 
-import styles from "./MosaicList.style";
+import styles from './MosaicList.style';
 
 const MosaicList = ({ data, recipeClicked, matches }) => {
   const renderItem = ({ item }) => {

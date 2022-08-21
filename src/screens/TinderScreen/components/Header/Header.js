@@ -1,20 +1,18 @@
-import React from "react";
-import { Image, View, Pressable, Dimensions } from "react-native";
-import FastImage from "react-native-fast-image";
+import React from 'react';
+import { Dimensions, Image, Pressable, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
-import { COLORS } from "../../../../consts/colors";
+import { COLORS } from '../../../../consts/colors';
 
-const { height } = Dimensions.get("screen");
+const { height } = Dimensions.get('screen');
 
 const Header = ({ bottomSheetRef, navigation }) => {
-  const logo = Image.resolveAssetSource(
-    require("../../../../assets/logo.png")
-  ).uri;
+  const logo = Image.resolveAssetSource(require('../../../../assets/logo.png')).uri;
   return (
     <View
       style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
+        flexDirection: 'row',
+        justifyContent: 'space-between',
       }}
     >
       <View
@@ -37,9 +35,9 @@ const Header = ({ bottomSheetRef, navigation }) => {
           backgroundColor: COLORS.primary,
           height: height * 0.06,
           marginRight: 16,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-end",
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
         }}
       >
         <Pressable
@@ -47,24 +45,24 @@ const Header = ({ bottomSheetRef, navigation }) => {
             bottomSheetRef.current.open();
           }}
           style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200%",
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200%',
             margin: 10,
           }}
         ></Pressable>
         <Pressable
           onPress={() => {
             if (auth().currentUser) {
-              navigation.navigate("ProfileScreen");
+              navigation.navigate('ProfileScreen');
             } else {
-              navigation.navigate("IntroScreen", { headerShown: false });
+              navigation.navigate('IntroScreen', { headerShown: false });
             }
           }}
           style={{
-            justifyContent: "center",
-            alignItems: "center",
-            height: "200%",
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '200%',
             margin: 10,
           }}
         >
@@ -72,7 +70,7 @@ const Header = ({ bottomSheetRef, navigation }) => {
             style={{ width: 50, height: 50 }}
             source={{
               uri: Image.resolveAssetSource(
-                require("../../../../assets/traitb.png")
+                require('../../../../assets/traitb.png')
               ),
             }}
           />

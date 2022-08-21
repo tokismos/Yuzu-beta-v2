@@ -9,6 +9,11 @@ podfile_properties = JSON.parse(File.read('./Podfile.properties.json')) rescue {
 
 target 'Yuzu' do
   use_expo_modules!
+
+  # Melvyn - TODO : check if is necessary
+  use_modular_headers!
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false
+
   config = use_native_modules!
 
   use_react_native!(
@@ -39,5 +44,4 @@ target 'Yuzu' do
       end
     end
   end
-
 end

@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
-import { TextInput, View, StatusBar, TouchableOpacity } from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
-import { useTranslation } from "react-i18next";
+import { Feather, Ionicons } from '@expo/vector-icons';
+import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { StatusBar, TextInput, TouchableOpacity, View } from 'react-native';
 
-import styles from "./SearchbarComponent.style";
+import styles from './SearchbarComponent.style';
 
 const SearchbarComponent = ({ searchPhrase, setSearchPhrase, setClicked }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -28,7 +28,7 @@ const SearchbarComponent = ({ searchPhrase, setSearchPhrase, setClicked }) => {
         <View
           style={{
             ...styles.textInput,
-            width: isFocused || searchPhrase?.length > 0 ? "90%" : "100%",
+            width: isFocused || searchPhrase?.length > 0 ? '90%' : '100%',
           }}
           onTouchEnd={handleFocus}
         >
@@ -41,7 +41,7 @@ const SearchbarComponent = ({ searchPhrase, setSearchPhrase, setClicked }) => {
           <TextInput
             ref={searchInput}
             className={styles.input}
-            placeholder={t("searchbarScreen_search")}
+            placeholder={t('searchbarScreen_search')}
             value={searchPhrase}
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -50,8 +50,8 @@ const SearchbarComponent = ({ searchPhrase, setSearchPhrase, setClicked }) => {
         </View>
         {(isFocused || searchPhrase?.length > 0) && (
           <>
-            <TouchableOpacity onPress={() => setSearchPhrase("")}>
-              <Ionicons name="close-circle" size={20} color={"grey"} />
+            <TouchableOpacity onPress={() => setSearchPhrase('')}>
+              <Ionicons name="close-circle" size={20} color={'grey'} />
             </TouchableOpacity>
           </>
         )}
