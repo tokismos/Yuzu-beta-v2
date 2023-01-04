@@ -23,7 +23,7 @@ const RateScreen = ({ route, navigation }) => {
   };
 
   const handleSubmit = async () => {
-    const recipe = await getRecipeByName(name);
+    const recipe = await getRecipeByName(routeParams.name);
     const { _id: id } = recipe;
 
     if (rate === 0) return;
@@ -95,7 +95,7 @@ const RateScreen = ({ route, navigation }) => {
               fontSize: 20,
             }}
           >
-            {name}
+            {routeParams.name}
           </Text>
         </View>
 

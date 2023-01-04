@@ -130,6 +130,7 @@ const TinderCard = ({ recipe, onSwipeRight, onSwipeLeft, setIsLoading }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
+              
                 navigation.navigate('IngredientScreen', { recipe });
               }}
               style={{

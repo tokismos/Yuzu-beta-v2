@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { HEROKU_API_URL } from './consts/env';
 
 const api = axios.create({
-  baseURL: 'https://yuzu-backend.herokuapp.com/',
+  baseURL: HEROKU_API_URL,
 });
 
 const getAllRecipes = async (item) => {

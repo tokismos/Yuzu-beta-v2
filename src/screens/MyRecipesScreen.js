@@ -63,10 +63,11 @@ const Skeleton = ({ title }) => {
 
 const CommandeItem = ({ recipe }) => {
   const navigation = useNavigation();
+  
   return (
     <Pressable
       android_ripple={{ color: '#d3d3d3', foreground: true }}
-      onPress={() => navigation.navigate('IngredientScreen', { _id: recipe._id })}
+      onPress={() => navigation.navigate('IngredientScreen', { _id: recipe._id, })}
       style={{
         width: '90%',
         marginVertical: 10,
@@ -125,7 +126,7 @@ const MyRecipesScreen = ({ route }) => {
 
   const initialize = async () => {
     if (route.name == 'Recettes favories') {
-      await getAllFavoris(setRecipes);
+    await getAllFavoris(setRecipes)
       setIsLoading(false);
     } else {
       await getCommandes(setRecipes);

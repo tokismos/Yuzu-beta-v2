@@ -26,7 +26,8 @@ const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
         onPress={() => {
           setFinalCart((p) => {
             const tmp = JSON.parse(JSON.stringify(p));
-            if (tmp[index].nbrPersonne > 2) {
+            if (tmp[index].nbrPersonne > 1) {
+              !tmp[index].defaultNbrPersonne ? tmp[index].defaultNbrPersonne = tmp[index].nbrPersonne : ''
               tmp[index].nbrPersonne = parseInt(tmp[index].nbrPersonne) - 1;
             }
             return [...tmp];
@@ -36,7 +37,7 @@ const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
         <AntDesign name="minuscircleo" size={24} color={COLORS.primary} />
       </TouchableOpacity>
       <Text style={{ fontWeight: 'bold', color: 'gray', marginLeft: 5 }}>
-        {item.nbrPersonne}
+        {parseInt(item.nbrPersonne)}
       </Text>
       <MaterialCommunityIcons
         name="human-male"
@@ -49,9 +50,10 @@ const NbrPersonneComponent = ({ item, setFinalCart, index }) => {
         onPress={() => {
           setFinalCart((p) => {
             const tmp = JSON.parse(JSON.stringify(p));
-            if (tmp[index].nbrPersonne < 8) {
+           
+              !tmp[index].defaultNbrPersonne ? tmp[index].defaultNbrPersonne = tmp[index].nbrPersonne : ''
               tmp[index].nbrPersonne = parseInt(tmp[index].nbrPersonne) + 1;
-            }
+            
             return [...tmp];
           });
         }}

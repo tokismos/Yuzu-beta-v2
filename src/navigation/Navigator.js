@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Animated,
@@ -22,8 +22,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../consts/colors';
 import { setUser } from '../redux/slicer/userSlicer';
-import AbonnementScreen from '../screens/AbonnementScreen';
-import AbonnementSecondScreen from '../screens/AbonnementSecondScreen';
+// import AbonnementScreen from '../screens/AbonnementScreen';
+// import AbonnementSecondScreen from '../screens/AbonnementSecondScreen';
 import CommandesScreen from '../screens/CommandesScreen';
 import SignUpScreen from '../screens/createAccountScreens/SignUpScreen';
 import FeedBackScreen from '../screens/FeedBackScreen';
@@ -316,10 +316,10 @@ const horizontalAnimation = {
       }),
       next
         ? next.progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 1],
-            extrapolate: 'clamp',
-          })
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
         : 0
     );
     return {
@@ -361,9 +361,16 @@ const LoggedStackScreen = () => {
           options={{
             headerShown: false,
           }}
+          name="IntroScreen"
+          component={IntroScreen}
+        />
+        {/* <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
           name="AbonnementSecondScreen"
           component={AbonnementSecondScreen}
-        />
+        /> */}
 
         <Stack.Screen
           options={{
@@ -374,11 +381,49 @@ const LoggedStackScreen = () => {
         />
         <Stack.Screen
           options={{
+            ...horizontalAnimation,
+            headerShown: true,
+            headerTitleAlign: 'center',
+            title: t('introScreen_login'),
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTintColor: 'white',
+            headerBackTitleVisible: false,
+            headerTitleStyle: {
+              fontSize: 22,
+              color: 'white',
+            },
+          }}
+          name="SignInScreen"
+          component={SignInScreen}
+        />
+        <Stack.Screen
+          options={{
+            ...horizontalAnimation,
+            headerShown: true,
+            headerTitleAlign: 'center',
+            title: 'Reinitialiser mot de passe',
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTintColor: 'white',
+            headerBackTitleVisible: false,
+            headerTitleStyle: {
+              fontSize: 18,
+              color: 'white',
+            },
+          }}
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
+        />
+        {/* <Stack.Screen
+          options={{
             headerShown: false,
           }}
           name="AbonnementScreen"
           component={AbonnementScreen}
-        />
+        /> */}
         <Stack.Screen
           options={{
             headerShown: false,
@@ -391,7 +436,7 @@ const LoggedStackScreen = () => {
             headerShown: true,
             headerTitleAlign: 'center',
             headerTintColor: 'white',
-
+            headerBackTitleVisible: false,
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -447,7 +492,7 @@ const LoggedStackScreen = () => {
             title: 'Les Ingredients',
             headerTitleAlign: 'center',
             headerTitleStyle: { fontWeight: 'bold', fontSize: 22 },
-            headerBackTitle: 'Back',
+            headerBackTitleVisible: false,
           }}
           name="IngredientsCartScreen"
           component={IngredientCartScreen}
@@ -493,7 +538,7 @@ const LoggedStackScreen = () => {
             headerTitle: 'Modifier mon numéro',
             headerTitleAlign: 'center',
             headerTintColor: 'white',
-
+            headerBackTitleVisible: false,
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -510,7 +555,7 @@ const LoggedStackScreen = () => {
             headerTitle: t('profileScreen_title'),
             headerTitleAlign: 'center',
             headerTintColor: 'white',
-
+            headerBackTitleVisible: false,
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -564,13 +609,13 @@ const LoginStackScreen = () => {
           name="IntroScreen"
           component={IntroScreen}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           options={{
             headerShown: false,
           }}
           name="AbonnementSecondScreen"
           component={AbonnementSecondScreen}
-        />
+        /> */}
         <Stack.Screen
           options={{
             headerShown: false,
@@ -595,7 +640,7 @@ const LoginStackScreen = () => {
               backgroundColor: COLORS.primary,
             },
             headerTintColor: 'white',
-            headerBackTitle: null,
+            headerBackTitleVisible: false,
             headerTitleStyle: {
               fontSize: 18,
               color: 'white',
@@ -610,6 +655,7 @@ const LoginStackScreen = () => {
             headerTitle: 'Modifier mon numéro',
             headerTitleAlign: 'center',
             headerTintColor: 'white',
+            headerBackTitleVisible: false,
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -635,6 +681,7 @@ const LoginStackScreen = () => {
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
+            headerBackTitleVisible: false,
             headerTitleStyle: {
               fontSize: 22,
             },
@@ -668,11 +715,13 @@ const LoginStackScreen = () => {
               backgroundColor: COLORS.primary,
             },
             headerTintColor: 'white',
-            headerBackTitle: null,
             headerTitleStyle: {
               fontSize: 22,
               color: 'white',
             },
+            headerBackTitleVisible: false,
+
+
           }}
           name="SignInScreen"
           component={SignInScreen}
@@ -752,19 +801,19 @@ const LoginStackScreen = () => {
             title: 'Les Ingredients',
             headerTitleAlign: 'center',
             headerTitleStyle: { fontWeight: 'bold', fontSize: 22 },
-            headerBackTitle: 'Back',
+            headerBackTitleVisible: false,
             headerShown: true,
           }}
           name="IngredientsCartScreen"
           component={IngredientCartScreen}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           options={{
             headerShown: false,
           }}
           name="AbonnementScreen"
           component={AbonnementScreen}
-        />
+        /> */}
         <Stack.Screen
           options={{
             headerShown: false,
@@ -835,7 +884,11 @@ const RootNavigation = () => {
     return sub;
   }, []);
 
-  return <>{user ? <LoggedStackScreen /> : <LoginStackScreen />}</>;
+  return (
+    <>
+      {user ? <LoggedStackScreen /> : <LoginStackScreen />}
+    </>
+  )
 };
 
 export default RootNavigation;

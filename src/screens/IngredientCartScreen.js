@@ -22,6 +22,7 @@ import {
 } from '../redux/slicer/notificationSlicer';
 
 const IngredientItemComponent = ({ ingredient, title, onPress }) => {
+ 
   const [toggle, setToggle] = useState(true);
 
   return (

@@ -33,7 +33,10 @@
         "backgroundColor": "#ffc700"
       }
     },
-    "plugins": ["@react-native-firebase/app"],
+    "plugins": [
+      "@react-native-firebase/app"
+   
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },

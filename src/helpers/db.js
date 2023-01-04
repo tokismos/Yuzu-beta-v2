@@ -1,8 +1,12 @@
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
+import '@react-native-firebase/database';
+import { FIREBASE_API_KEY } from '../consts/env';
+import { getRecipe } from "../axios"
+
 const firebaseDbURL = 'https://yuzu-5720e-default-rtdb.firebaseio.com';
 const firebaseConfig = {
-  apiKey: 'AIzaSyDp2NnsdP0i01XwJMmSynmmSrC_R23MUiQ',
+  apiKey: FIREBASE_API_KEY,
   authDomain: 'yuzu-5720e.firebaseapp.com',
   databaseURL: 'https://yuzu-5720e-default-rtdb.firebaseio.com',
   projectId: 'yuzu-5720e',
@@ -16,6 +20,12 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 } else {
   firebase.app(); // if already initialized, use that one
+}
+
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }
 
 const setAdditionalInfo = async (info) => {
@@ -97,9 +107,13 @@ const getAllFavoris = async (setCommandes) => {
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/favoris`)
     .orderByChild('dateTime')
-    .on('value', (snapshot) => {
+    .on('value', async (snapshot) => {
       if (snapshot.exists()) {
-        setCommandes(Object?.values(snapshot.val()));
+        var commandesBuf = Object?.values(snapshot.val())
+        await asyncForEach(commandesBuf, async (el, index) => {
+          if (el._id) commandesBuf[index].imgURL = (await getRecipe(el._id)).imgURL
+        })
+        setCommandes(commandesBuf);
       }
     });
 };
@@ -139,8 +153,20 @@ const getCommandes = async (setCommandes) => {
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/commandes`)
     .orderByChild('dateTime')
-    .on('value', (snapshot) => {
-      setCommandes(snapshot.exists() ? Object?.values(snapshot.val()) : []);
+    .on('value', async (snapshot) => {
+
+      if (snapshot.exists()) {
+        var commandesBuf = Object?.values(snapshot.val())
+
+        await asyncForEach(commandesBuf, async (el, index) => {
+          if (el.recipes[0]?._id) {
+            console.log((await getRecipe(el.recipes[0]._id)), 'idd')
+            const recipeBuf = await getRecipe(el.recipes[0]._id)
+             if(recipeBuf?.imgURL) commandesBuf[index].recipes[0].imgURL = recipeBuf.imgURL
+          }
+        })
+        setCommandes(commandesBuf);
+      }
     });
 };
 

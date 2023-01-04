@@ -25,8 +25,11 @@ const ForgotPasswordScreen = () => {
           {t('forgotPasswordScreen_enterYourEmail')}
         </Text>
         <TextInputColored
-          type="email"
-          keyboardType={'email-address'}
+          type="emailAddress"
+          keyboardType="email-address"
+          autoComplete="email"
+          autoCapitalize="none"
+          autoCorrect={false}
           label={t('email')}
           setChangeText={(text) => {
             setEmail(text);

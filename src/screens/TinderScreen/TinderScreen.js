@@ -81,6 +81,7 @@ const TinderScreen = ({ navigation }) => {
   const getAndSetFavorites = () => getFavoris((fav) => dispatch(setFavorites(fav)));
 
   useEffect(() => {
+    
     loadData(activeFilters);
   }, [activeFilters]);
 

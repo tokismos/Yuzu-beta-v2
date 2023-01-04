@@ -93,7 +93,7 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
       <TouchableOpacity
         style={{ padding: 10, marginRight: '-15%' }}
         onPress={() => {
-          if (nbrPersonne == 2) return;
+          if (nbrPersonne < 2) return;
 
           setNbrPersonne((p) => p - 1);
         }}
@@ -112,7 +112,7 @@ const NbrPersonneComponent = ({ nbrPersonne, setNbrPersonne }) => {
       <TouchableOpacity
         style={{ padding: 10, marginLeft: '-15%' }}
         onPress={() => {
-          if (nbrPersonne == 8) return;
+          
           setNbrPersonne((p) => p + 1);
         }}
       >

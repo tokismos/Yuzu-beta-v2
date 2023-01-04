@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { View, StatusBar } from "react-native";
+import React, { useRef, useState, useEffect} from "react";
+import { View, StatusBar, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useSelector } from "react-redux";
 
 import SearchbarComponent from "../../components/SearchbarComponent/SearchbarComponent";
@@ -13,16 +13,48 @@ const SearchRecipesScreen = ({ navigation }) => {
   const [clicked, setClicked] = useState(false);
   const [item, setItem] = useState(null);
   const recipeModalRef = useRef();
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const recipes = useSelector((store) => store.recipeStore.recipes);
   const matches = useSelector((store) => store.matchStore.matches);
 
   const handleModalClicked = (item) => {
-    setItem(item);
-    recipeModalRef.current.open();
+    if(!isKeyboardVisible)
+    {
+      setItem(item);
+      recipeModalRef.current.open();
+    }
+    else 
+    {
+      Keyboard.dismiss()
+    }
+   
+    
   };
 
+  
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); 
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); 
+      }
+    );
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
+
     <View style={styles.root}>
       <StatusBar backgroundColor="transparent" />
       <SearchbarComponent
@@ -30,15 +62,17 @@ const SearchRecipesScreen = ({ navigation }) => {
         setSearchPhrase={setSearchPhrase}
         setClicked={setClicked}
       />
-      <List
-        searchPhrase={searchPhrase}
-        data={recipes}
-        setClicked={setClicked}
-        clicked={clicked}
-        navigation={navigation}
-        openModal={handleModalClicked}
-        matches={matches}
-      />
+      <TouchableWithoutFeedback onPress={alert} accessible={false} style={{ height: "100%", backgroundColor: "red" }}>
+        <List
+          searchPhrase={searchPhrase}
+          data={recipes}
+          setClicked={setClicked}
+          clicked={clicked}
+          navigation={navigation}
+          openModal={handleModalClicked}
+          matches={matches}
+        />
+      </TouchableWithoutFeedback>
       <RecipeModal
         item={item}
         navigation={navigation}
@@ -46,6 +80,7 @@ const SearchRecipesScreen = ({ navigation }) => {
         ref={recipeModalRef}
       />
     </View>
+
   );
 };
 

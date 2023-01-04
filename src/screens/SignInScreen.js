@@ -29,7 +29,10 @@ const SignInScreen = () => {
   const handleSignIn = async () => {
     const toCheck = validateEmail(email);
 
-    if (toCheck) await signIn(email, password);
+    if (toCheck) {
+      await signIn(email, password)
+      navigation.navigate('TinderScreen')
+      ;}
     else Alert.alert(t('email_badFormat'));
   };
 
@@ -56,10 +59,14 @@ const SignInScreen = () => {
               : t('signinScreen_connectTo')}
           </Text>
           <TextInputColored
-            type="email"
+            type="emailAddress"
             keyboardType="email-address"
+            autoComplete="email"
+            autoCapitalize="none"
+            autoCorrect={false}
             label={t('email')}
             setChangeText={setEmail}
+            secured={false}
           />
           <TextInputColored
             label={t('password')}
@@ -74,7 +81,7 @@ const SignInScreen = () => {
           />
 
           <Pressable
-            style={{ marginTop: 20 }}
+            style={{ marginTop: 20, alignSelf: "center" }}
             onPress={() => navigation.navigate('ForgotPasswordScreen')}
           >
             <Text
@@ -87,6 +94,9 @@ const SignInScreen = () => {
             </Text>
           </Pressable>
         </View>
+
+       
+        
         <View style={{ width: '100%', flex: 1 }}>
           <View
             style={{
@@ -139,24 +149,65 @@ const SignInScreen = () => {
               </View>
             </View>
           </TouchableOpacity>
-          <Pressable
-            style={{ marginTop: 50 }}
-            onPress={() => navigation.navigate('SignUpScreen')}
-          >
-            {prevRoute === 'IngredientsCartScreen' && (
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: COLORS.primary,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}
-              >
-                {t('signinScreen_noAccount')}
-              </Text>
-            )}
-          </Pressable>
+
         </View>
+
+{/* <View
+            style={{
+              flexDirection: 'row',
+              height: 50,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <View
+              style={{
+                flexGrow: 1,
+                height: 0.4,
+                backgroundColor: 'gray',
+                alignItems: 'flex-end',
+              }}
+            />
+
+            <Text
+              style={{
+                textAlign: 'center',
+                marginHorizontal: 20,
+                fontSize: 20,
+                fontWeight: 'bold',
+              }}
+            >
+              {t('signinScree_or')}
+            </Text>
+            <View style={{ flexGrow: 1, height: 0.4, backgroundColor: 'gray' }} />
+          </View> */}
+       
+        <View style={{
+        
+           marginTop: 150
+           }}>
+            <Text
+              style={{
+                
+                fontSize: 16,
+                
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}
+            >
+              {t('signinScreen_noAccount')}
+            </Text>
+
+            <Pressable
+               onPress={() => navigation.navigate('SignUpScreen')}
+            
+              style={{ alignSelf: 'center', marginTop: 10, backgroundColor:"green", padding:10}}
+            >
+              <Text style={{color:"white", fontWeight:"bold"}}>{t('signup')}</Text>
+              </Pressable>
+              
+          </View>
       </View>
     </>
   );

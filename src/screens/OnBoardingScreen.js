@@ -4,7 +4,7 @@
 import React, { createRef, useState } from "react";
 import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import LottieView from "lottie-react-native";
-import YoutubePlayer from "react-native-youtube-iframe";
+// import YoutubePlayer from "react-native-youtube-iframe";
 import PaginationDot from "react-native-animated-pagination-dot";
 import { useTranslation } from "react-i18next";
 
@@ -227,61 +227,20 @@ const OnBoardingScreen = ({ navigation }) => {
           </View>
           <View style={{ height: "20%", width: "90%" }}>
             <CustomButton
-              title={t("next")}
+              title={t("onboardingScreen_start")}
               style={{
                 width: "70%",
               }}
               textStyle={{ fontSize: 20 }}
-              onPress={() => {
-                ref.current.setPage(index + 1);
-                setIndex(index + 1);
-              }}
-            />
-          </View>
-        </View>
-        <View
-          key="5"
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              height: "60%",
-              width: "80%",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 30,
-                fontWeight: "bold",
-                textAlign: "center",
-                marginBottom: 50,
-              }}
-            >
-              {t("onboardingScreen_justAWord")}
-            </Text>
-            <YoutubePlayer
-              height={"100%"}
-              width={width * 0.95}
-              videoId={"K-UNzBNSznU"}
-            />
-          </View>
-          <CustomButton
-            title={t("onboardingScreen_start")}
-            style={{
-              width: "70%",
-            }}
-            textStyle={{ fontSize: 20 }}
-            onPress={async () => {
-              await AsyncStorage.setItem("isFirstTime", "false");
+              onPress={async () => {
 
-              navigation.navigate("TinderScreen");
-            }}
-          />
+                await AsyncStorage.setItem("hasSeenOnBoarding", "true");
+                navigation.navigate("TinderScreen");
+              }}
+            />
+          </View>
         </View>
+        
       </PagerView>
       <View
         style={{
@@ -293,7 +252,7 @@ const OnBoardingScreen = ({ navigation }) => {
         <PaginationDot
           activeDotColor={COLORS.primary}
           curPage={index}
-          maxPage={5}
+          maxPage={4}
         />
       </View>
     </View>

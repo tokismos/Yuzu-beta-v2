@@ -175,7 +175,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = D8UW897YGF;
+						DevelopmentTeam = NVW3QDQA2M;
 						LastSwiftMigration = 1250;
 					};
 				};
@@ -251,10 +251,6 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXUpdates/EXUpdates.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleSignIn/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe3DS2.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/StripeCore/StripeCore.bundle",
-				"${PODS_ROOT}/YoutubePlayer-in-WKWebView/WKYTPlayerView/WKYTPlayerView.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -262,10 +258,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXUpdates.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe3DS2.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/StripeCore.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WKYTPlayerView.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -337,8 +329,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Yuzu/Yuzu.entitlements;
-				CURRENT_PROJECT_VERSION = 14;
-				DEVELOPMENT_TEAM = D8UW897YGF;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = NVW3QDQA2M;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -347,7 +339,7 @@
 				INFOPLIST_FILE = Yuzu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -370,12 +362,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Yuzu/Yuzu.entitlements;
-				CURRENT_PROJECT_VERSION = 14;
-				DEVELOPMENT_TEAM = D8UW897YGF;
+				CURRENT_PROJECT_VERSION = 4;
+				DEVELOPMENT_TEAM = NVW3QDQA2M;
 				INFOPLIST_FILE = Yuzu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

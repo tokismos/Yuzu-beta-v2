@@ -5,9 +5,10 @@ PODS:
   - AppAuth/Core (1.5.0)
   - AppAuth/ExternalUserAgent (1.5.0):
     - AppAuth/Core
+  - BEMCheckBox (1.4.1)
   - boost-for-react-native (1.63.0)
-  - BVLinearGradient (2.5.6):
-    - React
+  - BVLinearGradient (2.6.2):
+    - React-Core
   - DoubleConversion (1.1.6)
   - EXApplication (4.0.2):
     - ExpoModulesCore
@@ -19,14 +20,14 @@ PODS:
     - ExpoModulesCore
   - EXFont (10.0.5):
     - ExpoModulesCore
-  - EXJSONUtils (0.2.0)
+  - EXJSONUtils (0.2.1)
   - EXKeepAwake (10.0.2):
     - ExpoModulesCore
   - EXLinearGradient (10.0.3):
     - ExpoModulesCore
-  - EXManifests (0.2.3):
+  - EXManifests (0.2.4):
     - EXJSONUtils
-  - Expo (43.0.5):
+  - Expo (43.0.0):
     - ExpoModulesCore
   - ExpoModulesCore (0.4.10):
     - React-Core
@@ -192,9 +193,6 @@ PODS:
     - RCT-Folly (= 2020.01.13.00)
     - RCTRequired (= 0.64.3)
     - React-Core (= 0.64.3)
-  - RCTYouTube (2.0.2):
-    - React
-    - YoutubePlayer-in-WKWebView (~> 0.3.1)
   - React (0.64.3):
     - React-Core (= 0.64.3)
     - React-Core/DevSupport (= 0.64.3)
@@ -377,14 +375,12 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
-  - react-native-simple-toast (1.1.3):
+  - react-native-simple-toast (1.1.4):
     - React-Core
     - Toast (~> 4.0.0)
   - react-native-slider (4.1.12):
     - React-Core
   - react-native-splash-screen (3.3.0):
-    - React-Core
-  - react-native-webview (11.13.0):
     - React-Core
   - React-perflogger (0.64.3)
   - React-RCTActionSheet (0.64.3):
@@ -450,17 +446,18 @@ PODS:
     - React-cxxreact (= 0.64.3)
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
-  - RNAppleAuthentication (2.1.5):
+  - RNAppleAuthentication (2.2.2):
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
-  - RNCCheckbox (0.5.9):
+  - RNCCheckbox (0.5.14):
+    - BEMCheckBox (~> 1.4)
     - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
   - RNCMaskedView (0.2.5):
     - React-Core
-  - RNFastImage (8.5.11):
+  - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
@@ -481,10 +478,10 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNGoogleSignin (7.0.4):
+  - RNGoogleSignin (7.0.1):
     - GoogleSignIn (~> 6.0.0)
     - React-Core
-  - RNLocalize (2.2.1):
+  - RNLocalize (2.2.4):
     - React-Core
   - RNReanimated (2.2.4):
     - DoubleConversion
@@ -526,18 +523,8 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Stripe (21.8.1):
-    - Stripe/Stripe3DS2 (= 21.8.1)
-    - StripeCore (= 21.8.1)
-  - stripe-react-native (0.2.2):
-    - React
-    - Stripe (~> 21.8.1)
-  - Stripe/Stripe3DS2 (21.8.1):
-    - StripeCore (= 21.8.1)
-  - StripeCore (21.8.1)
   - Toast (4.0.0)
   - Yoga (1.14.0)
-  - YoutubePlayer-in-WKWebView (0.3.8)
 
 DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -564,7 +551,6 @@ DEPENDENCIES:
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
-  - RCTYouTube (from `../node_modules/react-native-youtube`)
   - React (from `../node_modules/react-native/`)
   - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
   - React-Core (from `../node_modules/react-native/`)
@@ -580,7 +566,6 @@ DEPENDENCIES:
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
-  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -609,12 +594,12 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
     - AppAuth
+    - BEMCheckBox
     - boost-for-react-native
     - Firebase
     - FirebaseAnalytics
@@ -637,10 +622,7 @@ SPEC REPOS:
     - PromisesObjC
     - SDWebImage
     - SDWebImageWebPCoder
-    - Stripe
-    - StripeCore
     - Toast
-    - YoutubePlayer-in-WKWebView
 
 EXTERNAL SOURCES:
   BVLinearGradient:
@@ -691,8 +673,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
     :path: "../node_modules/react-native/Libraries/TypeSafety"
-  RCTYouTube:
-    :path: "../node_modules/react-native-youtube"
   React:
     :path: "../node_modules/react-native/"
   React-callinvoker:
@@ -719,8 +699,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/slider"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
-  react-native-webview:
-    :path: "../node_modules/react-native-webview"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -777,33 +755,32 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  stripe-react-native:
-    :path: "../node_modules/@stripe/stripe-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
+  BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
+  BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
-  EXApplication: 54fe5bd6268d697771645e8f1aef8b806a65247a
-  EXConstants: 6d585d93723b18d7a8c283591a335609e3bc153e
-  EXErrorRecovery: b0d7582714a2cc896e94a2308a356f94dbf14ef7
-  EXFileSystem: 99aac7962c11c680681819dd9cbca24e20e5b1e7
-  EXFont: 2597c10ac85a69d348d44d7873eccf5a7576ef5e
-  EXJSONUtils: f515cf71710855d7ba5bfc6752af3b9a6f6aad01
-  EXKeepAwake: bf48d7f740a5cd2befed6cf9a49911d385c6c47d
-  EXLinearGradient: 4d727eacb53d19ef25b02dd810e0199b453489ce
-  EXManifests: d854c4d16fde48a19a2c2b6785b303177597bd08
-  Expo: d9588796cd19999da4d440d87bf7eb7ae4dbd608
-  ExpoModulesCore: c9438f6add0fb7b04b7c64eb97a833d2752a7834
-  EXSplashScreen: 57f329dbf25c5c12800feed79068a056453dc772
-  EXStructuredHeaders: 873e7f329c2f6279c1b1e0229df59c9861560b53
-  EXUpdates: 061b67c33f0e7f8fd335bbb48697c4a4fc8a5157
-  EXUpdatesInterface: e1c01b4f5ec76bd1d6cc714938f9edf5ef6379b9
+  EXApplication: 72d2781a562fc336305387b221cbd439b4da9a35
+  EXConstants: 66361ff23b5ea7eae3684ffad0f15955c23b5134
+  EXErrorRecovery: 9d4f59e2f01ca204a069ad976218cc5f6573353a
+  EXFileSystem: 624eef3e3a853f19cc0c26eaffab1519001d8c35
+  EXFont: 621d92d8ac6702d02a5237602815c0e1b6d684e6
+  EXJSONUtils: 827b0d129ac1ec5c7dabe61688efd305f27998c3
+  EXKeepAwake: f1ed9c7609cfe32a5519acd0f7d536cb59b8a656
+  EXLinearGradient: b00b2b1aad2de9b87b8f63c948a1fa16d24efe7b
+  EXManifests: fec7979914efcd86ce824158170c123c197dca49
+  Expo: 1f0deb1c07409d04a2babd0d2958e845d7da09dc
+  ExpoModulesCore: 55cabcb96b945000d56c16e5c02805f5d46ec8bc
+  EXSplashScreen: 62f71e20d00cd42cf8cbdc808b848520ddebba01
+  EXStructuredHeaders: 7d4a100b8321c6db341e91e730949558d4a48818
+  EXUpdates: c6dcdb9a33cfb7d81cbe288e1ac7484fcda663d9
+  EXUpdatesInterface: 2413d24feea140d6b30f6c73ec7f7e0281d3594a
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: cc519d81512f2ea8e1c66e749e97c507fe89dd3d
+  FBReactNativeSpec: 224d73537540bca1c12f9506e8e02e02b2386cd6
   Firebase: 7703fc4022824b6d6db1bf7bea58d13b8e17ec46
   FirebaseAnalytics: a1a24e72b7ba7f47045a4633f1abb545c07bd29c
   FirebaseAuth: ae5d4402e1516497357d909162b091b3ca2a2e9c
@@ -828,7 +805,6 @@ SPEC CHECKSUMS:
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c
   RCTTypeSafety: 8dab4933124ed39bb0c1d88d74d61b1eb950f28f
-  RCTYouTube: a8bb45705622a6fc9decf64be04128d3658ed411
   React: ef700aeb19afabff83a9cc5799ac955a9c6b5e0f
   React-callinvoker: 5547633d44f3e114b17c03c660ccb5faefd9ed2d
   React-Core: 3858d60185d71567962468bf176d582e36e4e25b
@@ -837,12 +813,11 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-pager-view: b90963d848e777def6714ab7fd40d02fa797e930
-  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
-  react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
-  react-native-slider: 6e9b86e76cce4b9e35b3403193a6432ed07e0c81
+  react-native-pager-view: a9ba7d4218dcff32c0cdb41237c62fb487f013dd
+  react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
+  react-native-simple-toast: 4f6a5b31f7a03bace3388fe9477b4db3de221bdd
+  react-native-slider: b0b4c575507df69bc8ceb307eaad0a8f89455a8e
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
-  react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8
   React-RCTAnimation: fb9b3fa1a4a9f5e6ab01b3368693ce69860ba76a
@@ -855,31 +830,27 @@ SPEC CHECKSUMS:
   React-RCTVibration: c7f845861e79eae13dc1e8217a3cf47a3945b504
   React-runtimeexecutor: 493d9abb8b23c3f84e19ae221eeba92cadcb70dc
   ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
-  RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
-  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
-  RNCCheckbox: 6369808337432cdbd5025d62ceced2480b4c51df
-  RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
-  RNCMaskedView: b7a3b119b1d738734a9d761e4220c6850bb248a3
-  RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
+  RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
+  RNCAsyncStorage: cb9a623793918c6699586281f0b51cbc38f046f9
+  RNCCheckbox: 7a4a0769e7ffbb60b4a6e29bd23866d252e8b0b2
+  RNCClipboard: 5e299c6df8e0c98f3d7416b86ae563d3a9f768a3
+  RNCMaskedView: 2b1c6aa9606aa7802a8b2f60e8913b709c4f54e5
+  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBAnalytics: 6ea16cce15e2081b26b0727e6520f2f365cf8f9c
   RNFBApp: 39904cebc3958e2d377dccf870b5c5d76cb089a9
   RNFBAuth: 32b9de70bcd7593159b73a81066cd7f9aa919952
   RNFBDatabase: 0cbc755fb4a5637f67eed1937ccaf01e672dc720
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
-  RNLocalize: cbcb55d0e19c78086ea4eea20e03fe8000bbbced
+  RNGoogleSignin: 2a6f56a378c89e7b23f2aa7ca21ab598f832b91b
+  RNLocalize: ea02d6ee626a9239c9efe0b2b3f8a4660dff6df6
   RNReanimated: 024eff8202342abf4b24e11575a16afc441dabfe
   RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Stripe: 57c6997c64042a3f5aedae9b76e331942f8b75d2
-  stripe-react-native: ae53a97cc9ab084cc6228f2250da56b0e53da276
-  StripeCore: a6e50d58119a0c7601773b56f274db2d394dcdac
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
-  YoutubePlayer-in-WKWebView: 4fca3b4f6f09940077bfbae7bddb771f2b43aacd
 
-PODFILE CHECKSUM: d9e280ce60817b6e2f2cdee38213b3ab7a357eb8
+PODFILE CHECKSUM: 2a694a4e69d6a3791cf89992ae2541f6e1d41afc
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

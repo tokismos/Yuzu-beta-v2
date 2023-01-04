@@ -10,24 +10,13 @@ import {
   View,
 } from "react-native";
 import { COLORS } from "../consts/colors";
-import AsyncStorage from "@react-native-community/async-storage";
 
 import CustomButton from "../components/CustomButton";
 
 import { useTranslation } from "react-i18next";
 
 const IntroScreen = ({ navigation }) => {
-  const [isFirstTime, setIsFirstTime] = useState(true);
   const { t } = useTranslation();
-
-  useEffect(() => {
-    (async () => {
-      const isFirstTimeStorage = await AsyncStorage.getItem("isFirstTime");
-      if (isFirstTimeStorage === "false") {
-        setIsFirstTime(false);
-      }
-    })();
-  }, []);
 
   return (
     <View style={{ width: "100%", height: "100%" }}>
@@ -71,7 +60,7 @@ const IntroScreen = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate(
-                isFirstTime ? "OnBoardingScreen" : "TinderScreen"
+                 "TinderScreen"
               );
             }}
           >

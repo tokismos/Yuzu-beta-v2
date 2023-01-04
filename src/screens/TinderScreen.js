@@ -19,13 +19,15 @@ import {
 import FastImage from 'react-native-fast-image';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useDispatch, useSelector } from 'react-redux';
+//  import {REACT_APP_FIREBASE_API_KEY} from "react-native-dotenv"
+import AsyncStorage from "@react-native-community/async-storage";
 
 import { getAllRecipes, incrementLeft, incrementRight } from '../axios';
 import { getFavoris } from '../helpers/db';
 
 import { setFavorites } from '../redux/slicer/favoritesSlicer';
 import { addMatch, resetMatches } from '../redux/slicer/MatchSlicer';
-import { storeRecipes } from '../redux/slicer/recipeSlicer';
+import { storeRecipes, } from '../redux/slicer/recipeSlicer';
 
 import FilterIcon from '../assets/filter.svg';
 import ProfileIcon from '../assets/profile.svg';
@@ -124,6 +126,14 @@ const TinderScreen = ({ navigation }) => {
 
   const bottomSheetRef = useRef();
   const [count, setCount] = useState();
+
+  useEffect(() => { // affiche ou non l'onboarding
+    (async () => {
+       !(await AsyncStorage.getItem("hasSeenOnBoarding")) 
+       && 
+       navigation.navigate("OnBoardingScreen")
+    })();
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({

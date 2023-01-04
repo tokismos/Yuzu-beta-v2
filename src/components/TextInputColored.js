@@ -1,7 +1,7 @@
 // C'est un textInput modifié qu'on trouve dans toute notre App, elle plusieurs attributs, dont leftIcon
 // qui nous permet de choisir l'icon qui s'affiche a gauche, secured si c'est true il cache les données saisies
 
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { TextInput } from 'react-native-paper';
 import { COLORS } from '../consts/colors';
 
@@ -17,6 +17,10 @@ const TextInputColored = (
     style,
     type,
     keyboardType,
+    autoComplete,
+    autoCapitalize,
+    autoCorrect,
+    clearButtonMode,
   },
   ref
 ) => {
@@ -26,6 +30,11 @@ const TextInputColored = (
   const handleChange = (val) => {
     setChangeText(type === 'email' ? val.trim() : val);
   };
+
+  useEffect(()=>{
+    if(secured) setVisible(true)
+    else setVisible(false)
+  },[])
 
   return (
     <TextInput
@@ -39,9 +48,13 @@ const TextInputColored = (
       value={value}
       placeholder={placeholder}
       onChangeText={handleChange}
-      secureTextEntry={secured ? visible : null}
+      secureTextEntry={secured ? visible : false}
       textContentType={type || 'none'}
       keyboardType={keyboardType || 'default'}
+      autoComplete={autoComplete || 'off'}
+      autoCapitalize={autoCapitalize || 'sentences'}
+      autoCorrect={autoCorrect == undefined ? true : autoCorrect}
+      clearButtonMode={clearButtonMode || 'never'}
       style={{
         marginVertical: 5,
         ...style,

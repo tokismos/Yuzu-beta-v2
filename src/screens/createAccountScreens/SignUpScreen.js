@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import CodeVerificationComponent from '../../components/CodeVerificationComponent';
@@ -32,10 +33,14 @@ const EmailComponent = ({ setEmail, refe, email }) => {
           {t('signupScreen_enterEmail')}
         </Text>
         <TextInputColored
-          type="email"
+          type="emailAddress"
           keyboardType="email-address"
+          autoComplete="email"
+          autoCapitalize="none"
+          autoCorrect={false}
           label={t('email')}
           setChangeText={setEmail}
+          secured={false}
         />
         <Text style={styles.description}>{t('signupScreen_confirmEmail')}</Text>
       </View>
@@ -96,6 +101,7 @@ const PhoneComponent = ({ refe, setPhoneNumber, setCountryCode, fullNumber }) =>
           const status = await sendPhoneVerification(fullNumber);
           if (status === 200) {
             refe.current.setPage(3);
+            navigation.navigate
             setIsLoading(false);
           } else {
             setIsLoading(false);
@@ -112,6 +118,7 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const navigation = useNavigation()
 
   return (
     <KeyboardAvoidingView
@@ -140,6 +147,7 @@ const VerificationPhoneComponent = ({ fullNumber, email, password, refe }) => {
                 await setAdditionalInfo({
                   phoneNumber: fullNumber,
                 });
+                navigation.navigate('TinderScreen')
 
                 setIsLoading(false);
               } else {

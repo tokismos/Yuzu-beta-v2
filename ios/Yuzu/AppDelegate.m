@@ -39,6 +39,7 @@ static void InitializeFlipper(UIApplication *application) {
 // @generated end @react-native-firebase/app-didFinishLaunchingWithOptions
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"main" initialProperties:nil];
+  
   id rootViewBackgroundColor = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"RCTRootViewBackgroundColor"];
   if (rootViewBackgroundColor != nil) {
     rootView.backgroundColor = [RCTConvert UIColor:rootViewBackgroundColor];
