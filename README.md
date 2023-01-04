@@ -24,7 +24,7 @@ Développé avec `ReactJS`, le back-office permet d'ajouter, modifier et supprim
 
 Les variables d'environnenemts du back-office sont sur le dashboard `Heroku -> yuzu-dashboard -> yuzu-dashboard -> Settings -> Config Vars`, veuillez en informer Tim si vous modifiez ces variables.
 
-***ATTENTION. Heroku uploadera chaque push de la branche main de ce repo en version prod.***
+***ATTENTION. Heroku déploiera automatiquement chaque push de la branche main de ce repo en version prod.***
 
 ### Bases de données et backend
 
@@ -36,7 +36,7 @@ Côté backend, `Heroku` fait l'intermédiaire entre le front et MongoDB, et est
 
 Les variables d'environnenemts du serveur sont sur le dashboard `Heroku -> yuzu-api -> yuzu-backend -> Settings -> Config Vars`, veuillez en informer Tim si vous modifiez ces variables.
 
-***ATTENTION. Heroku uploadera chaque push de la branche main de ce repo en version prod.***
+***ATTENTION. Heroku déploiera automatiquement chaque push de la branche main de ce repo en version prod.***
 
 ### Sécurité des données 
 
