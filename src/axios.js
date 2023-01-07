@@ -1,8 +1,9 @@
-import axios from 'axios';
-import { HEROKU_API_URL } from './consts/env';
+import axios from "axios";
+import { HEROKU_API_URL } from "./consts/env";
 
 const api = axios.create({
-  baseURL: HEROKU_API_URL,
+  baseURL: "http://172.20.11.153:3000",
+  // baseURL: HEROKU_API_URL,
 });
 
 const getAllRecipes = async (item) => {
@@ -13,7 +14,7 @@ const getAllRecipes = async (item) => {
       [array[i], array[j]] = [array[j], array[i]];
     }
   };
-  let url = '?';
+  let url = "?";
 
   item.map((i) => {
     url = url + `${Object.keys(i)}=${Object.values(i)}&`;
@@ -23,13 +24,15 @@ const getAllRecipes = async (item) => {
     const res = await api.get(`/recipes${url}`);
     const data = res.data.filter(
       (item) =>
-        item.imgURL !== null && item.thumbURL !== null && item.nbrPersonne !== null
+        item.imgURL !== null &&
+        item.thumbURL !== null &&
+        item.nbrPersonne !== null
     );
 
     shuffleArray(data);
     return data;
   } catch (e) {
-    console.log('ERROR', e);
+    console.log("ERROR", e);
   }
 };
 
@@ -48,21 +51,21 @@ const getRecipe = async (_id) => {
     const res = await api.get(`/recipes/${_id}`);
     return res.data[0];
   } catch (e) {
-    console.log('ERROR', e);
+    console.log("ERROR", e);
   }
 };
 const incrementRight = async (_id) => {
   try {
-    await api.patch('/recipes/incrementRight', { _id });
+    await api.patch("/recipes/incrementRight", { _id });
   } catch (e) {
-    console.log('ERROR, Not Incremented', e);
+    console.log("ERROR, Not Incremented", e);
   }
 };
 const incrementLeft = async (_id) => {
   try {
-    await api.patch('/recipes/incrementLeft', { _id });
+    await api.patch("/recipes/incrementLeft", { _id });
   } catch (e) {
-    console.log('ERROR, Not Incremented', e);
+    console.log("ERROR, Not Incremented", e);
   }
 };
 export {

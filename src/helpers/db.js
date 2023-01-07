@@ -1,19 +1,21 @@
-import firebase from '@react-native-firebase/app';
-import auth from '@react-native-firebase/auth';
-import '@react-native-firebase/database';
-import { FIREBASE_API_KEY } from '../consts/env';
-import { getRecipe } from "../axios"
+import firebase from "@react-native-firebase/app";
+import auth from "@react-native-firebase/auth";
+import "@react-native-firebase/database";
+import { FIREBASE_API_KEY } from "../consts/env";
+import { getRecipe } from "../axios";
 
-const firebaseDbURL = 'https://yuzu-5720e-default-rtdb.firebaseio.com';
+const firebaseDbURL = "https://yuzu-5720e.europe-west1.firebasedatabase.app/";
+// const firebaseDbURL = "";
+
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
-  authDomain: 'yuzu-5720e.firebaseapp.com',
-  databaseURL: 'https://yuzu-5720e-default-rtdb.firebaseio.com',
-  projectId: 'yuzu-5720e',
-  storageBucket: 'yuzu-5720e.appspot.com',
-  messagingSenderId: '246034960415',
-  appId: '1:246034960415:web:c4aa304ce2a2bc379bc52a',
-  measurementId: 'G-N0G4M012VE',
+  authDomain: "yuzu-5720e.firebaseapp.com",
+  databaseURL: "https://yuzu-5720e-default-rtdb.firebaseio.com",
+  projectId: "yuzu-5720e",
+  storageBucket: "yuzu-5720e.appspot.com",
+  messagingSenderId: "246034960415",
+  appId: "1:246034960415:web:c4aa304ce2a2bc379bc52a",
+  measurementId: "G-N0G4M012VE",
 };
 
 if (!firebase.apps.length) {
@@ -26,7 +28,7 @@ const asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
   }
-}
+};
 
 const setAdditionalInfo = async (info) => {
   try {
@@ -35,9 +37,9 @@ const setAdditionalInfo = async (info) => {
       .database(firebaseDbURL)
       .ref(`/users/${auth().currentUser?.uid}`)
       .update(info)
-      .then((i) => console.log('Additional info added', i));
+      .then((i) => console.log("Additional info added", i));
   } catch (e) {
-    console.log('Additional informations not added !');
+    console.log("Additional informations not added !");
   }
 };
 
@@ -47,7 +49,7 @@ const getAdditionalInfo = async () => {
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}`)
-    .once('value');
+    .once("value");
 
   if (snapshot.exists()) {
     return snapshot.val();
@@ -70,7 +72,7 @@ const addToFav = async (id, imgURL, name) => {
         dateTime: firebase.database.ServerValue.TIMESTAMP,
       });
   } catch (e) {
-    console.log('Erreur,recette non ajoutée aux favoris !');
+    console.log("Erreur,recette non ajoutée aux favoris !");
   }
 };
 
@@ -82,7 +84,7 @@ const deleteFav = async (id) => {
       .ref(`/users/${auth().currentUser?.uid}/favoris/${id}`)
       .remove();
   } catch (e) {
-    console.log('Recette ajoutées aux favoris .');
+    console.log("Recette ajoutées aux favoris .");
   }
 };
 
@@ -92,7 +94,7 @@ const getFavoris = async (tmp) => {
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/favoris`)
-    .once('value', (snapshot) => {
+    .once("value", (snapshot) => {
       if (snapshot.exists()) {
         snapshot.forEach((item) => favoritesArray.push(item.key));
         tmp(favoritesArray);
@@ -106,13 +108,14 @@ const getAllFavoris = async (setCommandes) => {
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/favoris`)
-    .orderByChild('dateTime')
-    .on('value', async (snapshot) => {
+    .orderByChild("dateTime")
+    .on("value", async (snapshot) => {
       if (snapshot.exists()) {
-        var commandesBuf = Object?.values(snapshot.val())
+        var commandesBuf = Object?.values(snapshot.val());
         await asyncForEach(commandesBuf, async (el, index) => {
-          if (el._id) commandesBuf[index].imgURL = (await getRecipe(el._id)).imgURL
-        })
+          if (el._id)
+            commandesBuf[index].imgURL = (await getRecipe(el._id)).imgURL;
+        });
         setCommandes(commandesBuf);
       }
     });
@@ -141,7 +144,7 @@ const setCommandes = (cart) => {
         recipes: { ...obj },
         dateTime: firebase.database.ServerValue.TIMESTAMP,
       })
-      .then((i) => console.log('cartadded', i));
+      .then((i) => console.log("cartadded", i));
   } catch (e) {
     console.error(e);
   }
@@ -152,19 +155,19 @@ const getCommandes = async (setCommandes) => {
     .app()
     .database(firebaseDbURL)
     .ref(`/users/${auth().currentUser?.uid}/commandes`)
-    .orderByChild('dateTime')
-    .on('value', async (snapshot) => {
-
+    .orderByChild("dateTime")
+    .on("value", async (snapshot) => {
       if (snapshot.exists()) {
-        var commandesBuf = Object?.values(snapshot.val())
+        var commandesBuf = Object?.values(snapshot.val());
 
         await asyncForEach(commandesBuf, async (el, index) => {
           if (el.recipes[0]?._id) {
-            console.log((await getRecipe(el.recipes[0]._id)), 'idd')
-            const recipeBuf = await getRecipe(el.recipes[0]._id)
-             if(recipeBuf?.imgURL) commandesBuf[index].recipes[0].imgURL = recipeBuf.imgURL
+            console.log(await getRecipe(el.recipes[0]._id), "idd");
+            const recipeBuf = await getRecipe(el.recipes[0]._id);
+            if (recipeBuf?.imgURL)
+              commandesBuf[index].recipes[0].imgURL = recipeBuf.imgURL;
           }
-        })
+        });
         setCommandes(commandesBuf);
       }
     });
