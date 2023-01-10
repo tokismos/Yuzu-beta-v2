@@ -1,6 +1,6 @@
 # Yuzu
 
-Yuzu est une application de recettes de plats, c'est le Marmitton 2.0. Son but est de pouvoir proposer des recettes personnalisées, pour permettre à tous de les cuisiner à la maison.
+Yuzu est une application de recettes de plats. Son but est de pouvoir proposer des recettes personnalisées, pour permettre à tous de les cuisiner à la maison.
 
 Stack technique :
 * JS
