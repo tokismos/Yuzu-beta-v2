@@ -9,19 +9,21 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform
 } from 'react-native';
 import GoogleIcon from '../assets/GoogleIcon.svg';
+import AppleIcon from '../assets/AppleIcon.svg';
 import CustomButton from '../components/CustomButton';
 import TextInputColored from '../components/TextInputColored';
 import { COLORS } from '../consts/colors';
 import useAuth from '../hooks/useAuth';
 
-const SignInScreen = () => {
+const SignInScreen = ({ route }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const { t } = useTranslation();
-  const { signIn, signInWithGoogle, validateEmail } = useAuth();
+  const { signIn, signInWithGoogle, signInWithApple, validateEmail } = useAuth();
 
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 2].name;
@@ -30,11 +32,33 @@ const SignInScreen = () => {
     const toCheck = validateEmail(email);
 
     if (toCheck) {
-      await signIn(email, password)
-      navigation.navigate('TinderScreen')
-      ;}
+      await signIn(email, password, route.params?.reauthMode)
+
+      navigation.goBack()
+
+        ;
+    }
     else Alert.alert(t('email_badFormat'));
   };
+
+  const handleGoogle = async () => {
+    const { error } = await signInWithGoogle(route.params?.reauthMode)
+    if (!error) {
+      navigation.goBack()
+    }
+    else alert(error)
+  }
+
+  const handleApple = async () => {
+    const { error } = await signInWithApple(route.params?.reauthMode)
+    if (!error) {
+      navigation.goBack()
+    }
+
+    else alert(error)
+  }
+
+
 
   return (
     <>
@@ -95,8 +119,8 @@ const SignInScreen = () => {
           </Pressable>
         </View>
 
-       
-        
+
+
         <View style={{ width: '100%', flex: 1 }}>
           <View
             style={{
@@ -136,23 +160,49 @@ const SignInScreen = () => {
               alignSelf: 'center',
               elevation: 1,
             }}
-            onPress={async () => {
-              await signInWithGoogle();
+            onPress={() => {
+              handleGoogle();
             }}
           >
             <View style={styles.buttonContainer}>
               <GoogleIcon width={'40'} height={'40'} />
-              <View style={{ width: '85%' }}>
+              <View style={{ width: '85%', }}>
                 <Text style={{ ...styles.socialText, color: '#757575' }}>
                   {t('signinScreen_googleConnect')}
                 </Text>
               </View>
             </View>
           </TouchableOpacity>
+          {Platform.OS == "ios" &&
+            <TouchableOpacity
+              activeOpacity={0.95}
+              style={{
+                ...styles.button,
+                backgroundColor: '#1E1E1E',
+                alignSelf: 'center',
+                elevation: 1,
+              }}
+              onPress={() => {
+                handleApple();
+              }}
+            >
+              <View style={styles.buttonContainer}>
+                <AppleIcon width={'40'} height={'40'} />
+                <View style={{ width: '85%' }}>
+                  <Text style={{ ...styles.socialText, color: 'white' }}>
+                    {t('signinScreen_appleConnect')}
+                  </Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          }
+
+
 
         </View>
 
-{/* <View
+
+        {/* <View
             style={{
               flexDirection: 'row',
               height: 50,
@@ -182,16 +232,17 @@ const SignInScreen = () => {
             </Text>
             <View style={{ flexGrow: 1, height: 0.4, backgroundColor: 'gray' }} />
           </View> */}
-       
-        <View style={{
-        
-           marginTop: 150
-           }}>
+
+        {!route.params?.reauthMode &&
+          <View style={{
+
+            marginTop: Platform.OS == "ios" ? 210 : 140
+          }}>
             <Text
               style={{
-                
+
                 fontSize: 16,
-                
+
                 fontWeight: 'bold',
                 textAlign: 'center',
               }}
@@ -200,14 +251,15 @@ const SignInScreen = () => {
             </Text>
 
             <Pressable
-               onPress={() => navigation.navigate('SignUpScreen')}
-            
-              style={{ alignSelf: 'center', marginTop: 10, backgroundColor:"green", padding:10}}
+              onPress={() => navigation.navigate('SignUpScreen')}
+
+              style={{ alignSelf: 'center', marginTop: 10, backgroundColor: "green", padding: 10 }}
             >
-              <Text style={{color:"white", fontWeight:"bold"}}>{t('signup')}</Text>
-              </Pressable>
-              
+              <Text style={{ color: "white", fontWeight: "bold" }}>{t('signup')}</Text>
+            </Pressable>
+
           </View>
+        }
       </View>
     </>
   );
@@ -233,8 +285,9 @@ const styles = StyleSheet.create({
   },
   socialText: {
     width: '100%',
-    textAlign: 'center',
+    // textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 16,
+    marginLeft: 30
   },
 });

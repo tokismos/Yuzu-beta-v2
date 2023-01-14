@@ -183,6 +183,23 @@ const setRating = async (rate, recipeId) => {
   }
 };
 
+const deleteUserData = async () => {
+ try {
+  await firebase
+  .app()
+  .database(firebaseDbURL)
+  .ref(`/users/${auth().currentUser?.uid}`)
+  .remove()}
+  catch (err) {
+console.log(err, 'error')
+  }
+  
+ }
+
+const getIdToken = async () => {
+ return await firebase.auth().currentUser.getIdToken()
+}
+
 // TODO : see if we login with FaceBook
 // const logInWithFb = async () => {
 //   try {
@@ -218,4 +235,6 @@ export {
   getFavoris,
   getAllFavoris,
   setRating,
+  getIdToken,
+  deleteUserData
 };

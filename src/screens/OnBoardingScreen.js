@@ -155,11 +155,10 @@ const OnBoardingScreen = ({ navigation }) => {
               }}
             >
               <TouchableOpacity
-                onPress={() => {
-                  setTimeout(() => {
-                    ref.current.setPage(index + 1);
-                    setIndex(index + 1);
-                  }, 300);
+                onPress={async () => {
+
+                  await AsyncStorage.setItem("hasSeenOnBoarding", "true");
+                  navigation.navigate("TinderScreen");
                 }}
                 style={{ justifyContent: "center", alignItems: "center" }}
               >
@@ -193,53 +192,8 @@ const OnBoardingScreen = ({ navigation }) => {
             </Text>
           </View>
         </View>
-        <View
-          key="4"
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              height: "20%",
-              width: "90%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: 26,
-                margin: 20,
-                textAlign: "center",
-              }}
-            >
-              {t("onboardingScreen_howTo")}
-            </Text>
-          </View>
-          <View style={{ height: "50%", width: "90%" }}>
-            <Row title={t("onboardingScreen_howTo1")} num="1" />
-            <Row title={t("onboardingScreen_howTo2")} num="2" />
-            <Row title={t("onboardingScreen_howTo3")} num="3" />
-            <Row title={t("onboardingScreen_howTo4")} num="4" />
-          </View>
-          <View style={{ height: "20%", width: "90%" }}>
-            <CustomButton
-              title={t("onboardingScreen_start")}
-              style={{
-                width: "70%",
-              }}
-              textStyle={{ fontSize: 20 }}
-              onPress={async () => {
-
-                await AsyncStorage.setItem("hasSeenOnBoarding", "true");
-                navigation.navigate("TinderScreen");
-              }}
-            />
-          </View>
-        </View>
+      
+    
         
       </PagerView>
       <View
@@ -252,7 +206,7 @@ const OnBoardingScreen = ({ navigation }) => {
         <PaginationDot
           activeDotColor={COLORS.primary}
           curPage={index}
-          maxPage={4}
+          maxPage={3}
         />
       </View>
     </View>

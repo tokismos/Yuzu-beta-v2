@@ -94,7 +94,7 @@ const Header = ({ bottomSheetRef, navigation }) => {
             if (auth().currentUser) {
               navigation.navigate('ProfileScreen');
             } else {
-              navigation.navigate('IntroScreen', { headerShown: false });
+              navigation.navigate('SignInScreen', { headerShown: false });
             }
           }}
           style={{

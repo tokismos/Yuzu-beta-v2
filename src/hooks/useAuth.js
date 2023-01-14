@@ -6,20 +6,23 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 import { api } from '../axios';
+import { deleteUserData } from '../helpers/db';
 
-const signIn = async (email, password) => {
+
+
+const signIn = async (email, password, reauthMode) => {
   try {
-    await auth().signInWithEmailAndPassword(email, password);
+    if(!reauthMode) await auth().signInWithEmailAndPassword(email, password);
+    else auth().currentUser.reauthenticateWithCredential(email, password)
   } catch (e) {
     console.error(e);
     alert(e);
   }
 };
 
-const signInWithGoogle = async () => {
+const signInWithGoogle = async (reauthMode) => {
   // Get the users ID token
   const userInfo = await GoogleSignin.signIn();
   const { idToken, accessToken } = await GoogleSignin.getTokens();
@@ -27,34 +30,45 @@ const signInWithGoogle = async () => {
   // Create a Google credential with the token
   const googleCredential = auth.GoogleAuthProvider.credential(idToken, accessToken);
   // reference.set(info).then((i) => console.log("Additional info added", i));
-  await auth().signInWithCredential(googleCredential);
-
-  //if its the first time email in google is null this is why we update it
-  if (!auth().currentUser.email) {
-    auth().currentUser.updateEmail(userInfo.user.email);
+  try {
+    if(!reauthMode) await auth().signInWithCredential(googleCredential);
+    else auth().currentUser.reauthenticateWithCredential(googleCredential)
+    if (!auth().currentUser.email) {
+      auth().currentUser.updateEmail(userInfo.user.email);
+    }
+    return {}
+  } catch (e) {
+    console.error(e);
+    return { error: e }
   }
+
+
 };
 
-const onAppleButtonPress = async () => {
-  // Start the sign-in request
+const signInWithApple = async (reauthMode) => {
   const appleAuthRequestResponse = await appleAuth.performRequest({
     requestedOperation: appleAuth.Operation.LOGIN,
     requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
   });
 
-  // Ensure Apple returned a user identityToken
   if (!appleAuthRequestResponse.identityToken) {
     throw new Error('Apple Sign-In failed - no identify token returned');
   }
 
-  // Create a Firebase credential from the response
   const { identityToken, nonce } = appleAuthRequestResponse;
   const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
 
-  // Sign the user in with the credential
-  return auth().signInWithCredential(appleCredential);
-};
-// Sign In with Facebook
+  try {
+    if(!reauthMode) await auth().signInWithCredential(appleCredential)
+    else auth().currentUser.reauthenticateWithCredential(appleCredential)
+    return {}
+  } catch (e) {
+    console.error(e);
+    return { error: e }
+  }
+
+
+}
 
 const signOut = async () => {
   if (auth().currentUser.providerData[0].providerId == 'google.com') {
@@ -128,6 +142,20 @@ const validateEmail = (email) => {
   return expression.test(String(email).toLowerCase());
 };
 
+const deleteAccount = async () => {
+  await deleteUserData()
+  try {
+    await auth().currentUser.delete()
+    return {}
+  } 
+  catch (error){  
+      return {error : error.code}
+  }
+  
+};
+
+
+
 export default () => {
   return {
     signIn,
@@ -137,7 +165,8 @@ export default () => {
     sendPhoneVerification,
     verifyCode,
     signUp,
-    onAppleButtonPress,
     resetPassword,
+    signInWithApple,
+    deleteAccount
   };
 };

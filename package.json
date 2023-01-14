@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
-    "@invertase/react-native-apple-authentication": "^2.1.5",
+    "@invertase/react-native-apple-authentication": "^2.2.2",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/checkbox": "^0.5.8",
     "@react-native-community/clipboard": "^1.5.1",

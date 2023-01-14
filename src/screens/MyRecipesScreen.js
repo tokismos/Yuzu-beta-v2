@@ -8,6 +8,7 @@ import { formatRelative } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import auth from '@react-native-firebase/auth'
 import {
   Dimensions,
   Pressable,
@@ -63,7 +64,7 @@ const Skeleton = ({ title }) => {
 
 const CommandeItem = ({ recipe }) => {
   const navigation = useNavigation();
-  
+
   return (
     <Pressable
       android_ripple={{ color: '#d3d3d3', foreground: true }}
@@ -124,18 +125,23 @@ const MyRecipesScreen = ({ route }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const initialize = async () => {
+  const initialize = async (user) => {
     if (route.name == 'Recettes favories') {
-    await getAllFavoris(setRecipes)
+  await getAllFavoris(setRecipes)
       setIsLoading(false);
     } else {
-      await getCommandes(setRecipes);
+      if(user)  await getCommandes(setRecipes);
+     else setRecipes([])   
       setIsLoading(false);
     }
   };
   useEffect(() => {
     dispatch(setCuisineNotification(null));
-    initialize();
+    const unsubscriber = auth().onAuthStateChanged((user) => {
+      initialize(user);
+    })
+    return () => unsubscriber()
+
   }, []);
 
   const CommandeComponent = ({ item, dateTime }) => {

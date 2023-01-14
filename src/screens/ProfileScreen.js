@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar } from "react-native-paper";
 import BottomSheet from "reanimated-bottom-sheet";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons, MaterialCommunityIcons} from "@expo/vector-icons";
 
 import TextInputColored from "../components/TextInputColored";
 import { COLORS } from "../consts/colors";
@@ -64,6 +64,13 @@ const ProfileScreen = () => {
       console.error(e);
     }
   };
+
+  const handleSignOut = async () => {
+   await signOut()
+   navigation.navigate('TinderScreen')
+  };
+
+
   return (
     <KeyboardAvoidingView behavior="position">
       <SafeAreaView
@@ -207,7 +214,6 @@ const ProfileScreen = () => {
                 {t("profileScreen_addNumber")}
               </Text>
 
-              <AntDesign name="exclamationcircle" size={16} color="red" />
               <MaterialIcons
                 name="keyboard-arrow-right"
                 size={20}
@@ -215,7 +221,7 @@ const ProfileScreen = () => {
               />
             </TouchableOpacity>
           )}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               height: 50,
               justifyContent: "space-between",
@@ -233,13 +239,12 @@ const ProfileScreen = () => {
             <Text style={{ fontSize: 18, flex: 1 }}>
               {t("profileScreen_addAddress")}
             </Text>
-            <AntDesign name="exclamationcircle" size={16} color="red" />
             <MaterialIcons
               name="keyboard-arrow-right"
               size={20}
               color="black"
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             onPress={() => sheetRef.current.snapTo(0)}
             style={{
@@ -293,7 +298,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            onPress={() => signOut()}
+            onPress={() => handleSignOut()}
             style={{
               height: 50,
               justifyContent: "space-between",
@@ -312,6 +317,27 @@ const ProfileScreen = () => {
               {t("disconnect")}
             </Text>
             <MaterialIcons name="keyboard-arrow-right" size={20} color="red" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AccountDeletion")}
+            style={{
+              height: 50,
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginVertical: 3,
+              flexDirection: "row",
+            }}
+          >
+            <MaterialCommunityIcons
+              name="account-remove"
+              size={20}
+              color="black"
+              style={{ marginRight: 20 }}
+            />
+            <Text style={{ fontSize: 18, flex: 1 }}>
+              {t("delete_account")}
+            </Text>
+            <MaterialIcons name="keyboard-arrow-right" size={20} color="black" />
           </TouchableOpacity>
         </View>
         <BottomSheet

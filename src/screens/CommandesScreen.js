@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { formatRelative } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
+import auth from '@react-native-firebase/auth'
 import {
   Dimensions,
   Platform,
@@ -66,7 +67,12 @@ const CommandesScreen = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(setListNotification(null));
-    getCommandes(setCommandes);
+    const unsubscriber = auth().onAuthStateChanged((user) => {
+      if(user) getCommandes(setCommandes);
+      else setCommandes([])
+  })
+  return () => unsubscriber()
+   
   }, []);
 
   return (

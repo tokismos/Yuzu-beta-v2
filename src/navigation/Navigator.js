@@ -24,6 +24,7 @@ import { COLORS } from '../consts/colors';
 import { setUser } from '../redux/slicer/userSlicer';
 // import AbonnementScreen from '../screens/AbonnementScreen';
 // import AbonnementSecondScreen from '../screens/AbonnementSecondScreen';
+import AccountDeletion from '../screens/AccountDeletion';
 import CommandesScreen from '../screens/CommandesScreen';
 import SignUpScreen from '../screens/createAccountScreens/SignUpScreen';
 import FeedBackScreen from '../screens/FeedBackScreen';
@@ -136,10 +137,14 @@ const BottomTabScreen = () => {
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: 'true',
+        
       }}
     >
       <Tab.Screen
+      
         options={{
+          tabBarIconStyle:{marginHorizontal:20},
+          tabBarLabelStyle:{marginHorizontal:20},
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(
               require('../assets/platJ.png')
@@ -175,6 +180,8 @@ const BottomTabScreen = () => {
       />
       <Tab.Screen
         options={{
+          tabBarIconStyle:{marginHorizontal:20},
+          tabBarLabelStyle:{marginHorizontal:20},
           headerShown: false,
           tabBarIcon: ({ focused }) => {
             const iconYellow = Image.resolveAssetSource(
@@ -210,12 +217,16 @@ const BottomTabScreen = () => {
         component={SearchRecipesScreen}
       />
       <Tab.Screen
+      style={{ backgroundColor:'red'}}
         options={{
+          tabBarIconStyle:{marginHorizontal:20},
+          tabBarLabelStyle:{marginHorizontal:20},
           tabBarBadge: listNotification,
           tabBarBadgeStyle: {
             backgroundColor: COLORS.red,
             top: 0,
             transform: [{ scale: 0.5 }],
+            
           },
           headerShown: true,
           headerStyle: {
@@ -263,6 +274,8 @@ const BottomTabScreen = () => {
 
       <Tab.Screen
         options={{
+          tabBarIconStyle:{marginHorizontal:20},
+          tabBarLabelStyle:{marginHorizontal:20},
           tabBarBadge: cuisineNotification,
           tabBarBadgeStyle: {
             backgroundColor: COLORS.red,
@@ -345,7 +358,7 @@ const horizontalAnimation = {
   },
 };
 
-const LoggedStackScreen = () => {
+const StackScreen = () => {
   const { t } = useTranslation();
   return (
     <NavigationContainer>
@@ -371,7 +384,6 @@ const LoggedStackScreen = () => {
           name="AbonnementSecondScreen"
           component={AbonnementSecondScreen}
         /> */}
-
         <Stack.Screen
           options={{
             headerShown: false,
@@ -381,22 +393,20 @@ const LoggedStackScreen = () => {
         />
         <Stack.Screen
           options={{
-            ...horizontalAnimation,
             headerShown: true,
+            headerTitle: t('accountDeletionScreen_title'),
             headerTitleAlign: 'center',
-            title: t('introScreen_login'),
+            headerTintColor: 'white',
+            headerBackTitleVisible: false,
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
-            headerTintColor: 'white',
-            headerBackTitleVisible: false,
             headerTitleStyle: {
               fontSize: 22,
-              color: 'white',
             },
           }}
-          name="SignInScreen"
-          component={SignInScreen}
+          name="AccountDeletion"
+          component={AccountDeletion}
         />
         <Stack.Screen
           options={{
@@ -482,7 +492,7 @@ const LoggedStackScreen = () => {
           component={CommandesScreen}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{ headerShown: false ,  headerLeft: null,}}
           name="PanierScreen"
           component={PanierScreen}
         />
@@ -515,197 +525,10 @@ const LoggedStackScreen = () => {
           options={{
             headerShown: false,
           }}
-          name="IngredientScreen"
-          component={IngredientScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
           name="SignUpScreen"
           component={SignUpScreen}
         />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="FilterScreen"
-          component={FilterScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'Modifier mon numéro',
-            headerTitleAlign: 'center',
-            headerTintColor: 'white',
-            headerBackTitleVisible: false,
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTitleStyle: {
-              fontSize: 22,
-            },
-          }}
-          name="PhoneScreen"
-          component={PhoneScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: t('profileScreen_title'),
-            headerTitleAlign: 'center',
-            headerTintColor: 'white',
-            headerBackTitleVisible: false,
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTitleStyle: {
-              fontSize: 22,
-            },
-          }}
-          name="ProfileScreen"
-          component={ProfileScreen}
-        />
-        <Stack.Screen
-          name="SearchRecipesScreen"
-          // name="SearchRecipesScreen"
-          options={{
-            headerShown: true,
-            headerTitle: t('searchRecipeScreen_title'),
-            headerTitleAlign: 'center',
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTitleStyle: {
-              fontSize: 22,
-            },
-          }}
-          component={SearchRecipesScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
-
-const LoginStackScreen = () => {
-  const { t } = useTranslation();
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false, tabBarStyle: { height: 120 } }}
-      >
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="TinderScreen"
-          component={BottomTabScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="IntroScreen"
-          component={IntroScreen}
-        />
-        {/* <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="AbonnementSecondScreen"
-          component={AbonnementSecondScreen}
-        /> */}
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="OnBoardingScreen"
-          component={OnBoardingScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="RateScreen"
-          component={RateScreen}
-        />
-        <Stack.Screen
-          options={{
-            ...horizontalAnimation,
-            headerShown: true,
-            headerTitleAlign: 'center',
-            title: 'Reinitialiser mot de passe',
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTintColor: 'white',
-            headerBackTitleVisible: false,
-            headerTitleStyle: {
-              fontSize: 18,
-              color: 'white',
-            },
-          }}
-          name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'Modifier mon numéro',
-            headerTitleAlign: 'center',
-            headerTintColor: 'white',
-            headerBackTitleVisible: false,
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTitleStyle: {
-              fontSize: 22,
-            },
-          }}
-          name="PhoneScreen"
-          component={PhoneScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="FilterScreen"
-          component={FilterScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitleAlign: 'center',
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerBackTitleVisible: false,
-            headerTitleStyle: {
-              fontSize: 22,
-            },
-          }}
-          name="InfoCommandeScreen"
-          component={InfoCommandeScreen}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            headerTitle: 'Mes recettes',
-            headerTitleAlign: 'center',
-            headerTintColor: 'white',
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTitleStyle: {
-              fontSize: 22,
-            },
-          }}
-          name="MyRecipesScreen"
-          component={MyRecipesTabScreen}
-        />
-        <Stack.Screen
+         <Stack.Screen
           options={{
             ...horizontalAnimation,
             headerShown: true,
@@ -726,14 +549,37 @@ const LoginStackScreen = () => {
           name="SignInScreen"
           component={SignInScreen}
         />
-
+        <Stack.Screen
+          options={{
+            headerShown: false,
+          }}
+          name="FilterScreen"
+          component={FilterScreen}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            headerTitle: 'Modifier mon numéro',
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
+            headerBackTitleVisible: false,
+            headerStyle: {
+              backgroundColor: COLORS.primary,
+            },
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+          }}
+          name="PhoneScreen"
+          component={PhoneScreen}
+        />
         <Stack.Screen
           options={{
             headerShown: true,
             headerTitle: t('profileScreen_title'),
             headerTitleAlign: 'center',
             headerTintColor: 'white',
-
+            headerBackTitleVisible: false,
             headerStyle: {
               backgroundColor: COLORS.primary,
             },
@@ -743,15 +589,6 @@ const LoginStackScreen = () => {
           }}
           name="ProfileScreen"
           component={ProfileScreen}
-        />
-
-        <Stack.Screen
-          options={{
-            ...horizontalAnimation,
-            headerShown: false,
-          }}
-          name="SignUpScreen"
-          component={SignUpScreen}
         />
         <Stack.Screen
           name="SearchRecipesScreen"
@@ -769,8 +606,7 @@ const LoginStackScreen = () => {
           }}
           component={SearchRecipesScreen}
         />
-
-        <Stack.Screen
+         <Stack.Screen
           options={{
             ...horizontalAnimation,
             headerShown: false,
@@ -778,8 +614,7 @@ const LoginStackScreen = () => {
           name="TinderScreen2"
           component={TinderScreen}
         />
-
-        <Stack.Screen
+         <Stack.Screen
           options={{
             ...horizontalAnimation,
             headerShown: false,
@@ -787,34 +622,9 @@ const LoginStackScreen = () => {
           name="IngredientScreen"
           component={IngredientScreen}
         />
-
-        <Stack.Screen
-          options={{
-            headerLeft: null,
-          }}
-          name="PanierScreen"
-          component={PanierScreen}
-        />
-        <Stack.Screen
-          options={{
-            ...horizontalAnimation,
-            title: 'Les Ingredients',
-            headerTitleAlign: 'center',
-            headerTitleStyle: { fontWeight: 'bold', fontSize: 22 },
-            headerBackTitleVisible: false,
-            headerShown: true,
-          }}
-          name="IngredientsCartScreen"
-          component={IngredientCartScreen}
-        />
-        {/* <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="AbonnementScreen"
-          component={AbonnementScreen}
-        /> */}
-        <Stack.Screen
+       
+      </Stack.Navigator>
+      <Stack.Screen
           options={{
             headerShown: false,
           }}
@@ -823,32 +633,15 @@ const LoginStackScreen = () => {
         />
         <Stack.Screen
           options={{
-            headerShown: true,
-            headerTitle: 'Liste de courses',
-            headerTitleAlign: 'center',
-            headerTintColor: 'white',
-
-            headerStyle: {
-              backgroundColor: COLORS.primary,
-            },
-            headerTitleStyle: {
-              fontSize: 22,
-            },
-          }}
-          name="CommandesScreen"
-          component={CommandesScreen}
-        />
-        <Stack.Screen
-          options={{
             ...horizontalAnimation,
           }}
           name="SummarizeScreen"
           component={SummarizeScreen}
         />
-      </Stack.Navigator>
     </NavigationContainer>
   );
 };
+
 
 const RootNavigation = () => {
   const dispatch = useDispatch();
@@ -886,7 +679,7 @@ const RootNavigation = () => {
 
   return (
     <>
-      {user ? <LoggedStackScreen /> : <LoginStackScreen />}
+      <StackScreen /> 
     </>
   )
 };
