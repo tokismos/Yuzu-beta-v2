@@ -1,5 +1,10 @@
-import React, { useRef, useState, useEffect} from "react";
-import { View, StatusBar, Keyboard, TouchableWithoutFeedback } from "react-native";
+import React, { useRef, useState, useEffect } from "react";
+import {
+  View,
+  StatusBar,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useSelector } from "react-redux";
 
 import SearchbarComponent from "../../components/SearchbarComponent/SearchbarComponent";
@@ -18,33 +23,28 @@ const SearchRecipesScreen = ({ navigation }) => {
   const recipes = useSelector((store) => store.recipeStore.recipes);
   const matches = useSelector((store) => store.matchStore.matches);
 
+  console.log("r", recipes);
+
   const handleModalClicked = (item) => {
-    if(!isKeyboardVisible)
-    {
+    if (!isKeyboardVisible) {
       setItem(item);
       recipeModalRef.current.open();
+    } else {
+      Keyboard.dismiss();
     }
-    else 
-    {
-      Keyboard.dismiss()
-    }
-   
-    
   };
-
-  
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
+      "keyboardDidShow",
       () => {
-        setKeyboardVisible(true); 
+        setKeyboardVisible(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       () => {
-        setKeyboardVisible(false); 
+        setKeyboardVisible(false);
       }
     );
     return () => {
@@ -54,7 +54,6 @@ const SearchRecipesScreen = ({ navigation }) => {
   }, []);
 
   return (
-
     <View style={styles.root}>
       <StatusBar backgroundColor="transparent" />
       <SearchbarComponent
@@ -62,7 +61,11 @@ const SearchRecipesScreen = ({ navigation }) => {
         setSearchPhrase={setSearchPhrase}
         setClicked={setClicked}
       />
-      <TouchableWithoutFeedback onPress={alert} accessible={false} style={{ height: "100%", backgroundColor: "red" }}>
+      <TouchableWithoutFeedback
+        onPress={alert}
+        accessible={false}
+        style={{ height: "100%", backgroundColor: "red" }}
+      >
         <List
           searchPhrase={searchPhrase}
           data={recipes}
@@ -80,7 +83,6 @@ const SearchRecipesScreen = ({ navigation }) => {
         ref={recipeModalRef}
       />
     </View>
-
   );
 };
 

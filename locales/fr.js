@@ -80,8 +80,6 @@ export default {
   feedbackScreen_messageDescription:
     "Un bug, une suggestion d’amélioration, une remarque, un petit message d’encouragement...",
   feedbackScreen_mimimumLength: "{{min}} caractères manquants",
-  filterScreen_starter: "Entrée",
-  filterScreen_main: "Plat",
   filterScreen_sauce: "Sauce",
   filterScreen_dessert: "Dessert",
   filterScreen_breakfast: "Petit déjeuner",
@@ -90,6 +88,12 @@ export default {
   filterScreen_meat: "Viande",
   filterScreen_vegan: "Vegan",
   filterScreen_vegetarian: "Végétarien",
+  filterScreen_aperitif: "Apéritif",
+  filterScreen_snacks: "Snacks",
+  filterScreen_drinks: "Boisson & Cocktail",
+  filterScreen_starters: "Entrée",
+  filterScreen_main: "Plats principaux",
+
   filterScreen_fish: "Poisson",
   filterScreen_oven: "Four",
   filterScreen_microWave: "Four à micro-ondes",

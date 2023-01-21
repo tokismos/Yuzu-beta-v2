@@ -17,7 +17,9 @@
       "enabled": true,
       "checkAutomatically": "ON_LOAD"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "buildNumber": "9",
       "supportsTablet": true,
@@ -35,11 +37,15 @@
     },
     "plugins": [
       "@react-native-firebase/app"
-   
     ],
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "",
+    "extra": {
+      "eas": {
+        "projectId": "055764d6-9fd2-4263-9e9f-8923568f0801"
+      }
+    }
   }
 }

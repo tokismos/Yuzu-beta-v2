@@ -49,7 +49,7 @@ const getRecipeByName = async (name) => {
 const getRecipe = async (_id) => {
   try {
     const res = await api.get(`/recipes/${_id}`);
-    return res.data[0];
+    return res.data;
   } catch (e) {
     console.log("ERROR", e);
   }

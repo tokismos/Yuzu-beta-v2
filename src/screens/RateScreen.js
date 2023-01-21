@@ -1,17 +1,17 @@
 // L'ecran qui gere le rating de chaque recette
 
-import { Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 
-import { AntDesign } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { AirbnbRating } from 'react-native-ratings';
+import { AntDesign } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { AirbnbRating } from "react-native-ratings";
 
-import { getRecipeByName } from '../axios';
-import CustomButton from '../components/CustomButton';
-import { setRating } from '../helpers/db';
+import { getRecipeByName } from "../axios";
+import CustomButton from "../components/CustomButton";
+import { setRating } from "../helpers/db";
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get("screen");
 
 const RateScreen = ({ route, navigation }) => {
   const [rate, setRate] = useState(0);
@@ -30,28 +30,28 @@ const RateScreen = ({ route, navigation }) => {
     const rated = await setRating(rate, id);
 
     if (rated) navigation.goBack();
-    else alert('Has not rated, error');
+    else alert("Has not rated, error");
   };
 
   return (
     <View
       style={{
         height,
-        backgroundColor: '#e6e5e5',
+        backgroundColor: "#e6e5e5",
         width,
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',
+        alignItems: "center",
+        justifyContent: "center",
+        alignSelf: "center",
       }}
     >
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 40,
           left: 20,
           zIndex: 99,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           borderRadius: 30,
         }}
       >
@@ -59,39 +59,39 @@ const RateScreen = ({ route, navigation }) => {
       </TouchableOpacity>
       <View
         style={{
-          backgroundColor: '#e6e5e5',
-          width: '90%',
-          alignItems: 'center',
-          alignSelf: 'center',
-          justifyContent: 'space-between',
-          height: '65%',
+          backgroundColor: "#e6e5e5",
+          width: "90%",
+          alignItems: "center",
+          alignSelf: "center",
+          justifyContent: "space-between",
+          height: "65%",
           paddingVertical: 20,
         }}
       >
         <View
           style={{
-            backgroundColor: 'white',
-            width: '90%',
-            height: '20%',
-            justifyContent: 'center',
-            flexDirection: 'row',
-            alignItems: 'center',
+            backgroundColor: "white",
+            width: "90%",
+            height: "20%",
+            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "center",
             paddingVertical: 10,
           }}
         >
           <Image
             source={{ uri: routeParams.imgURL }}
             style={{
-              width: '25%',
-              height: '100%',
+              width: "25%",
+              height: "100%",
               borderRadius: 10,
             }}
           />
           <Text
             style={{
-              textAlign: 'center',
-              width: '70%',
-              fontWeight: 'bold',
+              textAlign: "center",
+              width: "70%",
+              fontWeight: "bold",
               fontSize: 20,
             }}
           >
@@ -101,33 +101,86 @@ const RateScreen = ({ route, navigation }) => {
 
         <View
           style={{
-            backgroundColor: 'white',
-            width: '90%',
-            height: '75%',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingVertical: 40,
+            width: "90%",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          <Text style={{ fontSize: 26, fontWeight: 'bold' }}>
-            {t('rateScreen_title')}
-          </Text>
-
-          <AirbnbRating
-            count="5"
-            reviews={['rate1', 'rate2', 'rate3', 'rate4', 'rate5', 'rate6'].map(
-              (review) => t(`rateScreen_${review}`)
+          <View
+            style={{
+              flexDirection: "row",
+              marginBottom: 5,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {rating && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <FontAwesome name="star" size={40} color={COLORS.primary} />
+                <Text
+                  style={{
+                    fontSize: 40,
+                    marginLeft: 10,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {rating}
+                </Text>
+              </View>
             )}
-            size={40}
-            defaultRating={0}
-            starContainerStyle={{ marginTop: 10 }}
-            onFinishRating={handleRate}
+          </View>
+
+          <Text style={{ textAlign: "center", fontSize: 20 }}>
+            {t("slide_to_rate")}
+          </Text>
+          <Rating
+            style={{ marginTop: 10 }}
+            type="star"
+            ratingCount={5}
+            imageSize={40}
+            minValue={0.5}
+            fractions={1}
+            jumpValue={0.5}
+            startingValue={rating}
+            onFinishRating={(v) => {
+              setRate(v);
+            }}
           />
-          <CustomButton title="Valider" onPress={handleSubmit} />
-          <Text style={{ textAlign: 'center' }}>{t('rateScreen_disclaimer')}</Text>
+          <View style={{ width: "100%", marginBottom: 10 }}>
+            <Text
+              style={{
+                fontWeight: "bold",
+                textAlign: "center",
+                fontSize: 20,
+                marginVertical: 20,
+              }}
+            >
+              {t("what_you_think")}
+            </Text>
+
+            <TextInput
+              style={{ height: 100, marginBottom: 10 }}
+              placeholder={t("add_com")}
+              theme={{ colors: { primary: COLORS.primary } }}
+              multiline
+              mode="outlined"
+              numberOfLines={5}
+              value={commentaire}
+              onChangeText={setCommentaire}
+              contentStyle={{ padding: 0 }}
+              returnKeyType="done"
+            />
+          </View>
         </View>
       </View>
     </View>
+    // </KeyboardAvoidingView>
   );
 };
 

@@ -24,13 +24,13 @@ export const recipeSlice = createSlice({
     resetFilters: (state) => ({ ...state, activeFilters: [] }),
     changeTime: (state, { payload }) => {
       const filteredState = state.activeFilters.filter(
-        (i) => !Object.keys(i).includes("tempsCuisson")
+        (i) => !Object.keys(i).includes("tempsTotal")
       );
 
       if (payload === 0) return { ...state, activeFilters: [...filteredState] };
       return {
         ...state,
-        activeFilters: [...filteredState, { tempsCuisson: payload }],
+        activeFilters: [...filteredState, { tempsTotal: payload }],
       };
     },
     storeRecipes: (state, { payload }) => ({ ...state, recipes: payload }),

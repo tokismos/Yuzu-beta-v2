@@ -11,7 +11,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withSpring
+  withSpring,
 } from "react-native-reanimated";
 import Like from "../assets/LIKE.png";
 import Nope from "../assets/nope.png";
@@ -41,7 +41,7 @@ const AnimatedIntroCard = ({ swiped, right }) => {
       },
     ],
   }));
-  
+
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, context) => {
       context.startX = translateX.value;
