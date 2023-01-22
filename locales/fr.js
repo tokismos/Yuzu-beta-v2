@@ -85,6 +85,12 @@ export default {
   filterScreen_breakfast: "Petit déjeuner",
   filterScreen_sweet: "Sucré",
   filterScreen_salty: "Salé",
+  filterScreen_eatSeason: "Je souhaite manger de saison",
+  slide_to_rate:
+    " Faites glisser pour donner une note sur cinq à cette recette",
+  tinderScreen_nothingToShow: "Rien à montrer !",
+  what_you_think: "Qu'en pensez vous ?",
+  add_com: "Ajouter un commentaire",
   filterScreen_meat: "Viande",
   filterScreen_vegan: "Vegan",
   filterScreen_vegetarian: "Végétarien",

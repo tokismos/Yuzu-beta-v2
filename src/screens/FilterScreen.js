@@ -19,6 +19,7 @@ import {
   changeTime,
   removeFilter,
 } from "../redux/slicer/recipeSlicer";
+import { getCurrentMonth } from "../helpers/getCurrentMonth";
 
 const { height } = Dimensions.get("screen");
 
@@ -49,7 +50,7 @@ const useCategories = () => {
   const equipment = ["oven", "microWave", "blender", "beater"];
 
   const difficulty = ["easy", "medium", "hard"];
-
+  const saison = ["eatSeason"];
   const getTranslation = (arr) => arr.map((type) => t(`filterScreen_${type}`));
   const getTranslationM = (arr) =>
     arr.map((type) => {
@@ -61,13 +62,13 @@ const useCategories = () => {
     regime: getTranslation(regime),
     equipment: getTranslation(equipment),
     difficulty: getTranslation(difficulty),
+    saison: getTranslation(saison),
   };
 };
 
 const TypePlatsComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
   const { mealTypes } = useCategories();
-  // console.log("meal", mealTypes);
   const { t } = useTranslation();
 
   return (
@@ -104,7 +105,7 @@ const TypePlatsComponent = ({ activeFilters }) => {
         }}
       >
         {mealTypes.map((item, i) => {
-          // console.log("hja item", item);
+          // hja item", item);
           return (
             <Pressable
               key={i}
@@ -132,6 +133,9 @@ const TypePlatsComponent = ({ activeFilters }) => {
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
+                height: 60,
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Text
@@ -237,7 +241,9 @@ const RegimeComponent = ({ activeFilters }) => {
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
+                height: 60,
                 justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Text
@@ -318,8 +324,9 @@ const MaterielsComponent = ({ activeFilters }) => {
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
+                height: 60,
                 justifyContent: "center",
-                height: 150,
+                alignItems: "center",
               }}
             >
               <Text
@@ -404,7 +411,9 @@ const DifficultyComponent = ({ activeFilters }) => {
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
+                height: 60,
                 justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Text
@@ -437,9 +446,7 @@ const TempsComponent = ({ setTempsHeader }) => {
   const [temps, setTemps] = useState(stateTemps || 30);
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  useEffect(() => {
-    console.log("temps", temps);
-  }, [temps]);
+
   return (
     <View
       style={{
@@ -507,6 +514,7 @@ const TempsComponent = ({ setTempsHeader }) => {
 
 const SaisonComponent = ({ activeFilters }) => {
   const dispatch = useDispatch();
+  const { saison } = useCategories();
   return (
     <View
       style={{
@@ -536,24 +544,25 @@ const SaisonComponent = ({ activeFilters }) => {
           justifyContent: "center",
         }}
       >
-        {["Je souhaite manger de saison"].map((item, i) => {
+        {saison.map((item, i) => {
+          const currentMonth = getCurrentMonth();
           return (
             <Pressable
               key={i}
               onPress={() => {
-                const currentMonth = new Date().toLocaleDateString("fr-FR", {
-                  month: "long",
-                });
-                console.log("ha current month", currentMonth);
-                if (activeFilters.some((i) => Object.values(i)?.[0] === item)) {
-                  dispatch(removeFilter(item));
+                if (
+                  activeFilters.some(
+                    (i) => Object.values(i)?.[0] === currentMonth
+                  )
+                ) {
+                  dispatch(removeFilter(currentMonth));
                 } else {
-                  dispatch(addFilter({ type: "saison", name: item }));
+                  dispatch(addFilter({ type: "saison", name: currentMonth }));
                 }
               }}
               style={{
                 backgroundColor: activeFilters.some(
-                  (i) => Object.values(i)?.[0] === item
+                  (i) => Object.values(i)?.[0] === currentMonth
                 )
                   ? COLORS.primary
                   : "white",
@@ -564,13 +573,15 @@ const SaisonComponent = ({ activeFilters }) => {
                 marginHorizontal: 5,
                 marginVertical: 2,
                 padding: 5,
+                height: 60,
                 justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Text
                 style={{
                   color: activeFilters.some(
-                    (i) => Object.values(i)?.[0] === item
+                    (i) => Object.values(i)?.[0] === currentMonth
                   )
                     ? "white"
                     : COLORS.primary,

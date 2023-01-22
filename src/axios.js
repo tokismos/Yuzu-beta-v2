@@ -2,8 +2,8 @@ import axios from "axios";
 import { HEROKU_API_URL } from "./consts/env";
 
 const api = axios.create({
+  // baseURL: "https://yuzu-backend.herokuapp.com/",
   baseURL: "http://172.20.11.153:3000",
-  // baseURL: HEROKU_API_URL,
 });
 
 const getAllRecipes = async (item) => {
@@ -49,6 +49,7 @@ const getRecipeByName = async (name) => {
 const getRecipe = async (_id) => {
   try {
     const res = await api.get(`/recipes/${_id}`);
+
     return res.data;
   } catch (e) {
     console.log("ERROR", e);
@@ -68,11 +69,20 @@ const incrementLeft = async (_id) => {
     console.log("ERROR, Not Incremented", e);
   }
 };
+const setRating = async ({ _id, rating }) => {
+  try {
+    await api.post("/recipes/ratings", { _id, rating });
+    console.log("done");
+  } catch (e) {
+    throw new Error("Error updating");
+  }
+};
 export {
   getAllRecipes,
   getRecipe,
   api,
   incrementRight,
   incrementLeft,
+  setRating,
   getRecipeByName,
 };

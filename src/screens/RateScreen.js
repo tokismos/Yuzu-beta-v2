@@ -1,186 +1,227 @@
 // L'ecran qui gere le rating de chaque recette
 
-import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  KeyboardAvoidingView,
+} from "react-native";
 
-import { AntDesign } from "@expo/vector-icons";
-import React, { useState } from "react";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AirbnbRating } from "react-native-ratings";
+import { Rating } from "react-native-ratings";
+import { TextInput } from "react-native-paper";
 
-import { getRecipeByName } from "../axios";
+import { setRating } from "../axios";
 import CustomButton from "../components/CustomButton";
-import { setRating } from "../helpers/db";
+import { getRatingFirebase, setRatingFirebase } from "../helpers/db";
+import { COLORS } from "../consts/colors";
+import Toast from "react-native-simple-toast";
+import Modal from "react-native-modalbox";
+import Animated, {
+  AnimatedLayout,
+  SlideInRight,
+} from "react-native-reanimated";
 
 const { width, height } = Dimensions.get("screen");
 
 const RateScreen = ({ route, navigation }) => {
-  const [rate, setRate] = useState(0);
-  const routeParams = route?.params;
+  const [rating, setRate] = useState(null);
+  const [commentaire, setCommentaire] = useState(null);
+  const { _id, imgURL, name } = route.params;
+  const disabled = !rating;
   const { t } = useTranslation();
-
-  const handleRate = (rate) => {
-    setRate(rate);
-  };
-
   const handleSubmit = async () => {
-    const recipe = await getRecipeByName(routeParams.name);
-    const { _id: id } = recipe;
-
-    if (rate === 0) return;
-    const rated = await setRating(rate, id);
-
-    if (rated) navigation.goBack();
-    else alert("Has not rated, error");
+    try {
+      setRating({ _id, rating });
+      setRatingFirebase({
+        rating,
+        commentaire,
+        recipeId: route?.params._id,
+      });
+      navigation.goBack();
+      Toast.show(t("Merci pour votre contribution !"), Toast.LONG);
+    } catch (e) {
+      Toast.show(t("Erreur !"), Toast.LONG);
+      console.log("Can't set rating", e);
+    }
   };
 
+  useEffect(async () => {
+    const res = await getRatingFirebase(_id);
+    setRate(res);
+  }, []);
   return (
-    <View
-      style={{
-        height,
-        backgroundColor: "#e6e5e5",
-        width,
-        alignItems: "center",
-        justifyContent: "center",
-        alignSelf: "center",
-      }}
+    <KeyboardAvoidingView
+      behavior="position"
+      style={{ flex: 1, backgroundColor: "white" }}
     >
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={{
-          position: "absolute",
-          top: 40,
-          left: 20,
-          zIndex: 99,
-          backgroundColor: "white",
-          borderRadius: 30,
-        }}
-      >
-        <AntDesign name="arrowleft" size={40} color="black" />
-      </TouchableOpacity>
+      {/* <Modal
+        swipeThreshold={1}
+        // style={styles.modalContainer}
+        position="bottom"
+        backdrop={true}
+        // ref={ref}
+        isOpen={true}
+        backdropOpacity={0.5}
+      ></Modal> */}
       <View
         style={{
-          backgroundColor: "#e6e5e5",
-          width: "90%",
+          height,
+          backgroundColor: "white",
+          width: "100%",
           alignItems: "center",
+          marginTop: 40,
           alignSelf: "center",
-          justifyContent: "space-between",
-          height: "65%",
-          paddingVertical: 20,
         }}
       >
         <View
           style={{
-            backgroundColor: "white",
-            width: "90%",
-            height: "20%",
-            justifyContent: "center",
             flexDirection: "row",
-            alignItems: "center",
-            paddingVertical: 10,
-          }}
-        >
-          <Image
-            source={{ uri: routeParams.imgURL }}
-            style={{
-              width: "25%",
-              height: "100%",
-              borderRadius: 10,
-            }}
-          />
-          <Text
-            style={{
-              textAlign: "center",
-              width: "70%",
-              fontWeight: "bold",
-              fontSize: 20,
-            }}
-          >
-            {routeParams.name}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            width: "90%",
-            alignItems: "center",
             justifyContent: "space-between",
+            width: "90%",
           }}
         >
-          <View
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
             style={{
-              flexDirection: "row",
-              marginBottom: 5,
+              backgroundColor: "white",
+              borderRadius: 30,
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            {rating && (
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <FontAwesome name="star" size={40} color={COLORS.primary} />
-                <Text
-                  style={{
-                    fontSize: 40,
-                    marginLeft: 10,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {rating}
-                </Text>
-              </View>
-            )}
-          </View>
-
-          <Text style={{ textAlign: "center", fontSize: 20 }}>
-            {t("slide_to_rate")}
-          </Text>
-          <Rating
-            style={{ marginTop: 10 }}
-            type="star"
-            ratingCount={5}
-            imageSize={40}
-            minValue={0.5}
-            fractions={1}
-            jumpValue={0.5}
-            startingValue={rating}
-            onFinishRating={(v) => {
-              setRate(v);
-            }}
+            <AntDesign name="close" size={40} color="black" />
+          </TouchableOpacity>
+          <CustomButton
+            title="Terminer"
+            onPress={handleSubmit}
+            textStyle={{ fontSize: 22 }}
+            disabled={disabled}
           />
-          <View style={{ width: "100%", marginBottom: 10 }}>
+        </View>
+
+        <View
+          style={{
+            width: "90%",
+            alignItems: "center",
+            alignSelf: "center",
+            justifyContent: "space-between",
+            paddingVertical: 20,
+          }}
+        >
+          <View
+            style={{
+              width: "90%",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingVertical: 30,
+            }}
+          >
+            <Image
+              source={{ uri: imgURL }}
+              style={{
+                width: "70%",
+                aspectRatio: 1,
+              }}
+            />
             <Text
               style={{
-                fontWeight: "bold",
                 textAlign: "center",
-                fontSize: 20,
-                marginVertical: 20,
+                width: "100%",
+                fontWeight: "bold",
+                fontSize: 22,
+                marginTop: 20,
               }}
             >
-              {t("what_you_think")}
+              {name}
             </Text>
+          </View>
 
-            <TextInput
-              style={{ height: 100, marginBottom: 10 }}
-              placeholder={t("add_com")}
-              theme={{ colors: { primary: COLORS.primary } }}
-              multiline
-              mode="outlined"
-              numberOfLines={5}
-              value={commentaire}
-              onChangeText={setCommentaire}
-              contentStyle={{ padding: 0 }}
-              returnKeyType="done"
+          <View
+            style={{
+              width: "90%",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                marginBottom: 20,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {rating && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <FontAwesome name="star" size={40} color={COLORS.primary} />
+                  <Text
+                    style={{
+                      fontSize: 40,
+                      marginLeft: 10,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {rating}
+                  </Text>
+                </View>
+              )}
+            </View>
+
+            <Text style={{ textAlign: "center", fontSize: 20 }}>
+              {t("slide_to_rate")}
+            </Text>
+            <Rating
+              style={{ marginTop: 10 }}
+              type="star"
+              ratingCount={5}
+              imageSize={40}
+              minValue={0.5}
+              fractions={1}
+              jumpValue={0.5}
+              startingValue={rating}
+              onFinishRating={(v) => {
+                setRate(v);
+              }}
             />
+
+            <View style={{ width: "100%", marginBottom: 20, flexGrow: 1 }}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontSize: 20,
+                  marginVertical: 20,
+                }}
+              >
+                {t("what_you_think")}
+              </Text>
+
+              <TextInput
+                placeholder={t("add_com")}
+                theme={{ colors: { primary: COLORS.primary } }}
+                multiline
+                mode="outlined"
+                value={commentaire}
+                onChangeText={setCommentaire}
+                contentStyle={{ padding: 0 }}
+                returnKeyType="done"
+              />
+            </View>
           </View>
         </View>
       </View>
-    </View>
-    // </KeyboardAvoidingView>
+    </KeyboardAvoidingView>
   );
 };
 

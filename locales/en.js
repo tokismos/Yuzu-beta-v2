@@ -25,7 +25,7 @@ export default {
   onboardingScreen_howTo4:
     "Cuisinez et profitez de petits plats fait maison, plein de goût et d'énergie! 😍",
   onboardingScreen_justAWord: "Un petit mot par ❤️", //plus utilisé car page vidéo supprimé
-  onboardingScreen_start: "Start !", 
+  onboardingScreen_start: "Start !",
   signupScreen_enterEmail: "Saisissez votre adresse e-mail",
   signupScreen_confirmEmail:
     "Vous devez confirmer cette adresse e-mail par la suite",
@@ -82,6 +82,12 @@ export default {
   feedbackScreen_mimimumLength: "{{min}} caractères manquants",
   filterScreen_starters: "Entrée",
   filterScreen_sauce: "Sauce",
+  slide_to_rate:
+    " Faites glisser pour donner une note sur cinq à cette recette",
+  tinderScreen_nothingToShow: "Rien à montrer !",
+  what_you_think: "Qu'en pensez vous ?",
+  add_com: "Ajouter un commentaire",
+  filterScreen_eatSeason: "Je souhaite manger de saison",
   filterScreen_dessert: "Dessert",
   filterScreen_breakfast: "Petit déjeuner",
   filterScreen_aperitif: "Apéritif",

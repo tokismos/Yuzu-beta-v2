@@ -93,9 +93,21 @@ const Header = ({ bottomSheetRef, navigation, totalFilters }) => {
             {totalFilters != 0 ? (
               <Badge
                 size={20}
-                style={{ position: "absolute", left: -10, top: -5, zIndex: 99 }}
+                style={{
+                  position: "absolute",
+                  left: -10,
+                  top: -5,
+                  zIndex: 99,
+                }}
               >
-                {totalFilters}
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {totalFilters}
+                </Text>
               </Badge>
             ) : null}
 

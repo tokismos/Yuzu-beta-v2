@@ -523,8 +523,9 @@ const IngredientScreen = ({ route, navigation }) => {
                   onPress={() =>
                     navigation.navigate("RateScreen", {
                       imgURL: recipe?.imgURL,
-                      id: recipe?._id,
+                      _id: recipe?._id,
                       name: recipe?.name,
+                      rating,
                     })
                   }
                 />

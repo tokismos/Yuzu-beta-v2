@@ -23,8 +23,6 @@ const SearchRecipesScreen = ({ navigation }) => {
   const recipes = useSelector((store) => store.recipeStore.recipes);
   const matches = useSelector((store) => store.matchStore.matches);
 
-  console.log("r", recipes);
-
   const handleModalClicked = (item) => {
     if (!isKeyboardVisible) {
       setItem(item);

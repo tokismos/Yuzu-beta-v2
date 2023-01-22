@@ -173,16 +173,28 @@ const getCommandes = async (setCommandes) => {
     });
 };
 
-const setRating = async (rate, recipeId) => {
+const setRatingFirebase = async ({ rating, recipeId, commentaire }) => {
   try {
     await firebase
       .app()
       .database(firebaseDbURL)
-      .ref(`/rate/${recipeId}/${auth().currentUser?.uid}`)
-      .set({ rate, createdAt: firebase.database.ServerValue.TIMESTAMP });
+      .ref(`/users/${auth().currentUser?.uid}/recipes/${recipeId}`)
+      .set({ rating, commentaire });
     return true;
   } catch (e) {
-    console.error(e);
+    console.log("Error", e);
+  }
+};
+const getRatingFirebase = async (recipeId) => {
+  try {
+    const rating = await firebase
+      .app()
+      .database(firebaseDbURL)
+      .ref(`/users/${auth().currentUser?.uid}/recipes/${recipeId}/rating`)
+      .once("value");
+    return rating.val();
+  } catch (e) {
+    console.log("Error", e);
   }
 };
 
@@ -220,5 +232,6 @@ export {
   deleteFav,
   getFavoris,
   getAllFavoris,
-  setRating,
+  setRatingFirebase,
+  getRatingFirebase,
 };
