@@ -85,6 +85,9 @@ export default {
   filterScreen_breakfast: "Petit déjeuner",
   filterScreen_sweet: "Sucré",
   filterScreen_salty: "Salé",
+  end: "Terminer",
+  did_you_like_recipe: "Cette recette vous a-t-elle plu ?",
+
   filterScreen_eatSeason: "Je souhaite manger de saison",
   slide_to_rate:
     " Faites glisser pour donner une note sur cinq à cette recette",

@@ -162,7 +162,6 @@ const getCommandes = async (setCommandes) => {
 
         await asyncForEach(commandesBuf, async (el, index) => {
           if (el.recipes[0]?._id) {
-            console.log(await getRecipe(el.recipes[0]._id), "idd");
             const recipeBuf = await getRecipe(el.recipes[0]._id);
             if (recipeBuf?.imgURL)
               commandesBuf[index].recipes[0].imgURL = recipeBuf.imgURL;

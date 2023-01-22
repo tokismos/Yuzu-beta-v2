@@ -72,6 +72,8 @@ export default {
     "Tu peux annuler ton abonnement à tout moment !",
   abonnementSecondScreen_startOffer_startTrial: "Commencer mon essai gratuit !",
   commandsScreen_listDate: "Liste du {{date}}",
+  end: "Terminer",
+
   feedbackScreen_messageSent: "Message envoyé avec succès",
   feedbackScreen_messageError: "Erreur, message non envoyé !",
   feedbackScreen_yourFeedback: "Ton feedback",
@@ -81,6 +83,7 @@ export default {
     "Un bug, une suggestion d’amélioration, une remarque, un petit message d’encouragement...",
   feedbackScreen_mimimumLength: "{{min}} caractères manquants",
   filterScreen_starters: "Entrée",
+  did_you_like_recipe: "Cette recette vous a-t-elle plu ?",
   filterScreen_sauce: "Sauce",
   slide_to_rate:
     " Faites glisser pour donner une note sur cinq à cette recette",
