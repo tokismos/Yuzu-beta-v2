@@ -15,6 +15,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Rating } from "react-native-ratings";
 import { TextInput } from "react-native-paper";
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 import { setRating } from "../axios";
 import CustomButton from "../components/CustomButton";
@@ -28,6 +29,7 @@ const { width, height } = Dimensions.get("screen");
 const RateScreen = ({ route, navigation }) => {
   const [rating, setRate] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const { _id, imgURL, name } = route.params;
   const disabled = !rating;
   const ref = useRef();
@@ -52,7 +54,7 @@ const RateScreen = ({ route, navigation }) => {
     setRate(res);
   }, []);
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <RatingModal
         recipeId={_id}
         isOpen={isOpen}
@@ -60,168 +62,181 @@ const RateScreen = ({ route, navigation }) => {
         setIsOpen={setIsOpen}
         rating={rating}
       />
-      <KeyboardAvoidingView
-        behavior="position"
-        style={{ flex: 1, backgroundColor: "white" }}
+
+      <View
+        style={{
+          backgroundColor: "white",
+          width: "100%",
+          alignItems: "center",
+          marginTop: 30,
+          alignSelf: "center",
+        }}
       >
         <View
           style={{
-            height,
-            backgroundColor: "white",
-            width: "100%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "90%",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{
+              backgroundColor: "white",
+              borderRadius: 30,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <AntDesign name="close" size={40} color="black" />
+          </TouchableOpacity>
+          <CustomButton
+            title="Terminer"
+            onPress={handleSubmit}
+            textStyle={{ fontSize: 22 }}
+            disabled={disabled}
+          />
+        </View>
+
+        <View
+          style={{
+            width: "90%",
             alignItems: "center",
-            marginTop: 40,
             alignSelf: "center",
+            justifyContent: "space-between",
+            paddingVertical: 20,
           }}
         >
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
               width: "90%",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingVertical: 30,
             }}
           >
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
+            <View
               style={{
-                backgroundColor: "white",
-                borderRadius: 30,
-                justifyContent: "center",
-                alignItems: "center",
+                width: width * 0.6,
+                height: height * 0.3,
               }}
             >
-              <AntDesign name="close" size={40} color="black" />
-            </TouchableOpacity>
-            <CustomButton
-              title="Terminer"
-              onPress={handleSubmit}
-              textStyle={{ fontSize: 22 }}
-              disabled={disabled}
-            />
+              {isImageLoading && (
+                <SkeletonPlaceholder>
+                  <View style={{ width: "100%", height: "100%" }} />
+                </SkeletonPlaceholder>
+              )}
+              <Image
+                source={{ uri: imgURL }}
+                resizeMode="contain"
+                onLoad={() => setIsImageLoading(false)}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              />
+            </View>
+            <Text
+              style={{
+                textAlign: "center",
+                width: "110%",
+                fontSize: 26,
+                marginTop: 20,
+              }}
+            >
+              {name}
+            </Text>
           </View>
 
           <View
             style={{
               width: "90%",
               alignItems: "center",
-              alignSelf: "center",
               justifyContent: "space-between",
-              paddingVertical: 20,
             }}
           >
             <View
               style={{
-                width: "90%",
+                flexDirection: "row",
+                marginBottom: 10,
                 justifyContent: "center",
                 alignItems: "center",
-                paddingVertical: 30,
               }}
             >
-              <Image
-                source={{ uri: imgURL }}
-                style={{
-                  width: "70%",
-                  aspectRatio: 1,
-                }}
-              />
-              <Text
-                style={{
-                  textAlign: "center",
-                  width: "100%",
-                  fontWeight: "bold",
-                  fontSize: 22,
-                  marginTop: 20,
-                }}
-              >
-                {name}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                width: "90%",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginBottom: 20,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {rating && (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <FontAwesome name="star" size={40} color={COLORS.primary} />
-                    <Text
-                      style={{
-                        fontSize: 40,
-                        marginLeft: 10,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {rating}
-                    </Text>
-                  </View>
-                )}
-              </View>
-
-              <Text style={{ textAlign: "center", fontSize: 20 }}>
-                {t("slide_to_rate")}
-              </Text>
-              <Rating
-                style={{ marginTop: 10 }}
-                type="star"
-                ratingCount={5}
-                imageSize={40}
-                minValue={0.5}
-                fractions={1}
-                jumpValue={0.5}
-                startingValue={rating}
-                onFinishRating={(v) => {
-                  setRate(v);
-                }}
-              />
-
               {rating && (
-                <View style={{ width: "100%", marginBottom: 20, flexGrow: 1 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <FontAwesome
+                    name="star"
+                    size={40}
+                    color={COLORS.lightYellow}
+                  />
                   <Text
                     style={{
+                      fontSize: 40,
+                      marginLeft: 10,
                       fontWeight: "bold",
-                      textAlign: "center",
-                      fontSize: 20,
-                      marginVertical: 20,
                     }}
                   >
-                    {t("what_you_think")}
+                    {rating}
                   </Text>
-                  <Pressable onPress={() => setIsOpen(true)}>
-                    <View pointerEvents="none">
-                      <TextInput
-                        placeholder={t("add_com")}
-                        theme={{ colors: { primary: COLORS.primary } }}
-                        multiline
-                        onFocus={() => console.log("cliicked")}
-                        mode="outlined"
-                        contentStyle={{ padding: 0 }}
-                        returnKeyType="done"
-                      />
-                    </View>
-                  </Pressable>
                 </View>
               )}
             </View>
+
+            <Rating
+              style={{ marginBottom: 10 }}
+              type="custom"
+              ratingCount={5}
+              imageSize={50}
+              containerStyle={{ width: 140 }}
+              minValue={0.5}
+              fractions={1}
+              jumpValue={0.5}
+              startingValue={rating}
+              ratingColor={COLORS.lightYellow}
+              onFinishRating={(v) => {
+                setRate(v);
+              }}
+            />
+            <Text style={{ textAlign: "center", fontSize: 20 }}>
+              {t("slide_to_rate")}
+            </Text>
+            {rating && (
+              <View style={{ width: "100%", marginBottom: 20, flexGrow: 1 }}>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    fontSize: 20,
+                    marginVertical: 20,
+                  }}
+                >
+                  {t("what_you_think")}
+                </Text>
+                <Pressable onPress={() => setIsOpen(true)}>
+                  <View pointerEvents="none">
+                    <TextInput
+                      placeholder={t("add_com")}
+                      theme={{ colors: { primary: COLORS.lightYellow } }}
+                      multiline
+                      onFocus={() => console.log("cliicked")}
+                      mode="outlined"
+                      contentStyle={{ padding: 0 }}
+                      returnKeyType="done"
+                    />
+                  </View>
+                </Pressable>
+              </View>
+            )}
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </View>
   );
 };

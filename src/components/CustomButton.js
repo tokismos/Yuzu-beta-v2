@@ -22,12 +22,18 @@ const CustomButton = ({
       android_ripple={{ color: "white", ...colorRipple }}
       style={{
         ...styles.button,
-        backgroundColor: disabled ? COLORS.secondary : COLORS.primary,
+        backgroundColor: disabled ? COLORS.disabled : COLORS.lightYellow,
         ...style,
       }}
     >
       {isLoading && <ActivityIndicator size="small" color="white" />}
-      <Text style={{ fontWeight: "bold", color: "white", ...textStyle }}>
+      <Text
+        style={{
+          color: "black",
+          ...textStyle,
+          fontSize: 17,
+        }}
+      >
         {title}
       </Text>
     </Pressable>
@@ -38,10 +44,12 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   button: {
-    width: 120,
+    width: 167,
     justifyContent: "center",
-    height: 50,
+    height: 54,
     alignItems: "center",
     alignSelf: "center",
+
+    borderRadius: 13,
   },
 });

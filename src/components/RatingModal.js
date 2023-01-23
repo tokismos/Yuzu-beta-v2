@@ -69,7 +69,7 @@ const RatingModal = ({ isOpen, setIsOpen, refe, rating, recipeId }) => {
           alignItems: "center",
         }}
       >
-        <FontAwesome name="star" size={40} color={COLORS.primary} />
+        <FontAwesome name="star" size={40} color={COLORS.lightYellow} />
         <Text
           style={{
             fontSize: 40,
@@ -88,7 +88,7 @@ const RatingModal = ({ isOpen, setIsOpen, refe, rating, recipeId }) => {
           alignSelf: "center",
         }}
         placeholder={t("did_you_like_recipe")}
-        theme={{ colors: { primary: COLORS.primary } }}
+        theme={{ colors: { primary: COLORS.lightYellow } }}
         multiline
         mode="outlined"
         value={commentaire}
