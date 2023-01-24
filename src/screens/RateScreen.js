@@ -6,8 +6,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
   Pressable,
+  ScrollView,
 } from "react-native";
 
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
@@ -54,7 +54,7 @@ const RateScreen = ({ route, navigation }) => {
     setRate(res);
   }, []);
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
       <RatingModal
         recipeId={_id}
         isOpen={isOpen}
@@ -65,10 +65,10 @@ const RateScreen = ({ route, navigation }) => {
 
       <View
         style={{
-          backgroundColor: "white",
           width: "100%",
+          height: "100%",
           alignItems: "center",
-          marginTop: 30,
+          marginTop: 40,
           alignSelf: "center",
         }}
       >
@@ -104,7 +104,7 @@ const RateScreen = ({ route, navigation }) => {
             alignItems: "center",
             alignSelf: "center",
             justifyContent: "space-between",
-            paddingVertical: 20,
+            flexShrink: 1,
           }}
         >
           <View
@@ -143,6 +143,7 @@ const RateScreen = ({ route, navigation }) => {
                 fontSize: 26,
                 marginTop: 20,
               }}
+              numberOfLines={2}
             >
               {name}
             </Text>
@@ -188,13 +189,16 @@ const RateScreen = ({ route, navigation }) => {
                 </View>
               )}
             </View>
-
+            <Text
+              style={{ textAlign: "center", fontSize: 20, marginBottom: 10 }}
+            >
+              {t("slide_to_rate")}
+            </Text>
             <Rating
-              style={{ marginBottom: 10 }}
               type="custom"
               ratingCount={5}
               imageSize={50}
-              containerStyle={{ width: 140 }}
+              containerStyle={{ width: "100%" }}
               minValue={0.5}
               fractions={1}
               jumpValue={0.5}
@@ -204,9 +208,7 @@ const RateScreen = ({ route, navigation }) => {
                 setRate(v);
               }}
             />
-            <Text style={{ textAlign: "center", fontSize: 20 }}>
-              {t("slide_to_rate")}
-            </Text>
+
             {rating && (
               <View style={{ width: "100%", marginBottom: 20, flexGrow: 1 }}>
                 <Text
@@ -237,7 +239,7 @@ const RateScreen = ({ route, navigation }) => {
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

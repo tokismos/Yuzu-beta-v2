@@ -28,7 +28,7 @@ import { ActivityIndicator } from "react-native-paper";
 
 import { COLORS } from "../consts/colors";
 
-const ROTATION = 60;
+const ROTATION = 30;
 const SWIPE_VELOCITY = 800;
 
 const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
@@ -46,16 +46,24 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
   const hiddenTranslateX = 2 * screenWidth;
 
   const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
+  const rotation = useSharedValue(30);
   const rotate = useDerivedValue(
     () =>
-      interpolate(translateX.value, [0, hiddenTranslateX], [0, ROTATION]) +
-      "deg"
+      interpolate(
+        translateX.value,
+        [0, hiddenTranslateX],
+        [0, rotation.value]
+      ) + "deg"
   );
 
   const cardStyle = useAnimatedStyle(() => ({
     transform: [
       {
         translateX: translateX.value,
+      },
+      {
+        translateY: translateY.value,
       },
       {
         rotate: rotate.value,
@@ -93,26 +101,36 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
   }));
 
   const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, context) => {
+    onStart: (e, context) => {
+      if (e.y > 250) {
+        rotation.value = -30;
+      } else {
+        rotation.value = 30;
+      }
       context.startX = translateX.value;
+      context.startY = translateY.value;
     },
     onActive: (event, context) => {
       translateX.value = context.startX + event.translationX;
+      translateY.value = context.startY + event.translationY;
     },
     onEnd: (event) => {
-      if (Math.abs(event.velocityX) < SWIPE_VELOCITY) {
+      if (Math.abs(event.translationX) < screenWidth / 4.5) {
         translateX.value = withSpring(0);
+        translateY.value = withSpring(0);
         return;
       }
 
       translateX.value = withSpring(
-        hiddenTranslateX * Math.sign(event.velocityX),
+        hiddenTranslateX * Math.sign(event.translationX),
         {
           overshootClamping: true,
+          mass: 10,
         },
         () => {
           runOnJS(setCurrentIndex)(currentIndex + 1);
           runOnJS(setNextIndex)(nextIndex + 1);
+          translateY.value = 0;
         }
       );
 
