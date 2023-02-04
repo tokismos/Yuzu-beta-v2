@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const RatingModal = ({ isOpen, setIsOpen, refe, rating, recipeId }) => {
   const { width, height } = Dimensions.get("screen");
-  const [commentaire, setCommentaire] = useState(null);
+  const [commentaire, setCommentaire] = useState("");
   const navigation = useNavigation();
   const { t } = useTranslation();
 
@@ -39,7 +39,8 @@ const RatingModal = ({ isOpen, setIsOpen, refe, rating, recipeId }) => {
       swipeThreshold={1}
       style={{
         width: "100%",
-        height: Platform.OS === "ios" ? height * 0.8 : height * 0.8,
+        height,
+        // height: Platform.OS === "ios" ? height * 0.8 : height * 0.8,
         padding: 20,
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
@@ -51,22 +52,38 @@ const RatingModal = ({ isOpen, setIsOpen, refe, rating, recipeId }) => {
       isOpen={isOpen}
       backdropOpacity={1}
     >
-      <TouchableOpacity
-        onPress={() => refe.current.close()}
+      <View
         style={{
-          backgroundColor: "white",
-          borderRadius: 30,
-          //   justifyContent: "center",
-          //   alignItems: "center",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
         }}
       >
-        <AntDesign name="close" size={40} color="black" />
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => refe.current.close()}
+          style={{
+            backgroundColor: "white",
+            borderRadius: 30,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <AntDesign name="close" size={40} color="black" />
+        </TouchableOpacity>
+        {commentaire != "" && (
+          <CustomButton
+            title="Terminer"
+            onPress={handleSubmit}
+            textStyle={{ fontSize: 22 }}
+          />
+        )}
+      </View>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
+          marginTop: 30,
         }}
       >
         <FontAwesome name="star" size={40} color={COLORS.lightYellow} />
@@ -83,7 +100,7 @@ const RatingModal = ({ isOpen, setIsOpen, refe, rating, recipeId }) => {
 
       <TextInput
         style={{
-          height: height * 0.3,
+          height: height * 0.2,
           width: width * 0.8,
           alignSelf: "center",
         }}
@@ -95,14 +112,6 @@ const RatingModal = ({ isOpen, setIsOpen, refe, rating, recipeId }) => {
         onChangeText={setCommentaire}
         // contentStyle={{ padding: 0 }}
         returnKeyType="done"
-      />
-
-      <CustomButton
-        title={t("end")}
-        style={{ marginTop: 30 }}
-        onPress={handleSubmit}
-        textStyle={{ fontSize: 22 }}
-        disabled={!commentaire}
       />
     </Modal>
   );

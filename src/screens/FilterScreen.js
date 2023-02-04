@@ -105,7 +105,6 @@ const TypePlatsComponent = ({ activeFilters }) => {
         }}
       >
         {mealTypes.map((item, i) => {
-          // hja item", item);
           return (
             <Pressable
               key={i}
@@ -148,6 +147,8 @@ const TypePlatsComponent = ({ activeFilters }) => {
                   fontWeight: "bold",
                   fontSize: 18,
                   textAlign: "center",
+                  justifyContent: "center",
+                  alignSelf: "center",
                 }}
               >
                 {item.label}
@@ -445,6 +446,7 @@ const TempsComponent = ({ setTempsHeader }) => {
 
   const [temps, setTemps] = useState(stateTemps || 30);
   const dispatch = useDispatch();
+  const MAX_TIME = 60;
   const { t } = useTranslation();
 
   return (
@@ -477,7 +479,9 @@ const TempsComponent = ({ setTempsHeader }) => {
               color: COLORS.primary,
             }}
           >
-            {t("filterScreen_minDuration", { duration: temps })}
+            {t("filterScreen_minDuration", {
+              duration: temps != MAX_TIME ? `${temps}` : `${temps}+`,
+            })}
           </Text>
         )}
         <Time height={40} width={40} fill="black" />
@@ -501,8 +505,8 @@ const TempsComponent = ({ setTempsHeader }) => {
           width: "90%",
           height: 40,
         }}
-        minimumValue={0}
-        maximumValue={120}
+        minimumValue={10}
+        maximumValue={60}
         minimumTrackTintColor={COLORS.primary}
         maximumTrackTintColor="#000000"
         thumbStyle={{ width: 50, height: 50 }}

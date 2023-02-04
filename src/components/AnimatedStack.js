@@ -125,7 +125,7 @@ const AnimatedStack = ({ data, renderItem, onSwipeRight, onSwipeLeft }) => {
         hiddenTranslateX * Math.sign(event.translationX),
         {
           overshootClamping: true,
-          mass: 10,
+          mass: 7,
         },
         () => {
           runOnJS(setCurrentIndex)(currentIndex + 1);

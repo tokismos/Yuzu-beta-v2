@@ -90,12 +90,13 @@ const RateScreen = ({ route, navigation }) => {
           >
             <AntDesign name="close" size={40} color="black" />
           </TouchableOpacity>
-          <CustomButton
-            title="Terminer"
-            onPress={handleSubmit}
-            textStyle={{ fontSize: 22 }}
-            disabled={disabled}
-          />
+          {rating && (
+            <CustomButton
+              title="Terminer"
+              onPress={handleSubmit}
+              textStyle={{ fontSize: 22 }}
+            />
+          )}
         </View>
 
         <View
